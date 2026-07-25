@@ -449,6 +449,7 @@ function money(value){
   if(value===0) return '$0';
   return (value>0?'+$':'-$') + Math.abs(value).toLocaleString();
 }
+function clampValue(value, min, max){ return Math.max(min, Math.min(max, value)); }
 
 function packageById(){ return kitchenPackages.find(p=>p.id===kState.pkg); }
 function benchtopById(){ return benchtops.find(b=>b.id===kState.benchtop); }
@@ -473,7 +474,7 @@ function calcKitchenTotals(){
 
 function markKitchenStep(step){ kState.completed[step] = true; }
 function isKitchenStepComplete(step){ return !!kState.completed[step]; }
-function applianceModFor(list, id){ return list.find(item=>item.id===id).mod; }
+function applianceModFor(list, id){ return list.find(item=>item.id===id)?.mod ?? 0; }
 function areKitchenStepsComplete(){
   for(let i=KITCHEN_FIRST_STEP;i<=KITCHEN_CONFIG_LAST_STEP;i++) if(!isKitchenStepComplete(i)) return false;
   return true;
@@ -625,7 +626,7 @@ function renderKitchenStepContent(){
   }
 
   if(kState.step===5){
-    const selectedSplash = splashById();
+    const selectedSplash = splashById() || splashbacks[0];
     content += `<div class="kitchen-cards">${splashbacks.map(tile=>`
       <article class="kitchen-card ${kState.splash===tile.id?'selected':''}" data-splash="${tile.id}">
         <h4>${tile.name}</h4>
@@ -698,7 +699,7 @@ function renderKitchenStepContent(){
 function updateKitchenNav(){
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
-  backBtn.disabled = kState.step===1;
+  backBtn.disabled = kState.step===KITCHEN_FIRST_STEP;
   if(kState.step===KITCHEN_REVIEW_STEP){
     nextBtn.textContent = 'Review Design';
     nextBtn.disabled = true;
@@ -732,6 +733,13 @@ function initKitchenWizard(){
   const modal = document.getElementById('kitchenRequestModal');
   const modalClose = document.getElementById('kitchenModalClose');
   const summaryText = document.getElementById('kitchenSummaryText');
+  let modalTrigger = null;
+
+  function closeKitchenModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    if(modalTrigger) modalTrigger.focus();
+  }
 
   stepsList.addEventListener('click', (event)=>{
     const item = event.target.closest('[data-step-go]');
@@ -763,8 +771,8 @@ function initKitchenWizard(){
     if(stepper){
       const key = stepper.dataset.stepper;
       const dir = Number(stepper.dataset.dir);
-      if(key==='base') kState.baseCount = Math.max(BASE_CABINET_MIN, Math.min(BASE_CABINET_MAX, kState.baseCount + dir));
-      if(key==='wall') kState.wallCount = Math.max(WALL_CABINET_MIN, Math.min(WALL_CABINET_MAX, kState.wallCount + dir));
+      if(key==='base') kState.baseCount = clampValue(kState.baseCount + dir, BASE_CABINET_MIN, BASE_CABINET_MAX);
+      if(key==='wall') kState.wallCount = clampValue(kState.wallCount + dir, WALL_CABINET_MIN, WALL_CABINET_MAX);
       markKitchenStep(3);
       renderKitchenWizard();
       return;
@@ -782,7 +790,7 @@ function initKitchenWizard(){
     const splash = event.target.closest('[data-splash]');
     if(splash){
       kState.splash = splash.dataset.splash;
-      kState.splashPattern = splashbacks.find(s=>s.id===kState.splash).patterns[0];
+      kState.splashPattern = splashbacks.find(s=>s.id===kState.splash)?.patterns[0] ?? '';
       markKitchenStep(5);
       renderKitchenWizard();
       return;
@@ -805,23 +813,28 @@ function initKitchenWizard(){
 
     const requestBtn = event.target.closest('#kitchenRequestBtn');
     if(requestBtn && areKitchenStepsComplete()){
+      modalTrigger = requestBtn;
       summaryText.value = kitchenDesignSummaryText();
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
+      modalClose.focus();
       markKitchenStep(8);
       renderKitchenSidebar();
     }
   });
 
-  modalClose.addEventListener('click', ()=>{
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-  });
+  modalClose.addEventListener('click', closeKitchenModal);
   modal.addEventListener('click', (event)=>{
-    if(event.target===modal){
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-    }
+    if(event.target===modal) closeKitchenModal();
+  });
+  modal.addEventListener('keydown', (event)=>{
+    if(event.key==='Escape'){ closeKitchenModal(); return; }
+    if(event.key!=='Tab') return;
+    const focusable = [...modal.querySelectorAll('button,[href],textarea')].filter(node=>!node.disabled);
+    if(!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length-1];
+    if(event.shiftKey && document.activeElement===first){ event.preventDefault(); last.focus(); }
+    else if(!event.shiftKey && document.activeElement===last){ event.preventDefault(); first.focus(); }
   });
 
   renderKitchenWizard();
@@ -878,7 +891,7 @@ function bindGroupSwatches(container, list, state, key, updateFn){
     [...container.querySelectorAll(`.swatch[data-id="${item.id}"]`)].forEach(node=>{
       node.addEventListener('click', ()=>{
         state[key] = item.id;
-        renderBathroomOptions();
+        if(container.id==='bathroomOptions') renderBathroomOptions();
         updateFn();
       });
     });
