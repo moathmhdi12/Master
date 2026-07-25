@@ -209,7 +209,7 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .kitchen-request-dialog{width:min(680px,100%);background:#fff;border-radius:20px;padding:24px;border:1.5px solid var(--line);box-shadow:0 20px 40px rgba(0,0,0,.18);}
 .kitchen-request-dialog h3{margin:0 0 10px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
 .kitchen-request-dialog p{margin:0 0 16px;color:#6d6558;font-size:14px;line-height:1.6;}
-.kitchen-request-dialog textarea{width:100%;min-height:220px;border:1.5px solid var(--line);border-radius:14px;padding:14px;font:13px/1.6 'Work Sans',sans-serif;color:var(--gray);background:var(--cream);resize:vertical;}
+.kitchen-request-dialog pre{width:100%;min-height:220px;border:1.5px solid var(--line);border-radius:14px;padding:14px;font:13px/1.6 'Work Sans',sans-serif;color:var(--gray);background:var(--cream);white-space:pre-wrap;overflow:auto;margin:0;}
 .kitchen-request-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px;}
 .kitchen-secondary-btn{min-height:46px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font:600 14px 'Work Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;}
 .kitchen-secondary-btn:hover{border-color:var(--gold);}
@@ -278,10 +278,10 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
     </div>
 
     <div class="kitchen-request-modal" id="kitchenRequestModal" aria-hidden="true">
-      <div class="kitchen-request-dialog" role="dialog" aria-modal="true" aria-labelledby="kitchenRequestTitle">
+      <div class="kitchen-request-dialog" id="kitchenRequestDialog" role="dialog" aria-modal="true" aria-labelledby="kitchenRequestTitle" tabindex="-1">
         <h3 id="kitchenRequestTitle">Request This Design</h3>
         <p>Your design summary is pre-filled below so the MIC NSW team can quote the exact direction you selected.</p>
-        <textarea id="kitchenRequestSummary" readonly aria-label="Kitchen design summary"></textarea>
+        <pre id="kitchenRequestSummary" tabindex="0" role="region" aria-label="Kitchen design summary"></pre>
         <div class="kitchen-request-actions">
           <button type="button" class="kitchen-secondary-btn" id="kitchenRequestClose">Close</button>
           <a class="kitchen-cta-btn" href="index.html#contact">Continue to Contact</a>
@@ -338,6 +338,16 @@ const kitchenStepDefinitions = [
   {step:7, title:'Upgrades & Extras', short:'Optional enhancements', description:'Add practical extras and premium upgrades to elevate usability, storage and final detailing.'},
   {step:8, title:'Review & Summary', short:'Preview and request', description:'Review the visual concept, check the itemised pricing summary and request this exact kitchen design.'}
 ];
+const BASE_CABINET_MIN = 2;
+const BASE_CABINET_MAX = 8;
+const BASE_CABINET_STANDARD = 5;
+const WALL_CABINET_MIN = 2;
+const WALL_CABINET_MAX = 6;
+const WALL_CABINET_STANDARD = 3;
+const KITCHEN_STEP_COUNT = kitchenStepDefinitions.length;
+const REVIEW_UPPER_CABINET_WIDTH = 180;
+const REVIEW_BASE_CABINET_WIDTH = 220;
+const KITCHEN_MODAL_FOCUS_SELECTOR = 'button, a, [tabindex]:not([tabindex="-1"])';
 
 const kitchenPackages = [
   {id:'essentials', theme:'Sydney Essentials', name:'Essentials', low:18000, high:28000, description:'Laminate benchtop with standard cabinetry for a clean and practical upgrade.',
@@ -396,6 +406,8 @@ const splashbackStyles = [
     {name:'Calacatta Vein', hex:'#ECE4D8'}, {name:'Taupe Stone', hex:'#C9BFB2'}, {name:'Graphite Slab', hex:'#65686B'}
   ]}
 ];
+const DEFAULT_KITCHEN_SPLASH = 'subway';
+const DEFAULT_KITCHEN_SPLASH_PATTERN = ((splashbackStyles.find(style => style.id === DEFAULT_KITCHEN_SPLASH) || splashbackStyles[0])?.options || [{name:'Gloss White'}])[0].name;
 
 const microwaves = [
   {id:'chef', brand:'Chef', name:'Built-in Microwave', mod:0},
@@ -466,9 +478,10 @@ const showerScreens = [
 /* ============================================================
    STATE
 ============================================================ */
-let kState = {currentStep:1, visitedSteps:[1], pkg:null, layout:'ushape', baseCount:5, wallCount:3, door:'flat', color:'white', benchtop:'laminex', splash:'subway', splashPattern:'Gloss White', microwave:'chef', oven:'westinghouse', cooktop:'chef', rangehood:'chef', upgrades:[]};
+let kitchenState = {currentStep:1, visitedSteps:[1], pkg:null, layout:'ushape', baseCount:BASE_CABINET_STANDARD, wallCount:WALL_CABINET_STANDARD, door:'flat', color:'white', benchtop:'laminex', splash:DEFAULT_KITCHEN_SPLASH, splashPattern:DEFAULT_KITCHEN_SPLASH_PATTERN, microwave:'chef', oven:'westinghouse', cooktop:'chef', rangehood:'chef', upgrades:[]};
 let bState = {pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
   tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d'};
+let previousKitchenFocusBeforeModal = null;
 
 /* ============================================================
    PACKAGE CARDS
@@ -550,27 +563,30 @@ function formatSignedCurrency(amount){
 function getKitchenItem(list, id){
   return list.find(item => item.id === id);
 }
+function getKitchenItemOrFallback(list, id){
+  return getKitchenItem(list, id) || list[0];
+}
 function hasVisitedKitchenStep(step){
-  return kState.visitedSteps.includes(step);
+  return kitchenState.visitedSteps.includes(step);
 }
 function markKitchenStepVisited(step){
-  if(!hasVisitedKitchenStep(step)) kState.visitedSteps.push(step);
+  if(!hasVisitedKitchenStep(step)) kitchenState.visitedSteps.push(step);
 }
 function getKitchenApplianceTotal(){
-  return getKitchenItem(microwaves, kState.microwave).mod
-    + getKitchenItem(ovens, kState.oven).mod
-    + getKitchenItem(cooktops, kState.cooktop).mod
-    + getKitchenItem(rangehoods, kState.rangehood).mod;
+  return getKitchenItemOrFallback(microwaves, kitchenState.microwave).mod
+    + getKitchenItemOrFallback(ovens, kitchenState.oven).mod
+    + getKitchenItemOrFallback(cooktops, kitchenState.cooktop).mod
+    + getKitchenItemOrFallback(rangehoods, kitchenState.rangehood).mod;
 }
 function getKitchenUpgradeTotal(){
-  return kitchenUpgrades.filter(item => kState.upgrades.includes(item.id)).reduce((sum, item) => sum + item.mod, 0);
+  return kitchenUpgrades.filter(item => kitchenState.upgrades.includes(item.id)).reduce((sum, item) => sum + item.mod, 0);
 }
 function getKitchenPriceBreakdown(){
-  const pkg = getKitchenItem(kitchenPackages, kState.pkg);
-  const cabinetAdjustment = ((kState.baseCount - 5) * 450) + ((kState.wallCount - 3) * 380);
-  const doorStyleMod = getKitchenItem(doorStyles, kState.door).mod;
-  const benchtopMod = getKitchenItem(benchtops, kState.benchtop).mod;
-  const splashMod = getKitchenItem(splashbackStyles, kState.splash).mod;
+  const pkg = getKitchenItem(kitchenPackages, kitchenState.pkg);
+  const cabinetAdjustment = ((kitchenState.baseCount - BASE_CABINET_STANDARD) * 450) + ((kitchenState.wallCount - WALL_CABINET_STANDARD) * 380);
+  const doorStyleMod = getKitchenItemOrFallback(doorStyles, kitchenState.door).mod;
+  const benchtopMod = getKitchenItemOrFallback(benchtops, kitchenState.benchtop).mod;
+  const splashMod = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash).mod;
   const applianceMod = getKitchenApplianceTotal();
   const upgradesMod = getKitchenUpgradeTotal();
   const totalInvestment = pkg ? pkg.low + cabinetAdjustment + doorStyleMod + benchtopMod + splashMod + applianceMod + upgradesMod : 0;
@@ -578,41 +594,45 @@ function getKitchenPriceBreakdown(){
 }
 function isKitchenStepComplete(step){
   switch(step){
-    case 1: return Boolean(kState.pkg);
-    case 2: return Boolean(kState.layout);
-    case 3: return kState.baseCount >= 2 && kState.baseCount <= 8 && kState.wallCount >= 2 && kState.wallCount <= 6 && Boolean(kState.door) && Boolean(kState.color);
-    case 4: return Boolean(kState.benchtop);
-    case 5: return Boolean(kState.splash) && Boolean(kState.splashPattern);
-    case 6: return Boolean(kState.microwave && kState.oven && kState.cooktop && kState.rangehood);
+    case 1: return Boolean(kitchenState.pkg);
+    case 2: return Boolean(kitchenState.layout);
+    case 3: return kitchenState.baseCount >= BASE_CABINET_MIN && kitchenState.baseCount <= BASE_CABINET_MAX && kitchenState.wallCount >= WALL_CABINET_MIN && kitchenState.wallCount <= WALL_CABINET_MAX && Boolean(kitchenState.door) && Boolean(kitchenState.color);
+    case 4: return Boolean(kitchenState.benchtop);
+    case 5: return Boolean(kitchenState.splash) && Boolean(kitchenState.splashPattern);
+    case 6: return kitchenState.microwave && kitchenState.oven && kitchenState.cooktop && kitchenState.rangehood;
     case 7: return true;
-    case 8: return kitchenStepDefinitions.slice(0, 7).every(item => isKitchenStepComplete(item.step));
+    case KITCHEN_STEP_COUNT:
+      for(let stepIndex = 1; stepIndex < KITCHEN_STEP_COUNT; stepIndex++){
+        if(!isKitchenStepComplete(stepIndex)) return false;
+      }
+      return true;
     default: return false;
   }
 }
 function isKitchenWizardComplete(){
-  return isKitchenStepComplete(8);
+  return isKitchenStepComplete(KITCHEN_STEP_COUNT);
 }
 function isKitchenStepMarkedComplete(step){
-  if(step === 8) return hasVisitedKitchenStep(8) && isKitchenWizardComplete();
-  return hasVisitedKitchenStep(step) && isKitchenStepComplete(step) && (step < kState.currentStep || step === kState.currentStep);
+  if(step === KITCHEN_STEP_COUNT) return hasVisitedKitchenStep(KITCHEN_STEP_COUNT) && isKitchenWizardComplete();
+  return hasVisitedKitchenStep(step) && isKitchenStepComplete(step) && step <= kitchenState.currentStep;
 }
 function goToKitchenStep(step){
-  kState.currentStep = Math.min(8, Math.max(1, step));
-  markKitchenStepVisited(kState.currentStep);
+  kitchenState.currentStep = Math.min(KITCHEN_STEP_COUNT, Math.max(1, step));
+  markKitchenStepVisited(kitchenState.currentStep);
   renderKitchenWizard();
 }
 function advanceKitchenStep(){
-  if(kState.currentStep === 1 && !kState.pkg) return;
-  if(kState.currentStep < 8){
-    kState.currentStep += 1;
-    markKitchenStepVisited(kState.currentStep);
+  if(kitchenState.currentStep === 1 && !kitchenState.pkg) return;
+  if(kitchenState.currentStep < KITCHEN_STEP_COUNT){
+    kitchenState.currentStep += 1;
+    markKitchenStepVisited(kitchenState.currentStep);
     renderKitchenWizard();
   }
 }
 function retreatKitchenStep(){
-  if(kState.currentStep > 1){
-    kState.currentStep -= 1;
-    markKitchenStepVisited(kState.currentStep);
+  if(kitchenState.currentStep > 1){
+    kitchenState.currentStep -= 1;
+    markKitchenStepVisited(kitchenState.currentStep);
     renderKitchenWizard();
   }
 }
@@ -628,43 +648,43 @@ function renderKitchenLayoutIcon(id){
 }
 function renderKitchenPackageStep(){
   return `<div class="kitchen-card-grid kitchen-card-grid--three">${kitchenPackages.map(pkg => `
-    <button type="button" class="kitchen-option-card kitchen-package-card ${kState.pkg===pkg.id?'is-selected':''}" data-kitchen-package="${pkg.id}" aria-pressed="${kState.pkg===pkg.id}">
+    <button type="button" class="kitchen-option-card kitchen-package-card ${kitchenState.pkg===pkg.id?'is-selected':''}" data-kitchen-package="${pkg.id}" aria-pressed="${kitchenState.pkg===pkg.id}">
       <div class="theme">${pkg.theme}</div>
       <div class="kitchen-option-top"><h3>${pkg.name}</h3><span class="kitchen-price-mod">${formatCurrency(pkg.low)}–${formatCurrency(pkg.high)}</span></div>
       <p>${pkg.description}</p>
       <ul>${pkg.items.map(item => `<li>${item}</li>`).join('')}</ul>
       <div class="supp-label">Recommended Suppliers</div>
       <div class="supp-chips">${pkg.suppliers.map(supplier => `<span class="chip">${supplier}</span>`).join('')}</div>
-      <small>${kState.pkg===pkg.id ? 'Selected package ✓' : 'Click to choose this package'}</small>
+      <small>${kitchenState.pkg===pkg.id ? 'Selected package ✓' : 'Click to choose this package'}</small>
     </button>`).join('')}</div>`;
 }
 function renderKitchenLayoutStep(){
   return `<div class="kitchen-card-grid">${kitchenLayouts.map(layout => `
-    <button type="button" class="kitchen-option-card ${kState.layout===layout.id?'is-selected':''}" data-kitchen-layout="${layout.id}" aria-pressed="${kState.layout===layout.id}">
+    <button type="button" class="kitchen-option-card ${kitchenState.layout===layout.id?'is-selected':''}" data-kitchen-layout="${layout.id}" aria-pressed="${kitchenState.layout===layout.id}">
       <div class="kitchen-layout-icon">${renderKitchenLayoutIcon(layout.id)}</div>
       <div class="kitchen-option-top"><h3>${layout.name}</h3><span class="kitchen-price-mod">Included</span></div>
       <p>${layout.desc}</p>
     </button>`).join('')}</div>`;
 }
 function renderKitchenCabinetStep(){
-  const baseAdjustment = (kState.baseCount - 5) * 450;
-  const wallAdjustment = (kState.wallCount - 3) * 380;
+  const baseAdjustment = (kitchenState.baseCount - BASE_CABINET_STANDARD) * 450;
+  const wallAdjustment = (kitchenState.wallCount - WALL_CABINET_STANDARD) * 380;
   return `<div class="kitchen-config-grid">
     <div class="kitchen-config-card">
       <h3>Cabinet quantities</h3>
       <div class="kitchen-config-row">
-        <div><label>Base Cabinets</label><span>2–8 units · ${formatSignedCurrency(baseAdjustment)}</span></div>
+        <div><label>Base Cabinets</label><span>${BASE_CABINET_MIN}–${BASE_CABINET_MAX} units · ${formatSignedCurrency(baseAdjustment)}</span></div>
         <div class="kitchen-stepper" data-stepper="baseCount">
           <button type="button" data-step="decrease" aria-label="Decrease base cabinets">−</button>
-          <strong>${kState.baseCount}</strong>
+          <strong role="status" aria-live="polite">${kitchenState.baseCount}</strong>
           <button type="button" data-step="increase" aria-label="Increase base cabinets">+</button>
         </div>
       </div>
       <div class="kitchen-config-row">
-        <div><label>Wall Cabinets</label><span>2–6 units · ${formatSignedCurrency(wallAdjustment)}</span></div>
+        <div><label>Wall Cabinets</label><span>${WALL_CABINET_MIN}–${WALL_CABINET_MAX} units · ${formatSignedCurrency(wallAdjustment)}</span></div>
         <div class="kitchen-stepper" data-stepper="wallCount">
           <button type="button" data-step="decrease" aria-label="Decrease wall cabinets">−</button>
-          <strong>${kState.wallCount}</strong>
+          <strong role="status" aria-live="polite">${kitchenState.wallCount}</strong>
           <button type="button" data-step="increase" aria-label="Increase wall cabinets">+</button>
         </div>
       </div>
@@ -672,14 +692,14 @@ function renderKitchenCabinetStep(){
     <div class="kitchen-config-card">
       <h3>Door style</h3>
       <div class="kitchen-choice-grid">${doorStyles.map(style => `
-        <button type="button" class="kitchen-choice-card ${kState.door===style.id?'is-selected':''}" data-kitchen-door="${style.id}" aria-pressed="${kState.door===style.id}">
-          <strong>${style.name}</strong><span class="kitchen-price-mod">${style.mod ? '+' + formatCurrency(style.mod) : '+$0'}</span>
+        <button type="button" class="kitchen-choice-card ${kitchenState.door===style.id?'is-selected':''}" data-kitchen-door="${style.id}" aria-pressed="${kitchenState.door===style.id}">
+          <strong>${style.name}</strong><span class="kitchen-price-mod">${formatSignedCurrency(style.mod)}</span>
         </button>`).join('')}</div>
     </div>
     <div class="kitchen-config-card" style="grid-column:1 / -1;">
       <h3>Cabinet colour</h3>
       <div class="kitchen-swatch-grid">${cabinetColors.map(color => `
-        <button type="button" class="kitchen-swatch-btn ${kState.color===color.id?'is-selected':''}" data-kitchen-color="${color.id}" aria-pressed="${kState.color===color.id}">
+        <button type="button" class="kitchen-swatch-btn ${kitchenState.color===color.id?'is-selected':''}" data-kitchen-color="${color.id}" aria-pressed="${kitchenState.color===color.id}">
           <div class="kitchen-swatch-chip" style="background:${color.hex};"></div>
           <strong>${color.name}</strong>
           <span>${color.hex}</span>
@@ -689,17 +709,19 @@ function renderKitchenCabinetStep(){
 }
 function renderKitchenBenchtopStep(){
   return `<div class="kitchen-card-grid">${benchtops.map(bench => `
-    <button type="button" class="kitchen-option-card ${kState.benchtop===bench.id?'is-selected':''}" data-kitchen-benchtop="${bench.id}" aria-pressed="${kState.benchtop===bench.id}">
+    <button type="button" class="kitchen-option-card ${kitchenState.benchtop===bench.id?'is-selected':''}" data-kitchen-benchtop="${bench.id}" aria-pressed="${kitchenState.benchtop===bench.id}">
       <div class="kitchen-option-top"><div><h3>${bench.brand}</h3><p style="margin:4px 0 0;">${bench.name}</p></div><span class="kitchen-price-mod">${bench.mod ? '+' + formatCurrency(bench.mod) : '+$0'}</span></div>
       <div class="kitchen-swatch-chip" style="background:${bench.hex};height:54px;margin-top:14px;"></div>
       <small>${bench.mod ? 'Upgrade applied to package base' : 'Included in package allowance'}</small>
     </button>`).join('')}</div>`;
 }
 function renderKitchenSplashStep(){
-  const activeSplash = getKitchenItem(splashbackStyles, kState.splash);
+  const activeSplash = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  const activeSplashOption = getKitchenSplashOption();
+  if(kitchenState.splashPattern !== activeSplashOption.name) kitchenState.splashPattern = activeSplashOption.name;
   return `<div>
     <div class="kitchen-card-grid">${splashbackStyles.map(tile => `
-      <button type="button" class="kitchen-option-card ${kState.splash===tile.id?'is-selected':''}" data-kitchen-splash="${tile.id}" aria-pressed="${kState.splash===tile.id}">
+      <button type="button" class="kitchen-option-card ${kitchenState.splash===tile.id?'is-selected':''}" data-kitchen-splash="${tile.id}" aria-pressed="${kitchenState.splash===tile.id}">
         <div class="kitchen-option-top"><div><h3>${tile.name}</h3><p style="margin:4px 0 0;">${tile.subtitle}</p></div><span class="kitchen-price-mod">${tile.mod ? '+' + formatCurrency(tile.mod) : '+$0'}</span></div>
         <div class="kitchen-swatch-chip" style="background:${tile.options[0].hex};height:54px;margin-top:14px;"></div>
         <small>${tile.options.map(option => option.name).join(' · ')}</small>
@@ -708,7 +730,7 @@ function renderKitchenSplashStep(){
     <div class="kitchen-config-card" style="margin-top:18px;">
       <h3>${activeSplash.name} pattern options</h3>
       <div class="kitchen-pattern-row">${activeSplash.options.map(option => `
-        <button type="button" class="kitchen-pattern-chip ${kState.splashPattern===option.name?'is-selected':''}" data-kitchen-pattern="${option.name}">${option.name}</button>`).join('')}</div>
+        <button type="button" class="kitchen-pattern-chip ${activeSplashOption.name===option.name?'is-selected':''}" data-kitchen-pattern="${option.name}">${option.name}</button>`).join('')}</div>
     </div>
   </div>`;
 }
@@ -716,7 +738,7 @@ function renderKitchenApplianceBlock(label, key, list){
   return `<div class="kitchen-appliance-block">
     <h3>${label}</h3>
     <div class="kitchen-choice-grid kitchen-choice-grid--wide">${list.map(item => `
-      <button type="button" class="kitchen-choice-card ${kState[key]===item.id?'is-selected':''}" data-kitchen-appliance="${key}" data-kitchen-value="${item.id}" aria-pressed="${kState[key]===item.id}">
+      <button type="button" class="kitchen-choice-card ${kitchenState[key]===item.id?'is-selected':''}" data-kitchen-appliance="${key}" data-kitchen-value="${item.id}" aria-pressed="${kitchenState[key]===item.id}">
         <strong>${item.brand}</strong>
         <span>${item.mod ? '+' + formatCurrency(item.mod) : '+$0'}</span>
       </button>`).join('')}</div>
@@ -730,7 +752,7 @@ function renderKitchenApplianceStep(){
 }
 function renderKitchenUpgradeStep(){
   return `<div class="kitchen-upgrade-grid">${kitchenUpgrades.map(item => {
-    const active = kState.upgrades.includes(item.id);
+    const active = kitchenState.upgrades.includes(item.id);
     return `<button type="button" class="kitchen-upgrade-card ${active?'is-selected':''}" data-kitchen-upgrade="${item.id}" aria-pressed="${active}">
       <div><div class="kitchen-option-top"><h3 style="font-size:16px;">${item.name}</h3><span class="kitchen-price-mod">+${formatCurrency(item.mod)}</span></div><p>${item.description}</p></div>
       <span class="kitchen-toggle-pill" aria-hidden="true"></span>
@@ -738,29 +760,30 @@ function renderKitchenUpgradeStep(){
   }).join('')}</div>`;
 }
 function getKitchenSplashOption(){
-  return getKitchenItem(splashbackStyles, kState.splash).options.find(option => option.name === kState.splashPattern) || getKitchenItem(splashbackStyles, kState.splash).options[0];
+  const splashStyle = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  return splashStyle.options.find(option => option.name === kitchenState.splashPattern) || splashStyle.options[0];
 }
 function renderKitchenReviewSvg(){
-  const cabinetColor = getKitchenItem(cabinetColors, kState.color).hex;
-  const benchColor = getKitchenItem(benchtops, kState.benchtop).hex;
+  const cabinetColor = getKitchenItemOrFallback(cabinetColors, kitchenState.color).hex;
+  const benchColor = getKitchenItemOrFallback(benchtops, kitchenState.benchtop).hex;
   const splashColor = getKitchenSplashOption().hex;
-  const upperCount = Math.max(2, kState.wallCount);
-  const baseCount = Math.max(2, kState.baseCount);
-  const upperWidth = 180 / upperCount;
-  const baseWidth = 220 / baseCount;
+  const upperCount = Math.max(2, kitchenState.wallCount);
+  const baseCount = Math.max(2, kitchenState.baseCount);
+  const upperWidth = REVIEW_UPPER_CABINET_WIDTH / upperCount;
+  const baseWidth = REVIEW_BASE_CABINET_WIDTH / baseCount;
   const upperCabinets = Array.from({length:upperCount}, (_, index) => {
     const x = 24 + (index * upperWidth);
-    return `<rect x="${x}" y="28" width="${upperWidth-6}" height="48" rx="4" fill="${cabinetColor}" stroke="#00000018"/>`;
+    return `<rect x="${x}" y="28" width="${upperWidth-6}" height="48" rx="4" fill="${cabinetColor}" stroke="#00000030"/>`;
   }).join('');
   const baseCabinets = Array.from({length:baseCount}, (_, index) => {
     const x = 24 + (index * baseWidth);
-    return `<rect x="${x}" y="176" width="${baseWidth-6}" height="70" rx="4" fill="${cabinetColor}" stroke="#00000018"/>`;
+    return `<rect x="${x}" y="176" width="${baseWidth-6}" height="70" rx="4" fill="${cabinetColor}" stroke="#00000030"/>`;
   }).join('');
   const layoutShapes = {
-    ushape:`<path d="M286 78 H406 V258 H356 V124 H336 V258 H286 Z" fill="${benchColor}" stroke="#00000018"/><path d="M24 248 H244 V258 H24 Z" fill="${benchColor}" stroke="#00000018"/><path d="M24 78 H74 V258 H24 Z" fill="${benchColor}" stroke="#00000018"/>`,
-    lshape:`<path d="M24 78 H74 V258 H24 Z" fill="${benchColor}" stroke="#00000018"/><path d="M24 208 H316 V258 H24 Z" fill="${benchColor}" stroke="#00000018"/>`,
-    galley:`<path d="M24 88 H204 V138 H24 Z" fill="${benchColor}" stroke="#00000018"/><path d="M236 188 H416 V238 H236 Z" fill="${benchColor}" stroke="#00000018"/>`,
-    island:`<path d="M24 88 H416 V138 H24 Z" fill="${benchColor}" stroke="#00000018"/><rect x="160" y="188" width="120" height="44" rx="8" fill="${benchColor}" stroke="#00000018"/>`
+    ushape:`<path d="M286 78 H406 V258 H356 V124 H336 V258 H286 Z" fill="${benchColor}" stroke="#00000030"/><path d="M24 248 H244 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/><path d="M24 78 H74 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/>`,
+    lshape:`<path d="M24 78 H74 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/><path d="M24 208 H316 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/>`,
+    galley:`<path d="M24 88 H204 V138 H24 Z" fill="${benchColor}" stroke="#00000030"/><path d="M236 188 H416 V238 H236 Z" fill="${benchColor}" stroke="#00000030"/>`,
+    island:`<path d="M24 88 H416 V138 H24 Z" fill="${benchColor}" stroke="#00000030"/><rect x="160" y="188" width="120" height="44" rx="8" fill="${benchColor}" stroke="#00000030"/>`
   };
   return `<svg viewBox="0 0 440 280" width="100%" height="auto" aria-label="Kitchen design preview">
     <rect width="440" height="280" fill="#F3EEE5" rx="18"/>
@@ -768,45 +791,62 @@ function renderKitchenReviewSvg(){
     ${upperCabinets}
     <rect x="20" y="152" width="244" height="12" fill="${benchColor}" opacity=".95"/>
     ${baseCabinets}
-    ${layoutShapes[kState.layout]}
+    ${layoutShapes[kitchenState.layout]}
     <rect x="178" y="148" width="48" height="10" rx="5" fill="#15171A" opacity=".85"/>
     <circle cx="188" cy="153" r="2.5" fill="#fff" opacity=".5"/><circle cx="202" cy="153" r="2.5" fill="#fff" opacity=".5"/><circle cx="216" cy="153" r="2.5" fill="#fff" opacity=".5"/>
-    <rect x="330" y="92" width="30" height="42" rx="4" fill="#d8dee2" stroke="#00000018"/>
-    <rect x="326" y="148" width="38" height="70" rx="4" fill="#c5ccd1" stroke="#00000018"/>
+    <rect x="330" y="92" width="30" height="42" rx="4" fill="#d8dee2" stroke="#00000030"/>
+    <rect x="326" y="148" width="38" height="70" rx="4" fill="#c5ccd1" stroke="#00000030"/>
     <rect x="288" y="142" width="62" height="10" rx="4" fill="#3A3F44" opacity=".85"/>
-    <text x="286" y="34" font-family="Work Sans, sans-serif" font-size="11" fill="#5B5346">${getKitchenItem(kitchenLayouts, kState.layout).name}</text>
+    <text x="286" y="34" font-family="Work Sans, sans-serif" font-size="11" fill="#5B5346">${getKitchenItemOrFallback(kitchenLayouts, kitchenState.layout).name}</text>
   </svg>`;
 }
 function buildKitchenSummaryRows(){
   const breakdown = getKitchenPriceBreakdown();
   const pkg = breakdown.pkg;
-  const splash = getKitchenItem(splashbackStyles, kState.splash);
-  const upgrades = kitchenUpgrades.filter(item => kState.upgrades.includes(item.id));
+  const splash = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  const layout = getKitchenItemOrFallback(kitchenLayouts, kitchenState.layout);
+  const door = getKitchenItemOrFallback(doorStyles, kitchenState.door);
+  const color = getKitchenItemOrFallback(cabinetColors, kitchenState.color);
+  const benchtop = getKitchenItemOrFallback(benchtops, kitchenState.benchtop);
+  const microwave = getKitchenItemOrFallback(microwaves, kitchenState.microwave);
+  const oven = getKitchenItemOrFallback(ovens, kitchenState.oven);
+  const cooktop = getKitchenItemOrFallback(cooktops, kitchenState.cooktop);
+  const rangehood = getKitchenItemOrFallback(rangehoods, kitchenState.rangehood);
+  const upgrades = kitchenUpgrades.filter(item => kitchenState.upgrades.includes(item.id));
   return [
     ['Package', pkg ? pkg.name : 'Not selected'],
-    ['Layout', getKitchenItem(kitchenLayouts, kState.layout).name],
-    ['Cabinets', `${kState.baseCount} base + ${kState.wallCount} wall`],
-    ['Door Style', `${getKitchenItem(doorStyles, kState.door).name} — ${formatSignedCurrency(breakdown.doorStyleMod)}`],
-    ['Color', getKitchenItem(cabinetColors, kState.color).name],
-    ['Benchtop', `${getKitchenItem(benchtops, kState.benchtop).brand} ${getKitchenItem(benchtops, kState.benchtop).name} — ${formatSignedCurrency(breakdown.benchtopMod)}`],
-    ['Splashback', `${splash.name} (${kState.splashPattern}) — ${formatSignedCurrency(breakdown.splashMod)}`],
-    ['Appliances', `${getKitchenItem(microwaves, kState.microwave).brand} / ${getKitchenItem(ovens, kState.oven).brand} / ${getKitchenItem(cooktops, kState.cooktop).brand} / ${getKitchenItem(rangehoods, kState.rangehood).brand} — ${formatSignedCurrency(breakdown.applianceMod)}`],
+    ['Layout', layout.name],
+    ['Cabinets', `${kitchenState.baseCount} base + ${kitchenState.wallCount} wall`],
+    ['Door Style', `${door.name} — ${formatSignedCurrency(breakdown.doorStyleMod)}`],
+    ['Color', color.name],
+    ['Benchtop', `${benchtop.brand} ${benchtop.name} — ${formatSignedCurrency(breakdown.benchtopMod)}`],
+    ['Splashback', `${splash.name} (${kitchenState.splashPattern}) — ${formatSignedCurrency(breakdown.splashMod)}`],
+    ['Appliances', `${microwave.brand} / ${oven.brand} / ${cooktop.brand} / ${rangehood.brand} — ${formatSignedCurrency(breakdown.applianceMod)}`],
     ['Upgrades', upgrades.length ? `${upgrades.map(item => item.name).join(', ')} — ${formatSignedCurrency(breakdown.upgradesMod)}` : 'None selected — included']
   ];
 }
 function buildKitchenDesignSummaryText(){
   const breakdown = getKitchenPriceBreakdown();
+  const layout = getKitchenItemOrFallback(kitchenLayouts, kitchenState.layout);
+  const door = getKitchenItemOrFallback(doorStyles, kitchenState.door);
+  const color = getKitchenItemOrFallback(cabinetColors, kitchenState.color);
+  const benchtop = getKitchenItemOrFallback(benchtops, kitchenState.benchtop);
+  const splash = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  const microwave = getKitchenItemOrFallback(microwaves, kitchenState.microwave);
+  const oven = getKitchenItemOrFallback(ovens, kitchenState.oven);
+  const cooktop = getKitchenItemOrFallback(cooktops, kitchenState.cooktop);
+  const rangehood = getKitchenItemOrFallback(rangehoods, kitchenState.rangehood);
   if(!breakdown.pkg) return 'Kitchen package not selected yet.';
   return [
     `PACKAGE: ${breakdown.pkg.name}`,
-    `LAYOUT: ${getKitchenItem(kitchenLayouts, kState.layout).name}`,
-    `CABINETS: ${kState.baseCount} base + ${kState.wallCount} wall`,
-    `DOOR STYLE: ${getKitchenItem(doorStyles, kState.door).name} — ${formatSignedCurrency(breakdown.doorStyleMod)}`,
-    `COLOR: ${getKitchenItem(cabinetColors, kState.color).name}`,
-    `BENCHTOP: ${getKitchenItem(benchtops, kState.benchtop).brand} ${getKitchenItem(benchtops, kState.benchtop).name} — ${formatSignedCurrency(breakdown.benchtopMod)}`,
-    `SPLASHBACK: ${getKitchenItem(splashbackStyles, kState.splash).name} (${kState.splashPattern}) — ${formatSignedCurrency(breakdown.splashMod)}`,
-    `APPLIANCES: ${getKitchenItem(microwaves, kState.microwave).brand} microwave / ${getKitchenItem(ovens, kState.oven).brand} oven / ${getKitchenItem(cooktops, kState.cooktop).brand} cooktop / ${getKitchenItem(rangehoods, kState.rangehood).brand} hood — ${formatSignedCurrency(breakdown.applianceMod)}`,
-    `UPGRADES: ${kState.upgrades.length ? kitchenUpgrades.filter(item => kState.upgrades.includes(item.id)).map(item => item.name).join(', ') : 'None'} — ${formatSignedCurrency(breakdown.upgradesMod)}`,
+    `LAYOUT: ${layout.name}`,
+    `CABINETS: ${kitchenState.baseCount} base + ${kitchenState.wallCount} wall`,
+    `DOOR STYLE: ${door.name} — ${formatSignedCurrency(breakdown.doorStyleMod)}`,
+    `COLOR: ${color.name}`,
+    `BENCHTOP: ${benchtop.brand} ${benchtop.name} — ${formatSignedCurrency(breakdown.benchtopMod)}`,
+    `SPLASHBACK: ${splash.name} (${kitchenState.splashPattern}) — ${formatSignedCurrency(breakdown.splashMod)}`,
+    `APPLIANCES: ${microwave.brand} microwave / ${oven.brand} oven / ${cooktop.brand} cooktop / ${rangehood.brand} hood — ${formatSignedCurrency(breakdown.applianceMod)}`,
+    `UPGRADES: ${kitchenState.upgrades.length ? kitchenUpgrades.filter(item => kitchenState.upgrades.includes(item.id)).map(item => item.name).join(', ') : 'None'} — ${formatSignedCurrency(breakdown.upgradesMod)}`,
     `TOTAL INVESTMENT: ${formatCurrency(breakdown.totalInvestment)}+`
   ].join('\n');
 }
@@ -841,7 +881,7 @@ function renderKitchenReviewStep(){
   </div>`;
 }
 function renderKitchenCurrentStepContent(){
-  switch(kState.currentStep){
+  switch(kitchenState.currentStep){
     case 1: return renderKitchenPackageStep();
     case 2: return renderKitchenLayoutStep();
     case 3: return renderKitchenCabinetStep();
@@ -855,49 +895,53 @@ function renderKitchenCurrentStepContent(){
 }
 function renderKitchenRunningTotal(){
   const container = document.getElementById('kitchenRunningTotal');
-  if(kState.currentStep === 1){
+  if(kitchenState.currentStep === 1){
     container.innerHTML = '';
     return;
   }
   const breakdown = getKitchenPriceBreakdown();
-  container.innerHTML = `<div class="kitchen-running-total"><div><span>Running total</span><strong>${breakdown.pkg ? formatCurrency(breakdown.totalInvestment) + '+' : 'Select package to calculate'}</strong></div><span>${breakdown.pkg ? 'Live pricing updates instantly as you refine cabinets, finishes, appliances and upgrades.' : 'Choose a package first to activate the investment estimate.'}</span></div>`;
+  const totalText = breakdown.pkg ? `${formatCurrency(breakdown.totalInvestment)}+` : 'Select package to calculate';
+  const noteText = breakdown.pkg
+    ? 'Live pricing updates instantly as you refine cabinets, finishes, appliances and upgrades.'
+    : 'Choose a package first to activate the investment estimate.';
+  container.innerHTML = `<div class="kitchen-running-total"><div><span>Running total</span><strong>${totalText}</strong></div><span>${noteText}</span></div>`;
 }
 function bindKitchenStepEvents(){
   document.querySelectorAll('[data-kitchen-step-target]').forEach(button => {
     button.addEventListener('click', () => goToKitchenStep(Number(button.dataset.kitchenStepTarget)));
   });
   document.querySelectorAll('[data-kitchen-package]').forEach(button => {
-    button.addEventListener('click', () => { kState.pkg = button.dataset.kitchenPackage; markKitchenStepVisited(1); renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState.pkg = button.dataset.kitchenPackage; markKitchenStepVisited(1); renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-layout]').forEach(button => {
-    button.addEventListener('click', () => { kState.layout = button.dataset.kitchenLayout; renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState.layout = button.dataset.kitchenLayout; renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-door]').forEach(button => {
-    button.addEventListener('click', () => { kState.door = button.dataset.kitchenDoor; renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState.door = button.dataset.kitchenDoor; renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-color]').forEach(button => {
-    button.addEventListener('click', () => { kState.color = button.dataset.kitchenColor; renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState.color = button.dataset.kitchenColor; renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-benchtop]').forEach(button => {
-    button.addEventListener('click', () => { kState.benchtop = button.dataset.kitchenBenchtop; renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState.benchtop = button.dataset.kitchenBenchtop; renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-splash]').forEach(button => {
     button.addEventListener('click', () => {
-      kState.splash = button.dataset.kitchenSplash;
-      kState.splashPattern = getKitchenItem(splashbackStyles, kState.splash).options[0].name;
+      kitchenState.splash = button.dataset.kitchenSplash;
+      kitchenState.splashPattern = getKitchenItem(splashbackStyles, kitchenState.splash).options[0].name;
       renderKitchenWizard();
     });
   });
   document.querySelectorAll('[data-kitchen-pattern]').forEach(button => {
-    button.addEventListener('click', () => { kState.splashPattern = button.dataset.kitchenPattern; renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState.splashPattern = button.dataset.kitchenPattern; renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-appliance]').forEach(button => {
-    button.addEventListener('click', () => { kState[button.dataset.kitchenAppliance] = button.dataset.kitchenValue; renderKitchenWizard(); });
+    button.addEventListener('click', () => { kitchenState[button.dataset.kitchenAppliance] = button.dataset.kitchenValue; renderKitchenWizard(); });
   });
   document.querySelectorAll('[data-kitchen-upgrade]').forEach(button => {
     button.addEventListener('click', () => {
       const id = button.dataset.kitchenUpgrade;
-      kState.upgrades = kState.upgrades.includes(id) ? kState.upgrades.filter(item => item !== id) : [...kState.upgrades, id];
+      kitchenState.upgrades = kitchenState.upgrades.includes(id) ? kitchenState.upgrades.filter(item => item !== id) : [...kitchenState.upgrades, id];
       renderKitchenWizard();
     });
   });
@@ -906,10 +950,10 @@ function bindKitchenStepEvents(){
       button.addEventListener('click', () => {
         const key = stepper.dataset.stepper;
         const delta = button.dataset.step === 'increase' ? 1 : -1;
-        const nextValue = kState[key] + delta;
-        const bounds = key === 'baseCount' ? [2, 8] : [2, 6];
+        const nextValue = kitchenState[key] + delta;
+        const bounds = key === 'baseCount' ? [BASE_CABINET_MIN, BASE_CABINET_MAX] : [WALL_CABINET_MIN, WALL_CABINET_MAX];
         if(nextValue >= bounds[0] && nextValue <= bounds[1]){
-          kState[key] = nextValue;
+          kitchenState[key] = nextValue;
           renderKitchenWizard();
         }
       });
@@ -921,13 +965,13 @@ function bindKitchenStepEvents(){
   }
 }
 function renderKitchenWizard(){
-  const stepMeta = kitchenStepDefinitions.find(item => item.step === kState.currentStep);
+  const stepMeta = kitchenStepDefinitions.find(item => item.step === kitchenState.currentStep);
   document.getElementById('kitchenStepEyebrow').textContent = `Step ${stepMeta.step}`;
   document.getElementById('kitchenStepTitle').textContent = stepMeta.title;
   document.getElementById('kitchenStepDescription').textContent = stepMeta.description;
   document.getElementById('kitchenWizardSteps').innerHTML = kitchenStepDefinitions.map(item => {
     const complete = isKitchenStepMarkedComplete(item.step);
-    const active = item.step === kState.currentStep;
+    const active = item.step === kitchenState.currentStep;
     return `<button type="button" class="kitchen-step-link ${active?'is-active':''} ${complete?'is-complete':''}" data-kitchen-step-target="${item.step}" aria-current="${active ? 'step' : 'false'}">
       <span class="kitchen-step-indicator">${complete ? '✓' : item.step}</span>
       <span class="kitchen-step-meta"><strong>${item.title}${active && complete ? '<span class="kitchen-step-badge">Completed</span>' : ''}</strong><span>${item.short}</span></span>
@@ -937,20 +981,46 @@ function renderKitchenWizard(){
   renderKitchenRunningTotal();
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
-  backBtn.disabled = kState.currentStep === 1;
-  nextBtn.disabled = kState.currentStep === 8 || (kState.currentStep === 1 && !kState.pkg);
-  nextBtn.textContent = kState.currentStep === 7 ? 'Review Design' : 'Next →';
+  backBtn.disabled = kitchenState.currentStep === 1;
+  nextBtn.disabled = kitchenState.currentStep === KITCHEN_STEP_COUNT || (kitchenState.currentStep === 1 && !kitchenState.pkg);
+  nextBtn.textContent = kitchenState.currentStep === KITCHEN_STEP_COUNT - 1 ? 'Review Design' : 'Next →';
   bindKitchenStepEvents();
 }
 function openKitchenRequestModal(){
   if(!isKitchenWizardComplete()) return;
-  document.getElementById('kitchenRequestSummary').value = buildKitchenDesignSummaryText();
+  previousKitchenFocusBeforeModal = document.activeElement;
+  document.getElementById('kitchenRequestSummary').textContent = buildKitchenDesignSummaryText();
   document.getElementById('kitchenRequestModal').classList.add('is-open');
   document.getElementById('kitchenRequestModal').setAttribute('aria-hidden', 'false');
+  document.getElementById('kitchenRequestDialog').focus();
 }
 function closeKitchenRequestModal(){
   document.getElementById('kitchenRequestModal').classList.remove('is-open');
   document.getElementById('kitchenRequestModal').setAttribute('aria-hidden', 'true');
+  if(previousKitchenFocusBeforeModal && document.contains(previousKitchenFocusBeforeModal) && typeof previousKitchenFocusBeforeModal.focus === 'function'){
+    try { previousKitchenFocusBeforeModal.focus(); } catch (error) { /* focus restoration is best-effort */ }
+  }
+}
+function handleKitchenModalKeydown(event){
+  const modal = document.getElementById('kitchenRequestModal');
+  if(!modal.classList.contains('is-open')) return;
+  if(event.key === 'Escape'){
+    closeKitchenRequestModal();
+    return;
+  }
+  if(event.key !== 'Tab') return;
+  const dialog = document.getElementById('kitchenRequestDialog');
+  const focusable = [...dialog.querySelectorAll(KITCHEN_MODAL_FOCUS_SELECTOR)].filter(node => !node.hasAttribute('disabled'));
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if(event.shiftKey && document.activeElement === first){
+    event.preventDefault();
+    last.focus();
+  } else if(!event.shiftKey && document.activeElement === last){
+    event.preventDefault();
+    first.focus();
+  }
 }
 function initKitchenWizard(){
   renderKitchenWizard();
@@ -960,6 +1030,7 @@ function initKitchenWizard(){
   document.getElementById('kitchenRequestModal').addEventListener('click', (event) => {
     if(event.target.id === 'kitchenRequestModal') closeKitchenRequestModal();
   });
+  document.addEventListener('keydown', handleKitchenModalKeydown);
 }
 
 /* ============================================================
