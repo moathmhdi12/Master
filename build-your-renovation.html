@@ -752,7 +752,7 @@ function updateKitchenNav(){
   backBtn.disabled = kState.step===KITCHEN_FIRST_STEP;
   backBtn.setAttribute('aria-disabled', backBtn.disabled ? 'true' : 'false');
   if(kState.step===KITCHEN_REVIEW_STEP){
-    nextBtn.textContent = 'Review Design';
+    nextBtn.textContent = 'Design Complete';
     nextBtn.disabled = true;
   }else if(kState.step===KITCHEN_CONFIG_LAST_STEP){
     nextBtn.textContent = 'Review Design';
