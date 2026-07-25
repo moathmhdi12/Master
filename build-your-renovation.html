@@ -187,6 +187,8 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 /* ============================================================
    DATA
 ============================================================ */
+const WEB3FORMS_ACCESS_KEY = 'fc340379-cc05-4c4b-a7f0-47d2e0cfab53';
+
 const kitchenPackages = [
   {id:'essential', theme:'Sydney Essentials', name:'Essential Kitchen', badge:null, low:18000, high:28000,
    items:['Full strip-out & new drainage/plumbing','Laminate benchtop & standard cabinetry','Ceramic splashback','Chef/Westinghouse appliances'],
@@ -746,6 +748,104 @@ function updateBathroomPrice(){
 }
 function updateBathroom(){ updateBathroomPreview(); updateBathroomPrice(); }
 
+function getSelectionName(options, id){
+  const match = options.find(option=>option.id===id);
+  return match ? match.name : 'Not selected';
+}
+
+function buildKitchenQuoteMessage(){
+  const pkg = kitchenPackages.find(p=>p.id===kState.pkg);
+  return [
+    'Kitchen renovation quote request from the MIC NSW design studio.',
+    `Estimated total: ${document.getElementById('kitchenTotal').textContent}`,
+    `Package: ${pkg ? pkg.name : 'Not selected'} (${pkg ? pkg.theme : 'No theme'})`,
+    `Layout: ${getSelectionName(kitchenShapes, kState.shape)}`,
+    `Door style: ${getSelectionName(doorStyles, kState.door)}`,
+    `Benchtop: ${getSelectionName(benchtops, kState.benchtop)}`,
+    `Handles: ${getSelectionName(handles, kState.handle)}`,
+    `Microwave: ${getSelectionName(microwaves, kState.microwave)}`,
+    `Oven: ${getSelectionName(ovens, kState.oven)}`,
+    `Cooktop: ${getSelectionName(cooktops, kState.cooktop)}`,
+    `Rangehood: ${getSelectionName(rangehoods, kState.rangehood)}`,
+    `Base cabinets: ${kState.baseCount}`,
+    `Wall cabinets: ${kState.wallCount}`,
+    `LED lighting: ${kState.led ? 'Yes' : 'No'}`,
+    `Electrical & plumbing upgrade: ${kState.elecPlumb ? 'Yes' : 'No'}`
+  ].join('\n');
+}
+
+function buildBathroomQuoteMessage(){
+  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
+  return [
+    'Bathroom renovation quote request from the MIC NSW design studio.',
+    `Estimated total: ${document.getElementById('bathroomTotal').textContent}`,
+    `Package: ${pkg ? pkg.name : 'Not selected'} (${pkg ? pkg.theme : 'No theme'})`,
+    `Vanity style: ${getSelectionName(vanityStyles, bState.vanityStyle)}`,
+    `Vanity colour: ${getSelectionName(vanityColors, bState.vanityColor)}`,
+    `Floor tile: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `Wall tile: ${getSelectionName(wallTiles, bState.wallTile)}`,
+    `Tapware: ${getSelectionName(tapware, bState.tap)}`,
+    `Shower screen: ${getSelectionName(showerScreens, bState.screen)}`,
+    `LED mirror: ${bState.ledMirror ? 'Yes' : 'No'}`,
+    `Electrical & plumbing upgrade: ${bState.elecPlumb ? 'Yes' : 'No'}`
+  ].join('\n');
+}
+
+function collectQuoteContact(serviceName){
+  const from_name = window.prompt(`Enter your full name for this ${serviceName} quote request:`);
+  if(!from_name) return null;
+
+  const email = window.prompt('Enter your email address:');
+  if(!email) return null;
+
+  const phone = window.prompt('Enter your phone number:');
+  if(!phone) return null;
+
+  return { from_name: from_name.trim(), email: email.trim(), phone: phone.trim() };
+}
+
+async function submitQuoteRequest(serviceName, message, button){
+  const contact = collectQuoteContact(serviceName);
+  if(!contact) return;
+
+  const originalLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = 'Sending quote request...';
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `${serviceName} Quote Request`,
+        from_name: contact.from_name,
+        email: contact.email,
+        phone: contact.phone,
+        message
+      })
+    });
+    const result = await response.json();
+    if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request.');
+
+    button.textContent = 'Quote request sent ✓';
+    alert(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
+  } catch (error) {
+    alert(error.message || 'Sorry, we could not send your quote request right now.');
+    button.textContent = originalLabel;
+    button.disabled = false;
+    return;
+  }
+
+  setTimeout(()=>{
+    button.textContent = originalLabel;
+    button.disabled = false;
+  }, 2500);
+}
+
 /* ============================================================
    INIT + TABS + VIEW TOGGLES
 ============================================================ */
@@ -779,6 +879,17 @@ document.querySelectorAll('.view-btn').forEach(btn=>{
     btn.classList.add('active');
     if(target==='kitchen'){ kState.view = btn.dataset.view; updateKitchenPreview(); }
     else { bState.view = btn.dataset.view; updateBathroomPreview(); }
+  });
+});
+
+document.querySelectorAll('.cta-final').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const isKitchenQuote = !!btn.closest('#kitchen-tab');
+    submitQuoteRequest(
+      isKitchenQuote ? 'Kitchen Renovation' : 'Bathroom Renovation',
+      isKitchenQuote ? buildKitchenQuoteMessage() : buildBathroomQuoteMessage(),
+      btn
+    );
   });
 });
 </script>
