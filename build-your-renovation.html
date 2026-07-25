@@ -583,7 +583,9 @@ async function submitQuoteRequest(contact){
   trigger.textContent = 'Sending quote request...';
   quoteSubmitBtn.disabled = true;
   const controller = new AbortController();
-  const timeoutId = setTimeout(()=>controller.abort(), QUOTE_REQUEST_TIMEOUT_MS);
+  const timeoutId = setTimeout(()=>{
+    controller.abort();
+  }, QUOTE_REQUEST_TIMEOUT_MS);
 
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
@@ -1101,7 +1103,7 @@ function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
 function shade(hex, amt){
   const c = String(hex || '').replace('#','');
   if(!/^[0-9a-fA-F]{6}$/.test(c)){
-    console.warn('Invalid hex colour passed to shade()', hex);
+    console.warn(`Invalid hex colour passed to shade(): "${hex}"`);
     return '#808080';
   }
   const num = parseInt(c,16);
