@@ -858,7 +858,7 @@ function renderKitchenStepContent(){
       <div class="line"><span>Extras & Upgrades</span><span>${money(totals.upgradesMod)}</span></div>
       <div class="line"><strong>TOTAL INVESTMENT</strong><strong>$${totals.total.toLocaleString()}+</strong></div>
       <div style="font-size:11px;color:#7f7667;margin-top:8px;">(Fixed quote after free consultation)</div>
-      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'} aria-disabled="${canRequest ? 'false' : 'true'}">Request This Design</button>
+      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'}>Request This Design</button>
       ${!canRequest?'<div style="margin-top:6px;font-size:11px;color:#a14f39;">Complete Steps 1–7 to enable requests.</div>':''}
       <div style="margin-top:8px;font-size:11px;color:#7f7667;">Selected upgrades: ${upgrades.length?upgrades.map(u=>u.title).join(', '):'None'}.</div>
     </div>`;
@@ -873,7 +873,6 @@ function updateKitchenNav(){
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
   backBtn.disabled = kState.step===KITCHEN_FIRST_STEP;
-  backBtn.setAttribute('aria-disabled', backBtn.disabled ? 'true' : 'false');
   if(kState.step===KITCHEN_REVIEW_STEP){
     nextBtn.textContent = 'Review Design';
     nextBtn.disabled = true;
@@ -884,7 +883,6 @@ function updateKitchenNav(){
     nextBtn.textContent = 'Next →';
     nextBtn.disabled = false;
   }
-  nextBtn.setAttribute('aria-disabled', nextBtn.disabled ? 'true' : 'false');
 }
 
 function renderKitchenWizard(){
@@ -1102,7 +1100,10 @@ function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
 }
 function shade(hex, amt){
   const c = String(hex || '').replace('#','');
-  if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';
+  if(!/^[0-9a-fA-F]{6}$/.test(c)){
+    console.warn('Invalid hex colour passed to shade()', hex);
+    return '#808080';
+  }
   const num = parseInt(c,16);
   let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
   r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
