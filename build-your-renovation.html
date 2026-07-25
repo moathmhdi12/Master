@@ -1361,11 +1361,16 @@ quoteRequestForm.addEventListener('submit', e=>{
   e.preventDefault();
   if(!quoteRequestForm.reportValidity()) return;
 
-  submitQuoteRequest({
-    from_name: document.getElementById('quoteName').value.trim(),
-    email: document.getElementById('quoteEmail').value.trim(),
-    phone: document.getElementById('quotePhone').value.trim()
-  });
+  const from_name = document.getElementById('quoteName').value.trim();
+  const email = document.getElementById('quoteEmail').value.trim();
+  const phone = document.getElementById('quotePhone').value.trim();
+
+  if(!from_name || !email || !phone){
+    setQuoteStatus('Please enter your name, email, and phone number.', true);
+    return;
+  }
+
+  submitQuoteRequest({ from_name, email, phone });
 });
 </script>
 <footer style="background:var(--navy);color:#c9c2b3;padding:50px 20px 26px;margin-top:20px;">
