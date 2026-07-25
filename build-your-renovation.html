@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Your Kitchen or Bathroom | MIC NSW — Sydney</title>
+<meta name="description" content="Build your kitchen or bathroom renovation package online — choose your layout, cabinetry, benchtop, appliances and finishes, with live 2D/3D preview and instant pricing.">
+<link rel="canonical" href="https://mic-nsw.com.au/build-your-renovation.html">
+<link rel="icon" href="https://mic-nsw.com.au/front/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#15171A; --navy-2:#233933;
+  --gold:#A9812F; --gold-dark:#8a6a26;
+  --off:#EFEAE1; --gray:#3A3F44; --line:#E1D9C8;
+  --sage:#2F4A42; --cream:#FAF8F3;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Work Sans','Segoe UI',Arial,sans-serif;background:var(--off);color:var(--gray);}
+.topbar{background:var(--navy);color:#fff;padding:18px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.topbar h1{font-family:'Fraunces',Georgia,serif;font-size:21px;margin:0;font-weight:600;}
+.topbar .tag{font-size:11.5px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;}
+.topbar .back-link{color:#ece5d6;font-size:13px;font-weight:600;border:1.5px solid rgba(255,255,255,.3);padding:8px 16px;border-radius:100px;}
+.topbar .back-link:hover{border-color:var(--gold);color:var(--gold);}
+.wrap{max-width:1220px;margin:0 auto;padding:30px 20px 100px;}
+
+.tabs{display:flex;gap:10px;margin-bottom:26px;}
+.tab{flex:1;text-align:center;padding:14px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:21px;margin:34px 0 4px;font-weight:600;}
+.section-desc{color:#8a8478;font-size:13px;margin-bottom:18px;}
+
+/* Package cards */
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.pkg-card{background:var(--cream);border:2px solid var(--line);border-radius:16px;padding:22px;cursor:pointer;position:relative;transition:.2s;}
+.pkg-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.pkg-card.selected{border-color:var(--gold);box-shadow:0 6px 18px rgba(169,129,47,.22);}
+.pkg-card .badge{position:absolute;top:-10px;right:16px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:12px;}
+.pkg-card .theme{font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.pkg-card h3{margin:4px 0 4px;color:var(--navy);font-size:17px;font-family:'Fraunces',serif;}
+.pkg-card .price{font-size:19px;font-weight:700;color:var(--gold-dark);margin:6px 0 10px;}
+.pkg-card .price span{font-size:11.5px;color:#999;font-weight:400;}
+.pkg-card ul{margin:0 0 12px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;}
+.supp-label{font-size:10.5px;color:#9a9384;text-transform:uppercase;letter-spacing:.5px;margin:8px 0 4px;}
+.supp-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.chip{background:var(--off);border:1px solid var(--line);font-size:10.5px;padding:3px 8px;border-radius:10px;color:#6b6555;}
+.select-btn{width:100%;padding:9px;border-radius:100px;border:1.5px solid var(--navy);background:var(--cream);color:var(--navy);font-weight:600;font-size:13px;cursor:pointer;}
+.pkg-card.selected .select-btn{background:var(--navy);color:#fff;}
+
+/* Configurator */
+.config{display:none;margin-top:44px;gap:26px;grid-template-columns:1fr 400px;}
+.config.show{display:grid;}
+.options-col{display:flex;flex-direction:column;gap:22px;}
+.opt-group{background:var(--cream);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;}
+.opt-group h4{margin:0 0 12px;font-size:13px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center;}
+.opt-group h4 small{color:#b0aa9a;font-weight:400;text-transform:none;letter-spacing:0;}
+.sub-label{font-size:11.5px;font-weight:700;color:#7a7460;margin:12px 0 8px;text-transform:uppercase;letter-spacing:.4px;}
+.sub-label:first-child{margin-top:0;}
+
+.swatch-row{display:flex;flex-wrap:wrap;gap:9px;}
+.swatch{border:2px solid transparent;border-radius:8px;padding:6px;cursor:pointer;text-align:center;width:98px;background:#fafaf8;transition:.15s;}
+.swatch:hover{border-color:#ddd6c4;}
+.swatch.active{border-color:var(--gold);background:#fff8ea;}
+.swatch .chip-color{width:100%;height:34px;border-radius:5px;margin-bottom:6px;border:1px solid rgba(0,0,0,.08);}
+.swatch .name{font-size:10.5px;color:var(--gray);line-height:1.3;}
+.swatch .brand{font-size:9px;color:var(--gold-dark);font-weight:700;text-transform:uppercase;}
+.swatch .mod{font-size:9.5px;color:#999;margin-top:2px;}
+
+.shape-row{display:flex;flex-wrap:wrap;gap:9px;}
+.shape-btn{border:2px solid var(--line);border-radius:8px;padding:8px 6px 6px;cursor:pointer;text-align:center;width:88px;background:#fafaf8;}
+.shape-btn.active{border-color:var(--gold);background:#fff8ea;}
+.shape-btn svg{width:56px;height:40px;}
+.shape-btn .name{font-size:10px;margin-top:3px;}
+
+.stepper{display:flex;align-items:center;gap:12px;}
+.stepper button{width:32px;height:32px;border-radius:6px;border:1.5px solid var(--line);background:#fafaf8;font-size:16px;cursor:pointer;color:var(--navy);}
+.stepper button:hover{border-color:var(--gold);}
+.stepper .val{font-size:16px;font-weight:700;color:var(--navy);width:24px;text-align:center;}
+
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;}
+.toggle-row .lbl{font-size:13px;color:var(--gray);}
+.toggle-row .lbl small{display:block;color:#999;font-size:11px;}
+.switch{width:44px;height:24px;border-radius:14px;background:#ddd8c8;position:relative;cursor:pointer;transition:.2s;flex-shrink:0;}
+.switch.on{background:var(--gold);}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;}
+.switch.on::after{left:23px;}
+
+/* Preview column */
+.preview-col{position:sticky;top:20px;align-self:start;}
+.preview-box{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px;}
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;}
+.view-btn{flex:1;text-align:center;padding:8px;font-size:11.5px;font-weight:700;border:1.5px solid var(--line);border-radius:6px;cursor:pointer;color:#888;}
+.view-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+#kitchenSvgWrap,#bathroomSvgWrap{background:#f2efe8;border-radius:8px;padding:10px;min-height:220px;}
+.floorplan-note{font-size:10.5px;color:#999;margin-top:8px;line-height:1.5;}
+
+.price-box{background:var(--navy);color:#fff;border-radius:12px;padding:20px;}
+.price-box h4{margin:0 0 4px;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);}
+.price-total{font-size:26px;font-weight:700;margin:6px 0 12px;}
+.price-line{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.12);color:#dcd9d2;}
+.price-line span:last-child{color:#fff;font-weight:600;}
+.cta-final{margin-top:16px;width:100%;padding:12px;border-radius:6px;background:var(--gold);color:var(--navy);border:none;font-weight:700;font-size:13px;cursor:pointer;}
+.disclaimer{font-size:10.5px;color:#a9a49a;margin-top:24px;line-height:1.6;max-width:1220px;padding:0 20px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="back-link">← Back to MIC NSW</a>
+  <div style="text-align:center;">
+    <h1>Kitchen &amp; Bathroom Design Studio</h1>
+    <div class="tag">Packages · 2D/3D Live Preview · Sydney Suppliers</div>
+  </div>
+  <a href="index.html#contact" class="back-link" style="border-color:var(--gold);color:var(--gold);">Get a Quote</a>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="kitchen">Kitchen Renovation</div>
+    <div class="tab" data-tab="bathroom">Bathroom Renovation</div>
+  </div>
+
+  <!-- ============ KITCHEN ============ -->
+  <div id="kitchen-tab">
+    <h2 class="section-title">Step 1 — Choose Your Kitchen Package</h2>
+    <div class="section-desc">Full strip-out, new drainage &amp; plumbing, electrical, cabinetry and finishing. Recommended suppliers shown are common Sydney-available brands for each tier — final selection confirmed at your free consultation.</div>
+    <div class="pkg-grid" id="kitchenPkgGrid"></div>
+
+    <div class="config" id="kitchenConfig">
+      <div class="options-col" id="kitchenOptions"></div>
+      <div class="preview-col">
+        <div class="preview-box">
+          <h4 style="font-family:Georgia,serif;color:var(--navy);font-size:13px;margin:0 0 10px;">Live Design Preview</h4>
+          <div class="view-toggle">
+            <div class="view-btn active" data-view="2d" data-target="kitchen">2D Elevation</div>
+            <div class="view-btn" data-view="3d" data-target="kitchen">3D Isometric</div>
+          </div>
+          <div id="kitchenSvgWrap"></div>
+          <div class="floorplan-note">Illustrative style preview. Exact cabinetry, appliance fit and electrical/plumbing points are finalised during your free in-home measure.</div>
+        </div>
+        <div class="price-box">
+          <h4>Estimated Investment</h4>
+          <div class="price-total" id="kitchenTotal">$0 – $0</div>
+          <div id="kitchenPriceLines"></div>
+          <button class="cta-final">Request This Quote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BATHROOM ============ -->
+  <div id="bathroom-tab" style="display:none;">
+    <h2 class="section-title">Step 1 — Choose Your Bathroom Package</h2>
+    <div class="section-desc">Full strip-out, re-waterproofing, drainage &amp; plumbing rework, tiling, electrical and fit-off.</div>
+    <div class="pkg-grid" id="bathroomPkgGrid"></div>
+
+    <div class="config" id="bathroomConfig">
+      <div class="options-col" id="bathroomOptions"></div>
+      <div class="preview-col">
+        <div class="preview-box">
+          <h4 style="font-family:Georgia,serif;color:var(--navy);font-size:13px;margin:0 0 10px;">Live Design Preview</h4>
+          <div class="view-toggle">
+            <div class="view-btn active" data-view="2d" data-target="bathroom">2D Elevation</div>
+            <div class="view-btn" data-view="3d" data-target="bathroom">3D Isometric</div>
+          </div>
+          <div id="bathroomSvgWrap"></div>
+          <div class="floorplan-note">Illustrative style preview. Exact layout finalised during your free in-home measure.</div>
+        </div>
+        <div class="price-box">
+          <h4>Estimated Investment</h4>
+          <div class="price-total" id="bathroomTotal">$0 – $0</div>
+          <div id="bathroomPriceLines"></div>
+          <button class="cta-final">Request This Quote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  * All prices are indicative ranges for standard-size Sydney metro rooms, based on typical retail/trade pricing from the suppliers named. They exclude structural work, asbestos removal, council approvals and site-access surcharges. A fixed written quote follows your free site consultation. Brand names (Kaboodle, Kinsman, Freedom Kitchens, IKEA, Laminex, Caesarstone, Essastone, Smartstone, Dekton, Beaumont Tiles, National Tiles, Signorino, Reece, Caroma, Methven, Phoenix, Nero, Sussex Taps, Chef, Westinghouse, Bosch, Fisher &amp; Paykel, ILVE, Smeg, Miele, Blum, Hettich, Clipsal) are examples of Australian-available suppliers MIC NSW can source and install — availability and current pricing confirmed at consultation.
+</div>
+
+<script>
+/* ============================================================
+   DATA
+============================================================ */
+const kitchenPackages = [
+  {id:'essential', theme:'Sydney Essentials', name:'Essential Kitchen', badge:null, low:18000, high:28000,
+   items:['Full strip-out & new drainage/plumbing','Laminate benchtop & standard cabinetry','Ceramic splashback','Chef/Westinghouse appliances'],
+   suppliers:['Kaboodle (Bunnings)','Laminex','Beaumont Tiles','Chef / Westinghouse']},
+  {id:'premium', theme:'Sydney Premium', name:'Premium Kitchen', badge:'MOST POPULAR', low:35000, high:55000,
+   items:['Full strip-out & new drainage/plumbing','Engineered stone benchtop','Soft-close cabinetry & drawers','Bosch/Fisher & Paykel appliances'],
+   suppliers:['Kinsman Kitchens','Caesarstone / Essastone','National Tiles','Bosch / Fisher & Paykel']},
+  {id:'luxury', theme:'Sydney Signature', name:'Luxury Kitchen', badge:'FULL CUSTOM', low:65000, high:110000,
+   items:['Full strip-out, plumbing & electrical relocation','Premium stone benchtop','Custom handleless joinery','Miele/ILVE/Smeg appliances'],
+   suppliers:['Freedom Kitchens (custom)','Dekton / Smartstone','Signorino / Artedomus','Miele / ILVE / Smeg']}
+];
+
+const bathroomPackages = [
+  {id:'essential', theme:'Sydney Essentials', name:'Essential Bathroom', badge:null, low:18000, high:26000,
+   items:['Full strip-out & re-waterproofing','Ceramic wall & floor tiles','Standard vanity','Caroma tapware, semi-frameless screen'],
+   suppliers:['Bunnings / Caroma','Beaumont Tiles','Methven Tapware']},
+  {id:'premium', theme:'Sydney Premium', name:'Premium Bathroom', badge:'MOST POPULAR', low:28000, high:45000,
+   items:['Full strip-out & re-waterproofing','Large-format porcelain tiles','Floating vanity','Phoenix tapware, frameless screen'],
+   suppliers:['Reece','National Tiles','Phoenix Tapware']},
+  {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000,
+   items:['Full strip-out, re-waterproof & re-plumb','Natural stone-look porcelain','Freestanding bath','Brushed brass/black tapware, LED mirror'],
+   suppliers:['Custom Joinery','Signorino / Artedomus','Nero / Sussex Taps']}
+];
+
+const kitchenShapes = [
+  {id:'lshape', name:'L-Shape'},{id:'ushape', name:'U-Shape'},{id:'galley', name:'Galley'},
+  {id:'island', name:'Island'},{id:'onewall', name:'One-Wall'},{id:'peninsula', name:'Peninsula'}
+];
+
+const doorStyles = [
+  {id:'flat', name:'Flat / Slab', mod:0},
+  {id:'shaker', name:'Shaker Frame', mod:600},
+  {id:'raised', name:'Raised Panel', mod:1200},
+  {id:'handleless', name:'Handleless Shadowline', mod:1500},
+  {id:'groove', name:'Vertical Groove', mod:900}
+];
+
+const cabinetColors = [
+  {id:'white', name:'Alpine White', hex:'#F4F2ED'},{id:'black', name:'Matte Black', hex:'#26282A'},
+  {id:'sage', name:'Sage Green', hex:'#8A9A80'},{id:'navy', name:'Deep Navy', hex:'#1C2B33'},
+  {id:'oak', name:'Natural Oak', hex:'#C9A876'},{id:'charcoal', name:'Charcoal', hex:'#4A4E52'}
+];
+
+const handles = [
+  {id:'nohandle', name:'Handleless (Push-to-Open)', mod:800},
+  {id:'barBlack', name:'Bar Handle — Matte Black', mod:0},
+  {id:'barBrass', name:'Bar Handle — Brushed Brass', mod:150},
+  {id:'knobBrass', name:'Round Knob — Brass', mod:100},
+  {id:'jpull', name:'Recessed J-Pull', mod:900}
+];
+
+const benchtops = [
+  {id:'laminex', brand:'Laminex', name:'Bianco Marble (Laminate)', hex:'#EDEAE3', mod:0},
+  {id:'essastone', brand:'Essastone', name:'Georgian Bluestone', hex:'#9BA0A3', mod:1800},
+  {id:'caesarstone', brand:'Caesarstone', name:'Calacatta Nuvo', hex:'#EDE7DD', mod:2600},
+  {id:'smartstone', brand:'Smartstone', name:'Symphony Grey', hex:'#B8B2A7', mod:3200},
+  {id:'dekton', brand:'Dekton', name:'Sirocco', hex:'#8C8378', mod:4200}
+];
+
+const splashbacks = [
+  {id:'subway', name:'Subway Tile — White', hex:'#F7F6F2'},{id:'marble', name:'Marble-Look Large Format', hex:'#EAE6DC'},
+  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'blacksq', name:'Matte Black Square', hex:'#2B2C2E'}
+];
+
+const microwaves = [
+  {id:'chef', brand:'Chef', name:'Built-in Microwave', mod:0},
+  {id:'bosch', brand:'Bosch', name:'Built-in Microwave', mod:350},
+  {id:'miele', brand:'Miele', name:'Built-in Microwave', mod:900}
+];
+const ovens = [
+  {id:'westinghouse', brand:'Westinghouse', name:'Multifunction Oven', mod:0},
+  {id:'fp', brand:'Fisher & Paykel', name:'Pyrolytic Oven', mod:600},
+  {id:'ilve', brand:'ILVE', name:'Designer Oven', mod:1800},
+  {id:'miele', brand:'Miele', name:'Steam-Combi Oven', mod:2600}
+];
+const cooktops = [
+  {id:'chef', brand:'Chef', name:'Gas Cooktop', mod:0},
+  {id:'bosch', brand:'Bosch', name:'Induction Cooktop', mod:500},
+  {id:'miele', brand:'Miele', name:'Induction Cooktop', mod:1400}
+];
+const rangehoods = [
+  {id:'slideout', brand:'Chef', name:'Slide-Out Rangehood', mod:0},
+  {id:'canopy', brand:'Fisher & Paykel', name:'Canopy Rangehood', mod:450},
+  {id:'undermount', brand:'Miele', name:'Undermount Premium', mod:750}
+];
+
+/* Bathroom data */
+const vanityStyles = [
+  {id:'wallhung', name:'Wall-Hung', mod:0},{id:'freestanding', name:'Freestanding', mod:900},{id:'timber', name:'Timber Vanity', mod:1400}
+];
+const vanityColors = [
+  {id:'white', name:'Matte White', hex:'#F4F2ED'},{id:'oak', name:'Natural Oak', hex:'#C9A876'},
+  {id:'black', name:'Matte Black', hex:'#26282A'},{id:'sage', name:'Sage Green', hex:'#8A9A80'}
+];
+const floorTiles = [
+  {id:'subway', name:'Matte Porcelain — Grey', hex:'#D8D2C4'},{id:'stone', name:'Stone-Look Porcelain', hex:'#C8C2B4'},
+  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'charcoal', name:'Charcoal Matte', hex:'#3A3D40'}
+];
+const wallTiles = [
+  {id:'subway', name:'Subway Tile — White', hex:'#F7F6F2'},{id:'marble', name:'Marble-Look Large Format', hex:'#EAE6DC'},
+  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'black', name:'Matte Black Large Format', hex:'#2B2C2E'}
+];
+const tapware = [
+  {id:'chrome', brand:'Caroma', name:'Chrome', hex:'#C7CBCE', mod:0},{id:'black', brand:'Nero', name:'Matte Black', hex:'#26282A', mod:250},
+  {id:'brass', brand:'Sussex', name:'Brushed Brass', hex:'#C9A24B', mod:350},{id:'nickel', brand:'Phoenix', name:'Brushed Nickel', hex:'#A9ACAE', mod:300}
+];
+const showerScreens = [
+  {id:'framed', name:'Framed', mod:0},{id:'semi', name:'Semi-Frameless', mod:400},{id:'frameless', name:'Frameless', mod:900}
+];
+
+/* ============================================================
+   STATE
+============================================================ */
+let kState = {pkg:null, shape:'lshape', door:'flat', baseCount:5, wallCount:3, color:'white', handle:'barBlack',
+  benchtop:'laminex', splash:'subway', led:false, elecPlumb:false,
+  microwave:'chef', oven:'westinghouse', cooktop:'chef', rangehood:'slideout', view:'2d'};
+let bState = {pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
+  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d'};
+
+/* ============================================================
+   PACKAGE CARDS
+============================================================ */
+function renderPkgGrid(gridId, packages, state, onSelect){
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = packages.map(p => `
+    <div class="pkg-card ${state.pkg===p.id?'selected':''}" data-id="${p.id}">
+      ${p.badge?`<div class="badge">${p.badge}</div>`:''}
+      <div class="theme">${p.theme}</div>
+      <h3>${p.name}</h3>
+      <div class="price">$${p.low.toLocaleString()} – $${p.high.toLocaleString()} <span>AUD est.</span></div>
+      <ul>${p.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+      <div class="supp-label">Recommended Sydney Suppliers</div>
+      <div class="supp-chips">${p.suppliers.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
+      <button class="select-btn">${state.pkg===p.id? 'Selected ✓':'Select This Package'}</button>
+    </div>
+  `).join('');
+  [...grid.querySelectorAll('.pkg-card')].forEach(card=>{
+    card.addEventListener('click', ()=>{ state.pkg = card.dataset.id; onSelect(); });
+  });
+}
+
+/* ============================================================
+   HELPERS: swatches / steppers / toggles
+============================================================ */
+function swatchHTML(item, activeId, wide, showChip){
+  return `<div class="swatch ${activeId===item.id?'active':''}" style="${wide?'width:150px;':''}" data-id="${item.id}">
+    ${showChip?`<div class="chip-color" style="background:${item.hex}"></div>`:''}
+    ${item.brand?`<div class="brand">${item.brand}</div>`:''}
+    <div class="name">${item.name}</div>
+    ${'mod' in item ? `<div class="mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</div>`:''}
+  </div>`;
+}
+function bindSwatches(container, selectorRoot, list, state, key, onChange){
+  [...container.querySelectorAll(selectorRoot+' .swatch')].forEach(node=>{
+    node.addEventListener('click', ()=>{ state[key]=node.dataset.id; onChange(); });
+  });
+}
+function stepperHTML(id, val, min, max){
+  return `<div class="stepper" data-id="${id}">
+    <button data-act="dec">−</button><div class="val">${val}</div><button data-act="inc">+</button>
+  </div>`;
+}
+function bindStepper(container, id, state, key, min, max, onChange){
+  const wrap = container.querySelector(`.stepper[data-id="${id}"]`);
+  wrap.querySelector('[data-act="dec"]').addEventListener('click', ()=>{
+    if(state[key]>min){ state[key]--; onChange(); }
+  });
+  wrap.querySelector('[data-act="inc"]').addEventListener('click', ()=>{
+    if(state[key]<max){ state[key]++; onChange(); }
+  });
+}
+function toggleHTML(id, label, sub, mod, on){
+  return `<div class="toggle-row" data-id="${id}">
+    <div class="lbl">${label}<small>${sub}${mod?(' · +$'+mod.toLocaleString()):''}</small></div>
+    <div class="switch ${on?'on':''}"></div>
+  </div>`;
+}
+function bindToggle(container, id, state, key, onChange){
+  const row = container.querySelector(`.toggle-row[data-id="${id}"]`);
+  row.querySelector('.switch').addEventListener('click', ()=>{
+    state[key] = !state[key];
+    row.querySelector('.switch').classList.toggle('on', state[key]);
+    onChange();
+  });
+}
+
+/* ============================================================
+   KITCHEN OPTIONS PANEL
+============================================================ */
+function renderKitchenOptions(){
+  const el = document.getElementById('kitchenOptions');
+  el.innerHTML = `
+    <div class="opt-group">
+      <h4>Kitchen Layout <small>choose your shape</small></h4>
+      <div class="shape-row">${kitchenShapes.map(s=>`
+        <div class="shape-btn ${kState.shape===s.id?'active':''}" data-id="${s.id}">${shapeIcon(s.id)}<div class="name">${s.name}</div></div>`).join('')}</div>
+    </div>
+
+    <div class="opt-group">
+      <h4>Cabinetry</h4>
+      <div class="sub-label">Door Opening Style</div>
+      <div class="swatch-row">${doorStyles.map(d=>swatchHTML(d, kState.door, true, false)).join('')}</div>
+      <div class="sub-label">Base (Floor) Cabinets</div>
+      ${stepperHTML('base', kState.baseCount, 3, 9)}
+      <div class="sub-label" style="margin-top:14px;">Wall (Upper) Cabinets</div>
+      ${stepperHTML('wall', kState.wallCount, 2, 7)}
+      <div class="sub-label">Cabinet Colour</div>
+      <div class="swatch-row">${cabinetColors.map(c=>swatchHTML(c, kState.color, false, true)).join('')}</div>
+      <div class="sub-label">Handle Style</div>
+      <div class="swatch-row">${handles.map(h=>swatchHTML(h, kState.handle, true, false)).join('')}</div>
+    </div>
+
+    <div class="opt-group">
+      <h4>Surfaces</h4>
+      <div class="sub-label">Benchtop</div>
+      <div class="swatch-row">${benchtops.map(b=>swatchHTML(b, kState.benchtop, false, true)).join('')}</div>
+      <div class="sub-label">Splashback Tile</div>
+      <div class="swatch-row">${splashbacks.map(s=>swatchHTML(s, kState.splash, false, true)).join('')}</div>
+    </div>
+
+    <div class="opt-group">
+      <h4>Appliances</h4>
+      <div class="sub-label">Microwave</div>
+      <div class="swatch-row">${microwaves.map(a=>swatchHTML(a, kState.microwave, true, false)).join('')}</div>
+      <div class="sub-label">Oven</div>
+      <div class="swatch-row">${ovens.map(a=>swatchHTML(a, kState.oven, true, false)).join('')}</div>
+      <div class="sub-label">Cooktop</div>
+      <div class="swatch-row">${cooktops.map(a=>swatchHTML(a, kState.cooktop, true, false)).join('')}</div>
+      <div class="sub-label">Rangehood</div>
+      <div class="swatch-row">${rangehoods.map(a=>swatchHTML(a, kState.rangehood, true, false)).join('')}</div>
+    </div>
+
+    <div class="opt-group">
+      <h4>Lighting &amp; Trades</h4>
+      ${toggleHTML('led','LED Under-Cabinet Lighting','Warm strip lighting beneath wall cabinets', 450, kState.led)}
+      ${toggleHTML('elec','Electrical &amp; Plumbing Upgrade','Extra circuits, new points, gas/water relocation', 1800, kState.elecPlumb)}
+    </div>
+  `;
+
+  bindOptionClick(el, '.shape-btn', v=>{kState.shape=v; renderKitchenOptions(); updateKitchen();});
+  bindOptionClick(el, '.swatch[data-id]', null); // placeholder, real binds below per group
+  bindSwatches(el, '.opt-group:nth-of-type(2)', doorStyles, kState, 'door', ()=>{renderKitchenOptions();updateKitchen();});
+  bindStepper(el, 'base', kState, 'baseCount', 3, 9, updateKitchen);
+  bindStepper(el, 'wall', kState, 'wallCount', 2, 7, updateKitchen);
+  bindGroupSwatches(el, cabinetColors, kState, 'color', updateKitchen);
+  bindGroupSwatches(el, handles, kState, 'handle', updateKitchen);
+  bindGroupSwatches(el, benchtops, kState, 'benchtop', updateKitchen);
+  bindGroupSwatches(el, splashbacks, kState, 'splash', updateKitchen);
+  bindGroupSwatches(el, microwaves, kState, 'microwave', updateKitchen);
+  bindGroupSwatches(el, ovens, kState, 'oven', updateKitchen);
+  bindGroupSwatches(el, cooktops, kState, 'cooktop', updateKitchen);
+  bindGroupSwatches(el, rangehoods, kState, 'rangehood', updateKitchen);
+  bindToggle(el, 'led', kState, 'led', updateKitchen);
+  bindToggle(el, 'elec', kState, 'elecPlumb', updateKitchen);
+}
+
+/* generic click binder that just re-renders (used for shapes only) */
+function bindOptionClick(container, selector, cb){
+  if(!cb) return;
+  [...container.querySelectorAll(selector)].forEach(elm=>elm.addEventListener('click', ()=>cb(elm.dataset.id)));
+}
+/* binds a full list of swatch items by matching data-id anywhere in container (re-renders whole panel to reflect state) */
+function bindGroupSwatches(container, list, state, key, updateFn){
+  list.forEach(item=>{
+    [...container.querySelectorAll(`.swatch[data-id="${item.id}"]`)].forEach(node=>{
+      node.addEventListener('click', ()=>{
+        state[key] = item.id;
+        // re-render whichever panel this belongs to
+        if(container.id === 'kitchenOptions'){ renderKitchenOptions(); updateFn(); }
+        else { renderBathroomOptions(); updateFn(); }
+      });
+    });
+  });
+}
+
+function shapeIcon(id){
+  const s = 'stroke="#1C2B33" stroke-width="4" fill="#E9E4D6"';
+  switch(id){
+    case 'lshape': return `<svg viewBox="0 0 100 70"><path d="M10 10 H90 V30 H40 V60 H10 Z" ${s}/></svg>`;
+    case 'ushape': return `<svg viewBox="0 0 100 70"><path d="M10 10 H30 V45 H70 V10 H90 V60 H10 Z" ${s}/></svg>`;
+    case 'galley': return `<svg viewBox="0 0 100 70"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="10" y="46" width="80" height="14" ${s}/></svg>`;
+    case 'island': return `<svg viewBox="0 0 100 70"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
+    case 'onewall': return `<svg viewBox="0 0 100 70"><rect x="10" y="25" width="80" height="16" ${s}/></svg>`;
+    case 'peninsula': return `<svg viewBox="0 0 100 70"><path d="M10 10 H90 V26 H45 V50 H10 Z" ${s}/></svg>`;
+    default: return '';
+  }
+}
+
+/* ============================================================
+   KITCHEN 2D PREVIEW
+============================================================ */
+function doorOverlay(style, x, y, w, h){
+  if(style==='shaker') return `<rect x="${x+6}" y="${y+6}" width="${w-12}" height="${h-12}" fill="none" stroke="#00000022" stroke-width="2"/>`;
+  if(style==='raised') return `<rect x="${x+8}" y="${y+8}" width="${w-16}" height="${h-16}" fill="#00000010" stroke="#00000022" stroke-width="1.5"/>`;
+  if(style==='groove') return [0,1].map(i=>`<line x1="${x+w*(i+1)/3}" y1="${y+4}" x2="${x+w*(i+1)/3}" y2="${y+h-4}" stroke="#00000018" stroke-width="2"/>`).join('');
+  if(style==='handleless') return `<rect x="${x}" y="${y}" width="${w}" height="6" fill="#00000025"/>`;
+  return '';
+}
+function doorHandleMark(handleId, x, y, w, h){
+  if(handleId==='nohandle') return '';
+  if(handleId==='barBlack'||handleId==='barBrass'){
+    const c = handleId==='barBrass' ? '#C9A24B' : '#222';
+    return `<rect x="${x+w-6}" y="${y+6}" width="3" height="${h-12}" fill="${c}"/>`;
+  }
+  if(handleId==='knobBrass') return `<circle cx="${x+w-8}" cy="${y+h/2}" r="3" fill="#C9A24B"/>`;
+  if(handleId==='jpull') return `<rect x="${x}" y="${y+h-6}" width="${w}" height="3" fill="#111" opacity=".5"/>`;
+  return '';
+}
+
+function renderKitchen2D(){
+  const color = cabinetColors.find(c=>c.id===kState.color).hex;
+  const bench = benchtops.find(b=>b.id===kState.benchtop).hex;
+  const splash = splashbacks.find(s=>s.id===kState.splash).hex;
+  const runW = 400, startX = 20;
+  const baseW = runW / kState.baseCount;
+  const wallW = runW / kState.wallCount;
+
+  let doors = '';
+  for(let i=0;i<kState.baseCount;i++){
+    const x = startX + i*baseW;
+    doors += `<rect x="${x}" y="150" width="${baseW-3}" height="90" fill="${color}" stroke="#00000022"/>`;
+    doors += doorOverlay(kState.door, x, 150, baseW-3, 90);
+    doors += doorHandleMark(kState.handle, x, 150, baseW-3, 90);
+  }
+  let uppers = '';
+  for(let i=0;i<kState.wallCount;i++){
+    const x = startX + i*wallW;
+    uppers += `<rect x="${x}" y="20" width="${wallW-3}" height="70" fill="${color}" stroke="#00000022"/>`;
+    uppers += doorOverlay(kState.door, x, 20, wallW-3, 70);
+    uppers += doorHandleMark(kState.handle, x, 20, wallW-3, 70);
+  }
+  const led = kState.led ? `<rect x="18" y="88" width="404" height="4" fill="#FFE9AE" opacity=".9"/><rect x="18" y="90" width="404" height="10" fill="#FFE9AE" opacity=".25"/>` : '';
+  const rhStyle = kState.rangehood;
+  const rangehoodShape = rhStyle==='canopy'
+    ? `<path d="M300 96 L340 96 L332 112 L308 112 Z" fill="#3a3f44"/>`
+    : rhStyle==='undermount'
+    ? `<rect x="300" y="96" width="40" height="8" fill="#3a3f44"/>`
+    : `<rect x="300" y="96" width="40" height="6" fill="#3a3f44"/><rect x="308" y="90" width="24" height="6" fill="#3a3f44"/>`;
+
+  const svg = `
+  <svg viewBox="0 0 420 260" width="100%" height="auto">
+    <rect x="0" y="0" width="420" height="260" fill="#f2efe8"/>
+    <rect x="20" y="96" width="380" height="48" fill="${splash}" stroke="#00000015"/>
+    ${uppers}
+    ${rangehoodShape}
+    ${led}
+    <rect x="15" y="144" width="390" height="14" fill="${bench}" stroke="#00000022"/>
+    ${doors}
+    <!-- fridge -->
+    <rect x="305" y="150" width="85" height="90" fill="${color}" stroke="#00000022"/>
+    ${doorHandleMark(kState.handle, 305, 150, 85, 90)}
+    <!-- cooktop on bench -->
+    <rect x="230" y="144" width="55" height="10" fill="#1c1c1e" opacity=".85"/>
+    <circle cx="242" cy="149" r="3" fill="#444"/><circle cx="258" cy="149" r="3" fill="#444"/><circle cx="274" cy="149" r="3" fill="#444"/>
+  </svg>`;
+  document.getElementById('kitchenSvgWrap').innerHTML = svg;
+}
+
+/* ============================================================
+   KITCHEN 3D ISOMETRIC PREVIEW (SVG pseudo-iso projection)
+============================================================ */
+function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
+  const dx = d*0.55, dy = d*0.32;
+  return `
+    <polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${frontColor}" stroke="#00000022"/>
+    <polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${topColor}" stroke="#00000022"/>
+    <polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sideColor}" stroke="#00000022"/>
+  `;
+}
+function shade(hex, amt){
+  const c = hex.replace('#','');
+  const num = parseInt(c,16);
+  let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
+  r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+function renderKitchen3D(){
+  const color = cabinetColors.find(c=>c.id===kState.color).hex;
+  const bench = benchtops.find(b=>b.id===kState.benchtop).hex;
+  const top = shade(color, 30), side = shade(color,-35);
+  const benchTop = shade(bench,20), benchSide = shade(bench,-25);
+
+  let parts = '';
+  // base run
+  parts += isoBox(60, 210, 300, 90, 36, color, top, side);
+  // divisions on base front
+  for(let i=1;i<kState.baseCount;i++){
+    const lx = 60 + (300/kState.baseCount)*i;
+    parts += `<line x1="${lx}" y1="120" x2="${lx}" y2="210" stroke="#00000020" stroke-width="1.5"/>`;
+  }
+  // benchtop slab on top
+  parts += isoBox(56, 118, 308, 12, 40, benchTop, shade(bench,35), benchSide);
+  // wall cabinets
+  parts += isoBox(60, 70, 300, 55, 30, color, top, side);
+  for(let i=1;i<kState.wallCount;i++){
+    const lx = 60 + (300/kState.wallCount)*i;
+    parts += `<line x1="${lx}" y1="15" x2="${lx}" y2="70" stroke="#00000020" stroke-width="1.5"/>`;
+  }
+  // fridge box (side)
+  parts += isoBox(370, 210, 46, 130, 36, shade(color,10), shade(color,40), shade(color,-30));
+  // LED glow line
+  if(kState.led){
+    parts += `<rect x="60" y="106" width="300" height="4" fill="#FFE9AE" opacity=".9"/>`;
+  }
+  // rangehood hint
+  parts += `<polygon points="230,90 270,90 262,110 238,110" fill="${shade('#3A3F44',10)}"/>`;
+
+  const svg = `<svg viewBox="0 0 460 300" width="100%" height="auto">
+    <rect width="460" height="300" fill="#efeadb"/>
+    ${parts}
+  </svg>`;
+  document.getElementById('kitchenSvgWrap').innerHTML = svg;
+}
+
+function updateKitchenPreview(){
+  if(kState.view==='2d') renderKitchen2D(); else renderKitchen3D();
+}
+
+function updateKitchenPrice(){
+  const pkg = kitchenPackages.find(p=>p.id===kState.pkg);
+  if(!pkg) return;
+  const doorMod = doorStyles.find(d=>d.id===kState.door).mod;
+  const handleMod = handles.find(h=>h.id===kState.handle).mod;
+  const benchMod = benchtops.find(b=>b.id===kState.benchtop).mod;
+  const cabinetMod = (kState.baseCount-5)*450 + (kState.wallCount-3)*380;
+  const applianceMod = microwaves.find(a=>a.id===kState.microwave).mod
+    + ovens.find(a=>a.id===kState.oven).mod
+    + cooktops.find(a=>a.id===kState.cooktop).mod
+    + rangehoods.find(a=>a.id===kState.rangehood).mod;
+  const ledMod = kState.led?450:0;
+  const elecMod = kState.elecPlumb?1800:0;
+
+  const addOn = doorMod+handleMod+benchMod+cabinetMod+applianceMod+ledMod+elecMod;
+  const low = Math.max(pkg.low, pkg.low+addOn);
+  const high = Math.max(pkg.high, pkg.high+addOn);
+  document.getElementById('kitchenTotal').textContent = `$${low.toLocaleString()} – $${high.toLocaleString()}`;
+  document.getElementById('kitchenPriceLines').innerHTML = `
+    <div class="price-line"><span>${pkg.name} base package</span><span>$${pkg.low.toLocaleString()}–$${pkg.high.toLocaleString()}</span></div>
+    <div class="price-line"><span>Cabinet count adjustment</span><span>${cabinetMod?(cabinetMod>0?'+$'+cabinetMod.toLocaleString():'-$'+Math.abs(cabinetMod).toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>Door style</span><span>${doorMod?('+$'+doorMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>Benchtop upgrade</span><span>${benchMod?('+$'+benchMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>Handle style</span><span>${handleMod?('+$'+handleMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>Appliances (MW/Oven/Cooktop/Hood)</span><span>${applianceMod?('+$'+applianceMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>LED under-cabinet lighting</span><span>${ledMod?('+$'+ledMod.toLocaleString()):'not included'}</span></div>
+    <div class="price-line"><span>Electrical &amp; plumbing upgrade</span><span>${elecMod?('+$'+elecMod.toLocaleString()):'not included'}</span></div>
+  `;
+}
+function updateKitchen(){ updateKitchenPreview(); updateKitchenPrice(); }
+
+/* ============================================================
+   BATHROOM OPTIONS PANEL
+============================================================ */
+function renderBathroomOptions(){
+  const el = document.getElementById('bathroomOptions');
+  el.innerHTML = `
+    <div class="opt-group">
+      <h4>Vanity</h4>
+      <div class="sub-label">Style</div>
+      <div class="swatch-row">${vanityStyles.map(v=>swatchHTML(v, bState.vanityStyle, true, false)).join('')}</div>
+      <div class="sub-label">Colour</div>
+      <div class="swatch-row">${vanityColors.map(c=>swatchHTML(c, bState.vanityColor, false, true)).join('')}</div>
+    </div>
+    <div class="opt-group">
+      <h4>Tiling</h4>
+      <div class="sub-label">Floor Tile</div>
+      <div class="swatch-row">${floorTiles.map(t=>swatchHTML(t, bState.floorTile, false, true)).join('')}</div>
+      <div class="sub-label">Wall Tile</div>
+      <div class="swatch-row">${wallTiles.map(t=>swatchHTML(t, bState.wallTile, false, true)).join('')}</div>
+    </div>
+    <div class="opt-group">
+      <h4>Fixtures</h4>
+      <div class="sub-label">Tapware Finish</div>
+      <div class="swatch-row">${tapware.map(t=>swatchHTML(t, bState.tap, true, true)).join('')}</div>
+      <div class="sub-label">Shower Screen</div>
+      <div class="swatch-row">${showerScreens.map(s=>swatchHTML(s, bState.screen, true, false)).join('')}</div>
+    </div>
+    <div class="opt-group">
+      <h4>Lighting &amp; Trades</h4>
+      ${toggleHTML('ledMirror','LED Backlit Mirror','Touch-sensor demister mirror', 550, bState.ledMirror)}
+      ${toggleHTML('elecB','Electrical &amp; Plumbing Upgrade','New points, exhaust fan, water relocation', 1500, bState.elecPlumb)}
+    </div>
+  `;
+  bindGroupSwatches(el, vanityStyles, bState, 'vanityStyle', updateBathroom);
+  bindGroupSwatches(el, vanityColors, bState, 'vanityColor', updateBathroom);
+  bindGroupSwatches(el, floorTiles, bState, 'floorTile', updateBathroom);
+  bindGroupSwatches(el, wallTiles, bState, 'wallTile', updateBathroom);
+  bindGroupSwatches(el, tapware, bState, 'tap', updateBathroom);
+  bindGroupSwatches(el, showerScreens, bState, 'screen', updateBathroom);
+  bindToggle(el, 'ledMirror', bState, 'ledMirror', updateBathroom);
+  bindToggle(el, 'elecB', bState, 'elecPlumb', updateBathroom);
+}
+
+function renderBathroom2D(){
+  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
+  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
+  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
+  const tap = tapware.find(t=>t.id===bState.tap).hex;
+  const isFreestanding = bState.vanityStyle==='freestanding';
+  const isFramed = bState.screen==='framed';
+  const mirrorGlow = bState.ledMirror ? `<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>` : '';
+
+  const svg = `<svg viewBox="0 0 420 260" width="100%" height="auto">
+    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
+    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
+    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
+    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
+    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
+    ${isFreestanding? `<rect x="20" y="150" width="150" height="4" fill="#00000022"/>` : `<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
+    <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
+    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
+    <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
+    ${mirrorGlow}
+  </svg>`;
+  document.getElementById('bathroomSvgWrap').innerHTML = svg;
+}
+function renderBathroom3D(){
+  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
+  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
+  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
+  const tap = tapware.find(t=>t.id===bState.tap).hex;
+  let parts = '';
+  parts += `<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
+  parts += `<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
+  // vanity iso box
+  parts += isoBox(60, 260, 140, 55, 34, vColor, shade(vColor,25), shade(vColor,-30));
+  // mirror
+  parts += `<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
+  if(bState.ledMirror) parts += `<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
+  // tap
+  parts += `<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
+  // shower box
+  parts += isoBox(300, 260, 90, 190, 60, '#dbeef2', '#eef9fb', '#c3dee3');
+  const svg = `<svg viewBox="0 0 460 300" width="100%" height="auto">${parts}</svg>`;
+  document.getElementById('bathroomSvgWrap').innerHTML = svg;
+}
+function updateBathroomPreview(){ bState.view==='2d' ? renderBathroom2D() : renderBathroom3D(); }
+
+function updateBathroomPrice(){
+  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
+  if(!pkg) return;
+  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
+  const tMod = tapware.find(t=>t.id===bState.tap).mod;
+  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
+  const ledMod = bState.ledMirror?550:0;
+  const elecMod = bState.elecPlumb?1500:0;
+  const addOn = vMod+tMod+sMod+ledMod+elecMod;
+  const low = pkg.low+addOn, high = pkg.high+addOn;
+  document.getElementById('bathroomTotal').textContent = `$${low.toLocaleString()} – $${high.toLocaleString()}`;
+  document.getElementById('bathroomPriceLines').innerHTML = `
+    <div class="price-line"><span>${pkg.name} base package</span><span>$${pkg.low.toLocaleString()}–$${pkg.high.toLocaleString()}</span></div>
+    <div class="price-line"><span>Vanity style</span><span>${vMod?('+$'+vMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>Tapware finish</span><span>${tMod?('+$'+tMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>Shower screen</span><span>${sMod?('+$'+sMod.toLocaleString()):'included'}</span></div>
+    <div class="price-line"><span>LED backlit mirror</span><span>${ledMod?('+$'+ledMod.toLocaleString()):'not included'}</span></div>
+    <div class="price-line"><span>Electrical &amp; plumbing upgrade</span><span>${elecMod?('+$'+elecMod.toLocaleString()):'not included'}</span></div>
+  `;
+}
+function updateBathroom(){ updateBathroomPreview(); updateBathroomPrice(); }
+
+/* ============================================================
+   INIT + TABS + VIEW TOGGLES
+============================================================ */
+function onKitchenPkgSelect(){
+  renderPkgGrid('kitchenPkgGrid', kitchenPackages, kState, onKitchenPkgSelect);
+  document.getElementById('kitchenConfig').classList.add('show');
+  renderKitchenOptions(); updateKitchen();
+}
+function onBathroomPkgSelect(){
+  renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
+  document.getElementById('bathroomConfig').classList.add('show');
+  renderBathroomOptions(); updateBathroom();
+}
+renderPkgGrid('kitchenPkgGrid', kitchenPackages, kState, onKitchenPkgSelect);
+renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.tab;
+    document.getElementById('kitchen-tab').style.display = target==='kitchen'?'block':'none';
+    document.getElementById('bathroom-tab').style.display = target==='bathroom'?'block':'none';
+  });
+});
+
+document.querySelectorAll('.view-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const target = btn.dataset.target;
+    document.querySelectorAll(`.view-btn[data-target="${target}"]`).forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(target==='kitchen'){ kState.view = btn.dataset.view; updateKitchenPreview(); }
+    else { bState.view = btn.dataset.view; updateBathroomPreview(); }
+  });
+});
+</script>
+<footer style="background:var(--navy);color:#c9c2b3;padding:50px 20px 26px;margin-top:20px;">
+  <div style="max-width:1220px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center;">
+    <div>
+      <img src="https://mic-nsw.com.au/front/images/logo2.png" alt="MIC NSW" style="height:34px;filter:brightness(0) invert(1);margin-bottom:10px;">
+      <p style="font-size:12.5px;color:#a89f8e;max-width:340px;">MIC NSW PTY LTD — ABN: 51 665 533 282 — Contractor Licence: 393630C</p>
+    </div>
+    <div style="font-size:13px;">
+      <a href="index.html" style="color:#ece5d6;">← Back to Homepage</a> &nbsp;|&nbsp;
+      <a href="index.html#contact" style="color:var(--gold);">Contact Us</a> &nbsp;|&nbsp;
+      <a href="https://wa.me/+61470640083?text=Hello" style="color:#ece5d6;">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/+61470640083?text=Hello" style="position:fixed;bottom:26px;right:26px;z-index:250;background:#25D366;color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 20px rgba(0,0,0,.25);" aria-label="Chat on WhatsApp">💬</a>
+
+</body>
+</html>
