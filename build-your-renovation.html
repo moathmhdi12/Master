@@ -203,6 +203,8 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   .kitchen-cards,.kitchen-cards.cols-3,.kitchen-step-grid,.kitchen-toggle-grid,.kitchen-review-grid{grid-template-columns:1fr;}
   .kitchen-nav{flex-direction:column;}
   .kitchen-nav-btn{width:100%;}
+  #kitchenStepsList{display:grid;overflow:visible;}
+  .kitchen-step-item{min-width:0;}
 }
 
 </style>
@@ -290,7 +292,7 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
       <input id="quoteEmail" name="email" type="email" autocomplete="email" required>
 
       <label for="quotePhone">Phone Number</label>
-      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+()\\-\\s]{8,20}" maxlength="20" title="Phone number with 8-20 digits, spaces, or +()- characters" required>
+      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" maxlength="20" title="Phone number with 8-20 digits, spaces, or +()- characters" required>
 
       <label for="quoteSummaryText">Design Summary</label>
       <textarea id="quoteSummaryText" readonly></textarea>
@@ -651,6 +653,7 @@ function layoutIcon(id){
   if(id==='ushape') return `<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H30 V45 H70 V10 H90 V60 H10 Z" ${s}/></svg>`;
   if(id==='lshape') return `<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H90 V30 H40 V60 H10 Z" ${s}/></svg>`;
   if(id==='galley') return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="10" y="46" width="80" height="14" ${s}/></svg>`;
+  if(id==='island') return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
   return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
 }
 
@@ -716,6 +719,10 @@ function renderKitchenPreviewSvg(){
 function kitchenDesignSummaryText(){
   const totals = calcKitchenTotals();
   const upgrades = kitchenUpgradeOptions.filter(opt=>kState.upgrades[opt.id]).map(opt=>opt.title);
+  const microwaveBrand = microwaves.find(a=>a.id===kState.microwave)?.brand || 'Not selected';
+  const ovenBrand = ovens.find(a=>a.id===kState.oven)?.brand || 'Not selected';
+  const cooktopBrand = cooktops.find(a=>a.id===kState.cooktop)?.brand || 'Not selected';
+  const rangehoodBrand = rangehoods.find(a=>a.id===kState.rangehood)?.brand || 'Not selected';
   return [
     `PACKAGE: ${totals.pkg.name} ($${totals.pkg.low.toLocaleString()}–$${totals.pkg.high.toLocaleString()})`,
     `LAYOUT: ${layoutById().name}`,
@@ -724,7 +731,7 @@ function kitchenDesignSummaryText(){
     `COLOR: ${colorById().name}`,
     `BENCHTOP: ${benchtopById().brand} ${benchtopById().name} — ${money(totals.benchtopMod)}`,
     `SPLASHBACK: ${splashById().name} (${kState.splashPattern}) — ${money(totals.splashbackMod)}`,
-    `APPLIANCES: ${microwaves.find(a=>a.id===kState.microwave).brand} / ${ovens.find(a=>a.id===kState.oven).brand} / ${cooktops.find(a=>a.id===kState.cooktop).brand} / ${rangehoods.find(a=>a.id===kState.rangehood).brand} — ${money(totals.applianceMod)}`,
+    `APPLIANCES: ${microwaveBrand} / ${ovenBrand} / ${cooktopBrand} / ${rangehoodBrand} — ${money(totals.applianceMod)}`,
     `UPGRADES: ${upgrades.length ? upgrades.join(', ') : 'None'} — ${money(totals.upgradesMod)}`,
     `TOTAL INVESTMENT: $${totals.total.toLocaleString()}+`
   ].join('\n');
@@ -851,7 +858,7 @@ function renderKitchenStepContent(){
       <div class="line"><span>Extras & Upgrades</span><span>${money(totals.upgradesMod)}</span></div>
       <div class="line"><strong>TOTAL INVESTMENT</strong><strong>$${totals.total.toLocaleString()}+</strong></div>
       <div style="font-size:11px;color:#7f7667;margin-top:8px;">(Fixed quote after free consultation)</div>
-      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'}>Request This Design</button>
+      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'} aria-disabled="${canRequest ? 'false' : 'true'}">Request This Design</button>
       ${!canRequest?'<div style="margin-top:6px;font-size:11px;color:#a14f39;">Complete Steps 1–7 to enable requests.</div>':''}
       <div style="margin-top:8px;font-size:11px;color:#7f7667;">Selected upgrades: ${upgrades.length?upgrades.map(u=>u.title).join(', '):'None'}.</div>
     </div>`;
@@ -1094,7 +1101,8 @@ function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
   `;
 }
 function shade(hex, amt){
-  const c = hex.replace('#','');
+  const c = String(hex || '').replace('#','');
+  if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';
   const num = parseInt(c,16);
   let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
   r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
