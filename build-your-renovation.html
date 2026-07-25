@@ -103,6 +103,137 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .price-line span:last-child{color:#fff;font-weight:600;}
 .cta-final{margin-top:16px;width:100%;padding:12px;border-radius:6px;background:var(--gold);color:var(--navy);border:none;font-weight:700;font-size:13px;cursor:pointer;}
 .disclaimer{font-size:10.5px;color:#a9a49a;margin-top:24px;line-height:1.6;max-width:1220px;padding:0 20px;}
+
+.kitchen-wizard-shell{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:start;}
+.kitchen-wizard-sidebar{position:sticky;top:20px;background:var(--cream);border:1.5px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 4px 14px rgba(0,0,0,.06);}
+.kitchen-wizard-sidebar h2{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
+.kitchen-wizard-sidebar p{margin:0 0 20px;color:#736b5d;font-size:14px;line-height:1.6;}
+.kitchen-step-list{display:flex;flex-direction:column;gap:10px;}
+.kitchen-step-link{width:100%;display:flex;gap:14px;align-items:flex-start;padding:14px 13px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:all .2s ease;text-align:left;color:inherit;font:inherit;box-shadow:0 2px 8px rgba(0,0,0,0);}
+.kitchen-step-link:hover{border-color:var(--gold);box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px);}
+.kitchen-step-link.is-active{border-color:var(--gold);background:linear-gradient(135deg,rgba(169,129,47,.15),rgba(169,129,47,.04));box-shadow:0 6px 16px rgba(0,0,0,.08);}
+.kitchen-step-link.is-complete{border-color:rgba(47,74,66,.24);}
+.kitchen-step-indicator{width:38px;height:38px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;background:var(--off);color:var(--navy);font-weight:700;}
+.kitchen-step-link.is-active .kitchen-step-indicator,.kitchen-step-link.is-complete .kitchen-step-indicator{background:var(--gold);border-color:var(--gold);color:#fff;}
+.kitchen-step-meta{min-width:0;}
+.kitchen-step-meta strong{display:flex;align-items:center;gap:8px;color:var(--navy);font-size:14px;line-height:1.4;}
+.kitchen-step-meta span{display:block;margin-top:4px;font-size:12px;color:#7d7669;line-height:1.5;}
+.kitchen-step-badge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;background:rgba(47,74,66,.12);color:var(--sage);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.kitchen-step-panel{background:rgba(255,255,255,.76);border:1.5px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 10px 28px rgba(0,0,0,.06);backdrop-filter:blur(4px);}
+.kitchen-step-eyebrow{display:inline-block;margin-bottom:8px;color:var(--gold-dark);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.kitchen-step-copy{font-size:14px;line-height:1.7;max-width:720px;}
+.kitchen-step-content{margin-top:24px;animation:kitchenFade .2s ease;}
+.kitchen-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+.kitchen-card-grid--three{grid-template-columns:repeat(3,minmax(0,1fr));}
+.kitchen-option-card{width:100%;padding:18px;border:1.5px solid var(--line);border-radius:16px;background:var(--cream);cursor:pointer;transition:all .2s ease;text-align:left;color:inherit;font:inherit;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.kitchen-option-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px);}
+.kitchen-option-card.is-selected{border-color:var(--gold);background:linear-gradient(180deg,rgba(169,129,47,.18),rgba(250,248,243,.98));box-shadow:0 8px 18px rgba(0,0,0,.1);}
+.kitchen-option-card h3,.kitchen-option-card h4{margin:0;color:var(--navy);}
+.kitchen-option-card p{margin:8px 0 0;color:#625b4f;font-size:13px;line-height:1.6;}
+.kitchen-option-card small{display:block;margin-top:8px;color:#867c6d;font-size:11px;line-height:1.5;}
+.kitchen-option-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+.kitchen-price-mod{white-space:nowrap;color:var(--gold-dark);font-size:13px;font-weight:700;}
+.kitchen-package-card{position:relative;overflow:hidden;min-height:100%;}
+.kitchen-package-card::before{content:'';position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--gold),var(--gold-dark));opacity:.95;}
+.kitchen-package-card ul{margin:14px 0 0;padding-left:18px;color:#534d43;font-size:12.5px;line-height:1.7;}
+.kitchen-package-card .supp-label{margin-top:14px;}
+.kitchen-layout-icon{display:flex;align-items:center;justify-content:center;height:74px;margin-bottom:12px;background:rgba(239,234,225,.9);border-radius:12px;}
+.kitchen-layout-icon svg{width:96px;height:56px;}
+.kitchen-config-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;}
+.kitchen-config-card{background:var(--cream);border:1.5px solid var(--line);border-radius:16px;padding:18px;}
+.kitchen-config-card h3{margin:0 0 14px;color:var(--navy);font-size:16px;font-family:'Fraunces',Georgia,serif;}
+.kitchen-config-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid rgba(225,217,200,.9);}
+.kitchen-config-row:last-child{border-bottom:none;padding-bottom:0;}
+.kitchen-config-row:first-of-type{padding-top:0;}
+.kitchen-config-row label{display:block;color:var(--navy);font-weight:600;font-size:14px;}
+.kitchen-config-row span{display:block;color:#7d7669;font-size:12px;margin-top:4px;}
+.kitchen-stepper{display:flex;align-items:center;gap:10px;}
+.kitchen-stepper button{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:#fff;cursor:pointer;color:var(--navy);font-size:20px;transition:all .2s ease;}
+.kitchen-stepper button:hover,.kitchen-stepper button:focus-visible{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(169,129,47,.18);}
+.kitchen-stepper strong{min-width:26px;text-align:center;color:var(--navy);font-size:18px;}
+.kitchen-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.kitchen-choice-grid--wide{grid-template-columns:repeat(4,minmax(0,1fr));}
+.kitchen-choice-card{width:100%;padding:15px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:all .15s ease;text-align:left;color:inherit;font:inherit;}
+.kitchen-choice-card.is-selected{border-color:var(--gold);background:rgba(169,129,47,.12);font-weight:700;}
+.kitchen-choice-card:hover{border-color:var(--gold);}
+.kitchen-choice-card .kitchen-price-mod{display:block;margin-top:6px;}
+.kitchen-swatch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.kitchen-swatch-btn{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;transition:all .15s ease;color:inherit;font:inherit;}
+.kitchen-swatch-btn:hover{border-color:var(--gold);}
+.kitchen-swatch-btn.is-selected{border-color:var(--gold);background:rgba(169,129,47,.1);}
+.kitchen-swatch-chip{width:100%;height:46px;border-radius:12px;margin-bottom:10px;border:1px solid rgba(0,0,0,.08);}
+.kitchen-swatch-btn strong{display:block;color:var(--navy);font-size:13px;}
+.kitchen-swatch-btn span{display:block;margin-top:4px;color:#756d60;font-size:11.5px;}
+.kitchen-pattern-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.kitchen-pattern-chip{padding:10px 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;color:var(--navy);font:600 12px 'Work Sans',sans-serif;transition:all .15s ease;}
+.kitchen-pattern-chip.is-selected{border-color:var(--gold);background:rgba(169,129,47,.12);}
+.kitchen-appliance-block{background:var(--cream);border:1.5px solid var(--line);border-radius:16px;padding:18px;}
+.kitchen-appliance-block + .kitchen-appliance-block{margin-top:14px;}
+.kitchen-appliance-block h3{margin:0 0 12px;color:var(--navy);font-size:16px;font-family:'Fraunces',Georgia,serif;}
+.kitchen-upgrade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.kitchen-upgrade-card{width:100%;padding:18px;border:1.5px solid var(--line);border-radius:16px;background:var(--cream);cursor:pointer;transition:all .2s ease;text-align:left;color:inherit;font:inherit;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;}
+.kitchen-upgrade-card:hover{border-color:var(--gold);transform:translateY(-1px);}
+.kitchen-upgrade-card.is-selected{border-color:var(--gold);background:rgba(169,129,47,.12);}
+.kitchen-toggle-pill{min-width:52px;height:30px;border-radius:999px;background:#d7d0c0;position:relative;transition:all .2s ease;}
+.kitchen-toggle-pill::after{content:'';position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:#fff;transition:all .2s ease;box-shadow:0 2px 4px rgba(0,0,0,.15);}
+.kitchen-upgrade-card.is-selected .kitchen-toggle-pill{background:var(--gold);}
+.kitchen-upgrade-card.is-selected .kitchen-toggle-pill::after{left:26px;}
+.kitchen-running-total{margin-top:24px;padding:16px 18px;border-radius:16px;background:linear-gradient(90deg,var(--navy),#1f252a);color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center;animation:pricePop .2s ease;}
+.kitchen-running-total strong{font-size:20px;font-family:'Fraunces',Georgia,serif;}
+.kitchen-running-total span{font-size:12px;color:#d8d1c1;line-height:1.5;}
+.kitchen-nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px;}
+.kitchen-nav button{min-height:46px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font:600 14px 'Work Sans',sans-serif;cursor:pointer;transition:all .2s ease;}
+.kitchen-nav button:hover:not(:disabled){border-color:var(--gold);box-shadow:0 4px 12px rgba(0,0,0,.08);}
+.kitchen-nav button:disabled{opacity:.45;cursor:not-allowed;}
+.kitchen-nav .kitchen-next-btn{background:var(--navy);border-color:var(--navy);color:#fff;}
+.kitchen-nav .kitchen-next-btn:hover:not(:disabled){background:#202429;}
+.kitchen-review-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;}
+.kitchen-review-card{background:var(--cream);border:1.5px solid var(--line);border-radius:18px;padding:18px;}
+.kitchen-review-card h3{margin:0 0 14px;color:var(--navy);font-size:18px;font-family:'Fraunces',Georgia,serif;}
+.kitchen-review-preview{background:#f3eee5;border-radius:16px;padding:14px;min-height:290px;}
+.kitchen-summary-list{display:grid;gap:10px;}
+.kitchen-summary-line{display:flex;justify-content:space-between;gap:16px;padding-bottom:10px;border-bottom:1px solid rgba(225,217,200,.9);font-size:13px;}
+.kitchen-summary-line:last-child{padding-bottom:0;border-bottom:none;}
+.kitchen-summary-line strong{color:var(--navy);font-size:12px;letter-spacing:.04em;text-transform:uppercase;}
+.kitchen-summary-line span:last-child{text-align:right;color:#5d5548;}
+.kitchen-price-table{background:var(--navy);color:#fff;border-radius:18px;padding:18px;}
+.kitchen-price-table .price-line{border-bottom-color:rgba(255,255,255,.12);}
+.kitchen-price-table .price-line.is-total{padding-top:14px;margin-top:6px;border-top:1px solid rgba(255,255,255,.22);border-bottom:none;font-size:14px;font-weight:700;}
+.kitchen-price-table .kitchen-fixed-note{margin-top:10px;color:#cfc7b5;font-size:11px;}
+.kitchen-review-actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+.kitchen-cta-btn{min-height:48px;padding:0 18px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font:700 14px 'Work Sans',sans-serif;cursor:pointer;box-shadow:0 8px 18px rgba(169,129,47,.25);transition:transform .2s ease,box-shadow .2s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;}
+.kitchen-cta-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(169,129,47,.3);}
+.kitchen-cta-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none;}
+.kitchen-request-modal{position:fixed;inset:0;background:rgba(21,23,26,.65);display:none;align-items:center;justify-content:center;padding:20px;z-index:300;}
+.kitchen-request-modal.is-open{display:flex;}
+.kitchen-request-dialog{width:min(680px,100%);background:#fff;border-radius:20px;padding:24px;border:1.5px solid var(--line);box-shadow:0 20px 40px rgba(0,0,0,.18);}
+.kitchen-request-dialog h3{margin:0 0 10px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
+.kitchen-request-dialog p{margin:0 0 16px;color:#6d6558;font-size:14px;line-height:1.6;}
+.kitchen-request-dialog pre{width:100%;min-height:220px;border:1.5px solid var(--line);border-radius:14px;padding:14px;font:13px/1.6 'Work Sans',sans-serif;color:var(--gray);background:var(--cream);white-space:pre-wrap;overflow:auto;margin:0;}
+.kitchen-request-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.kitchen-secondary-btn{min-height:46px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font:600 14px 'Work Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;}
+.kitchen-secondary-btn:hover{border-color:var(--gold);}
+.kitchen-modal-note{margin-top:12px;color:#8a8174;font-size:11px;}
+@keyframes kitchenFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pricePop{0%{transform:scale(.985);}60%{transform:scale(1.01);}100%{transform:scale(1);}}
+@media (max-width:1199px){
+  .kitchen-wizard-shell{grid-template-columns:1fr;}
+  .kitchen-wizard-sidebar{position:static;padding:18px;}
+  .kitchen-step-list{flex-direction:row;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;}
+  .kitchen-step-link{min-width:220px;}
+  .kitchen-review-grid,.kitchen-config-grid{grid-template-columns:1fr;}
+}
+@media (max-width:767px){
+  .wrap{padding:24px 14px 90px;}
+  .tabs{gap:8px;overflow-x:auto;padding-bottom:4px;}
+  .tab{min-width:220px;}
+  .kitchen-step-panel{padding:18px;}
+  .kitchen-card-grid,.kitchen-card-grid--three,.kitchen-choice-grid,.kitchen-choice-grid--wide,.kitchen-upgrade-grid,.kitchen-swatch-grid{grid-template-columns:1fr;}
+  .kitchen-running-total,.kitchen-nav,.kitchen-summary-line,.kitchen-request-actions{flex-direction:column;align-items:stretch;}
+  .kitchen-nav button,.kitchen-cta-btn,.kitchen-secondary-btn{width:100%;}
+  .kitchen-step-link{min-width:190px;}
+}
+
 </style>
 </head>
 <body>
@@ -124,28 +255,38 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
   <!-- ============ KITCHEN ============ -->
   <div id="kitchen-tab">
-    <h2 class="section-title">Step 1 — Choose Your Kitchen Package</h2>
-    <div class="section-desc">Full strip-out, new drainage &amp; plumbing, electrical, cabinetry and finishing. Recommended suppliers shown are common Sydney-available brands for each tier — final selection confirmed at your free consultation.</div>
-    <div class="pkg-grid" id="kitchenPkgGrid"></div>
+    <div class="kitchen-wizard-shell">
+      <aside class="kitchen-wizard-sidebar" aria-label="Kitchen design steps">
+        <h2>Design Your Kitchen</h2>
+        <p>Work through eight guided selections to create a professional kitchen concept with live pricing and a polished review summary.</p>
+        <div class="kitchen-step-list" id="kitchenWizardSteps"></div>
+      </aside>
 
-    <div class="config" id="kitchenConfig">
-      <div class="options-col" id="kitchenOptions"></div>
-      <div class="preview-col">
-        <div class="preview-box">
-          <h4 style="font-family:Georgia,serif;color:var(--navy);font-size:13px;margin:0 0 10px;">Live Design Preview</h4>
-          <div class="view-toggle">
-            <div class="view-btn active" data-view="2d" data-target="kitchen">2D Elevation</div>
-            <div class="view-btn" data-view="3d" data-target="kitchen">3D Isometric</div>
+      <section class="kitchen-wizard-main">
+        <div class="kitchen-step-panel">
+          <span class="kitchen-step-eyebrow" id="kitchenStepEyebrow">Step 1</span>
+          <h2 class="section-title" id="kitchenStepTitle">Package Selection</h2>
+          <div class="section-desc kitchen-step-copy" id="kitchenStepDescription"></div>
+          <div id="kitchenStepContent" class="kitchen-step-content"></div>
+          <div id="kitchenRunningTotal"></div>
+          <div class="kitchen-nav">
+            <button type="button" id="kitchenBackBtn" aria-label="Go to previous kitchen step">← Back</button>
+            <button type="button" class="kitchen-next-btn" id="kitchenNextBtn" aria-label="Go to next kitchen step">Next →</button>
           </div>
-          <div id="kitchenSvgWrap"></div>
-          <div class="floorplan-note">Illustrative style preview. Exact cabinetry, appliance fit and electrical/plumbing points are finalised during your free in-home measure.</div>
         </div>
-        <div class="price-box">
-          <h4>Estimated Investment</h4>
-          <div class="price-total" id="kitchenTotal">$0 – $0</div>
-          <div id="kitchenPriceLines"></div>
-          <button class="cta-final">Request This Quote</button>
+      </section>
+    </div>
+
+    <div class="kitchen-request-modal" id="kitchenRequestModal" aria-hidden="true">
+      <div class="kitchen-request-dialog" id="kitchenRequestDialog" role="dialog" aria-modal="true" aria-labelledby="kitchenRequestTitle" tabindex="-1">
+        <h3 id="kitchenRequestTitle">Request This Design</h3>
+        <p>Your design summary is pre-filled below so the MIC NSW team can quote the exact direction you selected.</p>
+        <pre id="kitchenRequestSummary" tabindex="0" role="region" aria-label="Kitchen design summary"></pre>
+        <div class="kitchen-request-actions">
+          <button type="button" class="kitchen-secondary-btn" id="kitchenRequestClose">Close</button>
+          <a class="kitchen-cta-btn" href="index.html#contact">Continue to Contact</a>
         </div>
+        <div class="kitchen-modal-note">Fixed written quote provided after your free consultation and site measure.</div>
       </div>
     </div>
   </div>
@@ -187,16 +328,115 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 /* ============================================================
    DATA
 ============================================================ */
+const kitchenStepDefinitions = [
+  {step:1, title:'Package Selection', short:'Choose your package', description:'Select the renovation package that matches your desired level of finish, benchtop quality and supplier direction.'},
+  {step:2, title:'Kitchen Layout', short:'Choose your layout', description:'Pick the floorplan that best suits your room footprint and how you want to move through the space.'},
+  {step:3, title:'Cabinetry Configuration', short:'Cabinets, doors & colour', description:'Set cabinet quantities, choose your door profile and lock in a cabinet finish that suits the package.'},
+  {step:4, title:'Benchtop Selection', short:'Choose your benchtop', description:'Compare benchtop surfaces, brands and upgrades to refine the overall look and durability.'},
+  {step:5, title:'Splashback Tiles', short:'Tiles & pattern', description:'Select the splashback style and pattern direction to complement your cabinetry and benchtop.'},
+  {step:6, title:'Appliances', short:'Set your appliance suite', description:'Choose the appliance brands and performance tier for each key cooking zone.'},
+  {step:7, title:'Upgrades & Extras', short:'Optional enhancements', description:'Add practical extras and premium upgrades to elevate usability, storage and final detailing.'},
+  {step:8, title:'Review & Summary', short:'Preview and request', description:'Review the visual concept, check the itemised pricing summary and request this exact kitchen design.'}
+];
+const BASE_CABINET_MIN = 2;
+const BASE_CABINET_MAX = 8;
+const BASE_CABINET_STANDARD = 5;
+const WALL_CABINET_MIN = 2;
+const WALL_CABINET_MAX = 6;
+const WALL_CABINET_STANDARD = 3;
+const KITCHEN_STEP_COUNT = kitchenStepDefinitions.length;
+const REVIEW_UPPER_CABINET_WIDTH = 180;
+const REVIEW_BASE_CABINET_WIDTH = 220;
+const KITCHEN_MODAL_FOCUS_SELECTOR = 'button, a, [tabindex]:not([tabindex="-1"])';
+
 const kitchenPackages = [
-  {id:'essential', theme:'Sydney Essentials', name:'Essential Kitchen', badge:null, low:18000, high:28000,
-   items:['Full strip-out & new drainage/plumbing','Laminate benchtop & standard cabinetry','Ceramic splashback','Chef/Westinghouse appliances'],
-   suppliers:['Kaboodle (Bunnings)','Laminex','Beaumont Tiles','Chef / Westinghouse']},
-  {id:'premium', theme:'Sydney Premium', name:'Premium Kitchen', badge:'MOST POPULAR', low:35000, high:55000,
-   items:['Full strip-out & new drainage/plumbing','Engineered stone benchtop','Soft-close cabinetry & drawers','Bosch/Fisher & Paykel appliances'],
-   suppliers:['Kinsman Kitchens','Caesarstone / Essastone','National Tiles','Bosch / Fisher & Paykel']},
-  {id:'luxury', theme:'Sydney Signature', name:'Luxury Kitchen', badge:'FULL CUSTOM', low:65000, high:110000,
-   items:['Full strip-out, plumbing & electrical relocation','Premium stone benchtop','Custom handleless joinery','Miele/ILVE/Smeg appliances'],
-   suppliers:['Freedom Kitchens (custom)','Dekton / Smartstone','Signorino / Artedomus','Miele / ILVE / Smeg']}
+  {id:'essentials', theme:'Sydney Essentials', name:'Essentials', low:18000, high:28000, description:'Laminate benchtop with standard cabinetry for a clean and practical upgrade.',
+   items:['Laminate benchtop','Standard cabinetry package','Reliable entry appliance allowance'],
+   suppliers:['Laminex','Kaboodle','Chef Appliances']},
+  {id:'premium', theme:'Sydney Premium', name:'Premium', low:35000, high:55000, description:'Engineered stone surfaces and soft-close joinery for an elevated everyday kitchen.',
+   items:['Engineered stone benchtop','Soft-close cabinetry','Upgraded appliance allowance'],
+   suppliers:['Essastone / Caesarstone','Kinsman','Bosch / Fisher & Paykel']},
+  {id:'luxury', theme:'Sydney Signature', name:'Luxury', low:65000, high:110000, description:'Premium stone, custom detailing and designer appliance pairings for a statement kitchen.',
+   items:['Premium stone benchtop','Custom handles and detailing','Designer appliance allowance'],
+   suppliers:['Dekton / Smartstone','Freedom Kitchens','Miele / ILVE']}
+];
+
+const kitchenLayouts = [
+  {id:'ushape', name:'U-Shape', desc:'3 walls, versatile'},
+  {id:'lshape', name:'L-Shape', desc:'2 walls, efficient'},
+  {id:'galley', name:'Galley', desc:'Parallel counters, narrow'},
+  {id:'island', name:'Island', desc:'Central prep area'}
+];
+
+const doorStyles = [
+  {id:'flat', name:'Flat / Slab', mod:0},
+  {id:'shaker', name:'Shaker', mod:600},
+  {id:'raised', name:'Raised Panel', mod:1200},
+  {id:'handleless', name:'Handleless', mod:1500}
+];
+
+const cabinetColors = [
+  {id:'white', name:'Alpine White', hex:'#F4F2ED'},
+  {id:'black', name:'Matte Black', hex:'#26282A'},
+  {id:'sage', name:'Sage Green', hex:'#8A9A80'},
+  {id:'navy', name:'Deep Navy', hex:'#1C2B33'},
+  {id:'oak', name:'Natural Oak', hex:'#C9A876'},
+  {id:'charcoal', name:'Charcoal', hex:'#4A4E52'}
+];
+
+const benchtops = [
+  {id:'laminex', brand:'Laminex', name:'Bianco Marble', hex:'#EDEAE3', mod:0},
+  {id:'essastone', brand:'Essastone', name:'Georgian Bluestone', hex:'#9BA0A3', mod:1200},
+  {id:'caesarstone', brand:'Caesarstone', name:'Calacatta Nuvo', hex:'#EDE7DD', mod:1800},
+  {id:'smartstone', brand:'Smartstone', name:'Symphony Grey', hex:'#B8B2A7', mod:2200},
+  {id:'dekton', brand:'Dekton', name:'Sirocco', hex:'#8C8378', mod:3200}
+];
+
+const splashbackStyles = [
+  {id:'ceramic', name:'Ceramic', subtitle:'Classic', mod:400, options:[
+    {name:'Ivory Gloss', hex:'#EFE8DE'}, {name:'Warm Sand', hex:'#DDD1BE'}, {name:'Soft Sage', hex:'#C7D0C7'}
+  ]},
+  {id:'subway', name:'Subway', subtitle:'Timeless', mod:0, options:[
+    {name:'Gloss White', hex:'#F7F6F2'}, {name:'Greige Stack', hex:'#DDD5C7'}, {name:'Mist Grey', hex:'#D6D8D9'}
+  ]},
+  {id:'mosaic', name:'Mosaic', subtitle:'Decorative', mod:800, options:[
+    {name:'Pearl Mix', hex:'#D8D2C7'}, {name:'Sea Glass', hex:'#B5C5BF'}, {name:'Smoked Charcoal', hex:'#727476'}
+  ]},
+  {id:'large-format', name:'Large Format', subtitle:'Luxury', mod:1200, options:[
+    {name:'Calacatta Vein', hex:'#ECE4D8'}, {name:'Taupe Stone', hex:'#C9BFB2'}, {name:'Graphite Slab', hex:'#65686B'}
+  ]}
+];
+const DEFAULT_KITCHEN_SPLASH = 'subway';
+const DEFAULT_KITCHEN_SPLASH_PATTERN = ((splashbackStyles.find(style => style.id === DEFAULT_KITCHEN_SPLASH) || splashbackStyles[0])?.options || [{name:'Gloss White'}])[0].name;
+
+const microwaves = [
+  {id:'chef', brand:'Chef', name:'Built-in Microwave', mod:0},
+  {id:'bosch', brand:'Bosch', name:'Built-in Microwave', mod:350},
+  {id:'miele', brand:'Miele', name:'Built-in Microwave', mod:900}
+];
+const ovens = [
+  {id:'westinghouse', brand:'Westinghouse', name:'Oven', mod:0},
+  {id:'fp', brand:'Fisher & Paykel', name:'Oven', mod:600},
+  {id:'ilve', brand:'ILVE', name:'Oven', mod:1800},
+  {id:'miele', brand:'Miele', name:'Oven', mod:2600}
+];
+const cooktops = [
+  {id:'chef', brand:'Chef', name:'Cooktop', mod:0},
+  {id:'bosch', brand:'Bosch', name:'Cooktop', mod:500},
+  {id:'miele', brand:'Miele', name:'Cooktop', mod:1400}
+];
+const rangehoods = [
+  {id:'chef', brand:'Chef', name:'Rangehood', mod:0},
+  {id:'fp', brand:'Fisher & Paykel', name:'Rangehood', mod:450},
+  {id:'miele', brand:'Miele', name:'Rangehood', mod:750}
+];
+
+const kitchenUpgrades = [
+  {id:'led', name:'LED Under-Cabinet Lighting', description:'Warm task lighting beneath wall cabinets.', mod:1200},
+  {id:'services', name:'Electrical & Plumbing Upgrade', description:'Extra circuits, points and service relocation allowance.', mod:2400},
+  {id:'handles', name:'Premium Handles Set', description:'Upgraded designer hardware set across the joinery.', mod:800},
+  {id:'softClose', name:'Soft-Close Drawers', description:'Premium drawer runners for quieter, smoother use.', mod:600},
+  {id:'pantry', name:'Pantry Organization System', description:'Integrated inserts and pull-outs for daily storage.', mod:1400}
 ];
 
 const bathroomPackages = [
@@ -209,68 +449,6 @@ const bathroomPackages = [
   {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000,
    items:['Full strip-out, re-waterproof & re-plumb','Natural stone-look porcelain','Freestanding bath','Brushed brass/black tapware, LED mirror'],
    suppliers:['Custom Joinery','Signorino / Artedomus','Nero / Sussex Taps']}
-];
-
-const kitchenShapes = [
-  {id:'lshape', name:'L-Shape'},{id:'ushape', name:'U-Shape'},{id:'galley', name:'Galley'},
-  {id:'island', name:'Island'},{id:'onewall', name:'One-Wall'},{id:'peninsula', name:'Peninsula'}
-];
-
-const doorStyles = [
-  {id:'flat', name:'Flat / Slab', mod:0},
-  {id:'shaker', name:'Shaker Frame', mod:600},
-  {id:'raised', name:'Raised Panel', mod:1200},
-  {id:'handleless', name:'Handleless Shadowline', mod:1500},
-  {id:'groove', name:'Vertical Groove', mod:900}
-];
-
-const cabinetColors = [
-  {id:'white', name:'Alpine White', hex:'#F4F2ED'},{id:'black', name:'Matte Black', hex:'#26282A'},
-  {id:'sage', name:'Sage Green', hex:'#8A9A80'},{id:'navy', name:'Deep Navy', hex:'#1C2B33'},
-  {id:'oak', name:'Natural Oak', hex:'#C9A876'},{id:'charcoal', name:'Charcoal', hex:'#4A4E52'}
-];
-
-const handles = [
-  {id:'nohandle', name:'Handleless (Push-to-Open)', mod:800},
-  {id:'barBlack', name:'Bar Handle — Matte Black', mod:0},
-  {id:'barBrass', name:'Bar Handle — Brushed Brass', mod:150},
-  {id:'knobBrass', name:'Round Knob — Brass', mod:100},
-  {id:'jpull', name:'Recessed J-Pull', mod:900}
-];
-
-const benchtops = [
-  {id:'laminex', brand:'Laminex', name:'Bianco Marble (Laminate)', hex:'#EDEAE3', mod:0},
-  {id:'essastone', brand:'Essastone', name:'Georgian Bluestone', hex:'#9BA0A3', mod:1800},
-  {id:'caesarstone', brand:'Caesarstone', name:'Calacatta Nuvo', hex:'#EDE7DD', mod:2600},
-  {id:'smartstone', brand:'Smartstone', name:'Symphony Grey', hex:'#B8B2A7', mod:3200},
-  {id:'dekton', brand:'Dekton', name:'Sirocco', hex:'#8C8378', mod:4200}
-];
-
-const splashbacks = [
-  {id:'subway', name:'Subway Tile — White', hex:'#F7F6F2'},{id:'marble', name:'Marble-Look Large Format', hex:'#EAE6DC'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'blacksq', name:'Matte Black Square', hex:'#2B2C2E'}
-];
-
-const microwaves = [
-  {id:'chef', brand:'Chef', name:'Built-in Microwave', mod:0},
-  {id:'bosch', brand:'Bosch', name:'Built-in Microwave', mod:350},
-  {id:'miele', brand:'Miele', name:'Built-in Microwave', mod:900}
-];
-const ovens = [
-  {id:'westinghouse', brand:'Westinghouse', name:'Multifunction Oven', mod:0},
-  {id:'fp', brand:'Fisher & Paykel', name:'Pyrolytic Oven', mod:600},
-  {id:'ilve', brand:'ILVE', name:'Designer Oven', mod:1800},
-  {id:'miele', brand:'Miele', name:'Steam-Combi Oven', mod:2600}
-];
-const cooktops = [
-  {id:'chef', brand:'Chef', name:'Gas Cooktop', mod:0},
-  {id:'bosch', brand:'Bosch', name:'Induction Cooktop', mod:500},
-  {id:'miele', brand:'Miele', name:'Induction Cooktop', mod:1400}
-];
-const rangehoods = [
-  {id:'slideout', brand:'Chef', name:'Slide-Out Rangehood', mod:0},
-  {id:'canopy', brand:'Fisher & Paykel', name:'Canopy Rangehood', mod:450},
-  {id:'undermount', brand:'Miele', name:'Undermount Premium', mod:750}
 ];
 
 /* Bathroom data */
@@ -300,11 +478,10 @@ const showerScreens = [
 /* ============================================================
    STATE
 ============================================================ */
-let kState = {pkg:null, shape:'lshape', door:'flat', baseCount:5, wallCount:3, color:'white', handle:'barBlack',
-  benchtop:'laminex', splash:'subway', led:false, elecPlumb:false,
-  microwave:'chef', oven:'westinghouse', cooktop:'chef', rangehood:'slideout', view:'2d'};
+let kitchenState = {currentStep:1, visitedSteps:[1], pkg:null, layout:'ushape', baseCount:BASE_CABINET_STANDARD, wallCount:WALL_CABINET_STANDARD, door:'flat', color:'white', benchtop:'laminex', splash:DEFAULT_KITCHEN_SPLASH, splashPattern:DEFAULT_KITCHEN_SPLASH_PATTERN, microwave:'chef', oven:'westinghouse', cooktop:'chef', rangehood:'chef', upgrades:[]};
 let bState = {pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
   tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d'};
+let previousKitchenFocusBeforeModal = null;
 
 /* ============================================================
    PACKAGE CARDS
@@ -374,267 +551,487 @@ function bindToggle(container, id, state, key, onChange){
 }
 
 /* ============================================================
-   KITCHEN OPTIONS PANEL
+   KITCHEN WIZARD
 ============================================================ */
-function renderKitchenOptions(){
-  const el = document.getElementById('kitchenOptions');
-  el.innerHTML = `
-    <div class="opt-group">
-      <h4>Kitchen Layout <small>choose your shape</small></h4>
-      <div class="shape-row">${kitchenShapes.map(s=>`
-        <div class="shape-btn ${kState.shape===s.id?'active':''}" data-id="${s.id}">${shapeIcon(s.id)}<div class="name">${s.name}</div></div>`).join('')}</div>
-    </div>
-
-    <div class="opt-group">
-      <h4>Cabinetry</h4>
-      <div class="sub-label">Door Opening Style</div>
-      <div class="swatch-row">${doorStyles.map(d=>swatchHTML(d, kState.door, true, false)).join('')}</div>
-      <div class="sub-label">Base (Floor) Cabinets</div>
-      ${stepperHTML('base', kState.baseCount, 3, 9)}
-      <div class="sub-label" style="margin-top:14px;">Wall (Upper) Cabinets</div>
-      ${stepperHTML('wall', kState.wallCount, 2, 7)}
-      <div class="sub-label">Cabinet Colour</div>
-      <div class="swatch-row">${cabinetColors.map(c=>swatchHTML(c, kState.color, false, true)).join('')}</div>
-      <div class="sub-label">Handle Style</div>
-      <div class="swatch-row">${handles.map(h=>swatchHTML(h, kState.handle, true, false)).join('')}</div>
-    </div>
-
-    <div class="opt-group">
-      <h4>Surfaces</h4>
-      <div class="sub-label">Benchtop</div>
-      <div class="swatch-row">${benchtops.map(b=>swatchHTML(b, kState.benchtop, false, true)).join('')}</div>
-      <div class="sub-label">Splashback Tile</div>
-      <div class="swatch-row">${splashbacks.map(s=>swatchHTML(s, kState.splash, false, true)).join('')}</div>
-    </div>
-
-    <div class="opt-group">
-      <h4>Appliances</h4>
-      <div class="sub-label">Microwave</div>
-      <div class="swatch-row">${microwaves.map(a=>swatchHTML(a, kState.microwave, true, false)).join('')}</div>
-      <div class="sub-label">Oven</div>
-      <div class="swatch-row">${ovens.map(a=>swatchHTML(a, kState.oven, true, false)).join('')}</div>
-      <div class="sub-label">Cooktop</div>
-      <div class="swatch-row">${cooktops.map(a=>swatchHTML(a, kState.cooktop, true, false)).join('')}</div>
-      <div class="sub-label">Rangehood</div>
-      <div class="swatch-row">${rangehoods.map(a=>swatchHTML(a, kState.rangehood, true, false)).join('')}</div>
-    </div>
-
-    <div class="opt-group">
-      <h4>Lighting &amp; Trades</h4>
-      ${toggleHTML('led','LED Under-Cabinet Lighting','Warm strip lighting beneath wall cabinets', 450, kState.led)}
-      ${toggleHTML('elec','Electrical &amp; Plumbing Upgrade','Extra circuits, new points, gas/water relocation', 1800, kState.elecPlumb)}
-    </div>
-  `;
-
-  bindOptionClick(el, '.shape-btn', v=>{kState.shape=v; renderKitchenOptions(); updateKitchen();});
-  bindOptionClick(el, '.swatch[data-id]', null); // placeholder, real binds below per group
-  bindSwatches(el, '.opt-group:nth-of-type(2)', doorStyles, kState, 'door', ()=>{renderKitchenOptions();updateKitchen();});
-  bindStepper(el, 'base', kState, 'baseCount', 3, 9, updateKitchen);
-  bindStepper(el, 'wall', kState, 'wallCount', 2, 7, updateKitchen);
-  bindGroupSwatches(el, cabinetColors, kState, 'color', updateKitchen);
-  bindGroupSwatches(el, handles, kState, 'handle', updateKitchen);
-  bindGroupSwatches(el, benchtops, kState, 'benchtop', updateKitchen);
-  bindGroupSwatches(el, splashbacks, kState, 'splash', updateKitchen);
-  bindGroupSwatches(el, microwaves, kState, 'microwave', updateKitchen);
-  bindGroupSwatches(el, ovens, kState, 'oven', updateKitchen);
-  bindGroupSwatches(el, cooktops, kState, 'cooktop', updateKitchen);
-  bindGroupSwatches(el, rangehoods, kState, 'rangehood', updateKitchen);
-  bindToggle(el, 'led', kState, 'led', updateKitchen);
-  bindToggle(el, 'elec', kState, 'elecPlumb', updateKitchen);
+function formatCurrency(amount){
+  return `$${Math.abs(amount).toLocaleString()}`;
 }
-
-/* generic click binder that just re-renders (used for shapes only) */
-function bindOptionClick(container, selector, cb){
-  if(!cb) return;
-  [...container.querySelectorAll(selector)].forEach(elm=>elm.addEventListener('click', ()=>cb(elm.dataset.id)));
+function formatSignedCurrency(amount){
+  if(!amount) return 'included';
+  return `${amount > 0 ? '+' : '-'}${formatCurrency(amount)}`;
 }
-/* binds a full list of swatch items by matching data-id anywhere in container (re-renders whole panel to reflect state) */
-function bindGroupSwatches(container, list, state, key, updateFn){
-  list.forEach(item=>{
-    [...container.querySelectorAll(`.swatch[data-id="${item.id}"]`)].forEach(node=>{
-      node.addEventListener('click', ()=>{
-        state[key] = item.id;
-        // re-render whichever panel this belongs to
-        if(container.id === 'kitchenOptions'){ renderKitchenOptions(); updateFn(); }
-        else { renderBathroomOptions(); updateFn(); }
-      });
-    });
-  });
+function getKitchenItem(list, id){
+  return list.find(item => item.id === id);
 }
-
-function shapeIcon(id){
-  const s = 'stroke="#1C2B33" stroke-width="4" fill="#E9E4D6"';
+function getKitchenItemOrFallback(list, id){
+  return getKitchenItem(list, id) || list[0];
+}
+function hasVisitedKitchenStep(step){
+  return kitchenState.visitedSteps.includes(step);
+}
+function markKitchenStepVisited(step){
+  if(!hasVisitedKitchenStep(step)) kitchenState.visitedSteps.push(step);
+}
+function getKitchenApplianceTotal(){
+  return getKitchenItemOrFallback(microwaves, kitchenState.microwave).mod
+    + getKitchenItemOrFallback(ovens, kitchenState.oven).mod
+    + getKitchenItemOrFallback(cooktops, kitchenState.cooktop).mod
+    + getKitchenItemOrFallback(rangehoods, kitchenState.rangehood).mod;
+}
+function getKitchenUpgradeTotal(){
+  return kitchenUpgrades.filter(item => kitchenState.upgrades.includes(item.id)).reduce((sum, item) => sum + item.mod, 0);
+}
+function getKitchenPriceBreakdown(){
+  const pkg = getKitchenItem(kitchenPackages, kitchenState.pkg);
+  const cabinetAdjustment = ((kitchenState.baseCount - BASE_CABINET_STANDARD) * 450) + ((kitchenState.wallCount - WALL_CABINET_STANDARD) * 380);
+  const doorStyleMod = getKitchenItemOrFallback(doorStyles, kitchenState.door).mod;
+  const benchtopMod = getKitchenItemOrFallback(benchtops, kitchenState.benchtop).mod;
+  const splashMod = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash).mod;
+  const applianceMod = getKitchenApplianceTotal();
+  const upgradesMod = getKitchenUpgradeTotal();
+  const totalInvestment = pkg ? pkg.low + cabinetAdjustment + doorStyleMod + benchtopMod + splashMod + applianceMod + upgradesMod : 0;
+  return {pkg, cabinetAdjustment, doorStyleMod, benchtopMod, splashMod, applianceMod, upgradesMod, totalInvestment};
+}
+function isKitchenStepComplete(step){
+  switch(step){
+    case 1: return Boolean(kitchenState.pkg);
+    case 2: return Boolean(kitchenState.layout);
+    case 3: return kitchenState.baseCount >= BASE_CABINET_MIN && kitchenState.baseCount <= BASE_CABINET_MAX && kitchenState.wallCount >= WALL_CABINET_MIN && kitchenState.wallCount <= WALL_CABINET_MAX && Boolean(kitchenState.door) && Boolean(kitchenState.color);
+    case 4: return Boolean(kitchenState.benchtop);
+    case 5: return Boolean(kitchenState.splash) && Boolean(kitchenState.splashPattern);
+    case 6: return kitchenState.microwave && kitchenState.oven && kitchenState.cooktop && kitchenState.rangehood;
+    case 7: return true;
+    case KITCHEN_STEP_COUNT:
+      for(let stepIndex = 1; stepIndex < KITCHEN_STEP_COUNT; stepIndex++){
+        if(!isKitchenStepComplete(stepIndex)) return false;
+      }
+      return true;
+    default: return false;
+  }
+}
+function isKitchenWizardComplete(){
+  return isKitchenStepComplete(KITCHEN_STEP_COUNT);
+}
+function isKitchenStepMarkedComplete(step){
+  if(step === KITCHEN_STEP_COUNT) return hasVisitedKitchenStep(KITCHEN_STEP_COUNT) && isKitchenWizardComplete();
+  return hasVisitedKitchenStep(step) && isKitchenStepComplete(step) && step <= kitchenState.currentStep;
+}
+function goToKitchenStep(step){
+  kitchenState.currentStep = Math.min(KITCHEN_STEP_COUNT, Math.max(1, step));
+  markKitchenStepVisited(kitchenState.currentStep);
+  renderKitchenWizard();
+}
+function advanceKitchenStep(){
+  if(kitchenState.currentStep === 1 && !kitchenState.pkg) return;
+  if(kitchenState.currentStep < KITCHEN_STEP_COUNT){
+    kitchenState.currentStep += 1;
+    markKitchenStepVisited(kitchenState.currentStep);
+    renderKitchenWizard();
+  }
+}
+function retreatKitchenStep(){
+  if(kitchenState.currentStep > 1){
+    kitchenState.currentStep -= 1;
+    markKitchenStepVisited(kitchenState.currentStep);
+    renderKitchenWizard();
+  }
+}
+function renderKitchenLayoutIcon(id){
+  const stroke = 'stroke="#1C2B33" stroke-width="4" fill="#E9E4D6"';
   switch(id){
-    case 'lshape': return `<svg viewBox="0 0 100 70"><path d="M10 10 H90 V30 H40 V60 H10 Z" ${s}/></svg>`;
-    case 'ushape': return `<svg viewBox="0 0 100 70"><path d="M10 10 H30 V45 H70 V10 H90 V60 H10 Z" ${s}/></svg>`;
-    case 'galley': return `<svg viewBox="0 0 100 70"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="10" y="46" width="80" height="14" ${s}/></svg>`;
-    case 'island': return `<svg viewBox="0 0 100 70"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
-    case 'onewall': return `<svg viewBox="0 0 100 70"><rect x="10" y="25" width="80" height="16" ${s}/></svg>`;
-    case 'peninsula': return `<svg viewBox="0 0 100 70"><path d="M10 10 H90 V26 H45 V50 H10 Z" ${s}/></svg>`;
+    case 'ushape': return `<svg viewBox="0 0 100 60" aria-hidden="true"><path d="M10 8 H28 V40 H72 V8 H90 V52 H10 Z" ${stroke}/></svg>`;
+    case 'lshape': return `<svg viewBox="0 0 100 60" aria-hidden="true"><path d="M10 8 H88 V24 H34 V52 H10 Z" ${stroke}/></svg>`;
+    case 'galley': return `<svg viewBox="0 0 100 60" aria-hidden="true"><rect x="10" y="10" width="80" height="12" ${stroke}/><rect x="10" y="38" width="80" height="12" ${stroke}/></svg>`;
+    case 'island': return `<svg viewBox="0 0 100 60" aria-hidden="true"><rect x="10" y="10" width="80" height="12" ${stroke}/><rect x="34" y="34" width="32" height="16" ${stroke}/></svg>`;
     default: return '';
   }
 }
-
-/* ============================================================
-   KITCHEN 2D PREVIEW
-============================================================ */
-function doorOverlay(style, x, y, w, h){
-  if(style==='shaker') return `<rect x="${x+6}" y="${y+6}" width="${w-12}" height="${h-12}" fill="none" stroke="#00000022" stroke-width="2"/>`;
-  if(style==='raised') return `<rect x="${x+8}" y="${y+8}" width="${w-16}" height="${h-16}" fill="#00000010" stroke="#00000022" stroke-width="1.5"/>`;
-  if(style==='groove') return [0,1].map(i=>`<line x1="${x+w*(i+1)/3}" y1="${y+4}" x2="${x+w*(i+1)/3}" y2="${y+h-4}" stroke="#00000018" stroke-width="2"/>`).join('');
-  if(style==='handleless') return `<rect x="${x}" y="${y}" width="${w}" height="6" fill="#00000025"/>`;
-  return '';
+function renderKitchenPackageStep(){
+  return `<div class="kitchen-card-grid kitchen-card-grid--three">${kitchenPackages.map(pkg => `
+    <button type="button" class="kitchen-option-card kitchen-package-card ${kitchenState.pkg===pkg.id?'is-selected':''}" data-kitchen-package="${pkg.id}" aria-pressed="${kitchenState.pkg===pkg.id}">
+      <div class="theme">${pkg.theme}</div>
+      <div class="kitchen-option-top"><h3>${pkg.name}</h3><span class="kitchen-price-mod">${formatCurrency(pkg.low)}–${formatCurrency(pkg.high)}</span></div>
+      <p>${pkg.description}</p>
+      <ul>${pkg.items.map(item => `<li>${item}</li>`).join('')}</ul>
+      <div class="supp-label">Recommended Suppliers</div>
+      <div class="supp-chips">${pkg.suppliers.map(supplier => `<span class="chip">${supplier}</span>`).join('')}</div>
+      <small>${kitchenState.pkg===pkg.id ? 'Selected package ✓' : 'Click to choose this package'}</small>
+    </button>`).join('')}</div>`;
 }
-function doorHandleMark(handleId, x, y, w, h){
-  if(handleId==='nohandle') return '';
-  if(handleId==='barBlack'||handleId==='barBrass'){
-    const c = handleId==='barBrass' ? '#C9A24B' : '#222';
-    return `<rect x="${x+w-6}" y="${y+6}" width="3" height="${h-12}" fill="${c}"/>`;
-  }
-  if(handleId==='knobBrass') return `<circle cx="${x+w-8}" cy="${y+h/2}" r="3" fill="#C9A24B"/>`;
-  if(handleId==='jpull') return `<rect x="${x}" y="${y+h-6}" width="${w}" height="3" fill="#111" opacity=".5"/>`;
-  return '';
+function renderKitchenLayoutStep(){
+  return `<div class="kitchen-card-grid">${kitchenLayouts.map(layout => `
+    <button type="button" class="kitchen-option-card ${kitchenState.layout===layout.id?'is-selected':''}" data-kitchen-layout="${layout.id}" aria-pressed="${kitchenState.layout===layout.id}">
+      <div class="kitchen-layout-icon">${renderKitchenLayoutIcon(layout.id)}</div>
+      <div class="kitchen-option-top"><h3>${layout.name}</h3><span class="kitchen-price-mod">Included</span></div>
+      <p>${layout.desc}</p>
+    </button>`).join('')}</div>`;
 }
-
-function renderKitchen2D(){
-  const color = cabinetColors.find(c=>c.id===kState.color).hex;
-  const bench = benchtops.find(b=>b.id===kState.benchtop).hex;
-  const splash = splashbacks.find(s=>s.id===kState.splash).hex;
-  const runW = 400, startX = 20;
-  const baseW = runW / kState.baseCount;
-  const wallW = runW / kState.wallCount;
-
-  let doors = '';
-  for(let i=0;i<kState.baseCount;i++){
-    const x = startX + i*baseW;
-    doors += `<rect x="${x}" y="150" width="${baseW-3}" height="90" fill="${color}" stroke="#00000022"/>`;
-    doors += doorOverlay(kState.door, x, 150, baseW-3, 90);
-    doors += doorHandleMark(kState.handle, x, 150, baseW-3, 90);
-  }
-  let uppers = '';
-  for(let i=0;i<kState.wallCount;i++){
-    const x = startX + i*wallW;
-    uppers += `<rect x="${x}" y="20" width="${wallW-3}" height="70" fill="${color}" stroke="#00000022"/>`;
-    uppers += doorOverlay(kState.door, x, 20, wallW-3, 70);
-    uppers += doorHandleMark(kState.handle, x, 20, wallW-3, 70);
-  }
-  const led = kState.led ? `<rect x="18" y="88" width="404" height="4" fill="#FFE9AE" opacity=".9"/><rect x="18" y="90" width="404" height="10" fill="#FFE9AE" opacity=".25"/>` : '';
-  const rhStyle = kState.rangehood;
-  const rangehoodShape = rhStyle==='canopy'
-    ? `<path d="M300 96 L340 96 L332 112 L308 112 Z" fill="#3a3f44"/>`
-    : rhStyle==='undermount'
-    ? `<rect x="300" y="96" width="40" height="8" fill="#3a3f44"/>`
-    : `<rect x="300" y="96" width="40" height="6" fill="#3a3f44"/><rect x="308" y="90" width="24" height="6" fill="#3a3f44"/>`;
-
-  const svg = `
-  <svg viewBox="0 0 420 260" width="100%" height="auto">
-    <rect x="0" y="0" width="420" height="260" fill="#f2efe8"/>
-    <rect x="20" y="96" width="380" height="48" fill="${splash}" stroke="#00000015"/>
-    ${uppers}
-    ${rangehoodShape}
-    ${led}
-    <rect x="15" y="144" width="390" height="14" fill="${bench}" stroke="#00000022"/>
-    ${doors}
-    <!-- fridge -->
-    <rect x="305" y="150" width="85" height="90" fill="${color}" stroke="#00000022"/>
-    ${doorHandleMark(kState.handle, 305, 150, 85, 90)}
-    <!-- cooktop on bench -->
-    <rect x="230" y="144" width="55" height="10" fill="#1c1c1e" opacity=".85"/>
-    <circle cx="242" cy="149" r="3" fill="#444"/><circle cx="258" cy="149" r="3" fill="#444"/><circle cx="274" cy="149" r="3" fill="#444"/>
+function renderKitchenCabinetStep(){
+  const baseAdjustment = (kitchenState.baseCount - BASE_CABINET_STANDARD) * 450;
+  const wallAdjustment = (kitchenState.wallCount - WALL_CABINET_STANDARD) * 380;
+  return `<div class="kitchen-config-grid">
+    <div class="kitchen-config-card">
+      <h3>Cabinet quantities</h3>
+      <div class="kitchen-config-row">
+        <div><label>Base Cabinets</label><span>${BASE_CABINET_MIN}–${BASE_CABINET_MAX} units · ${formatSignedCurrency(baseAdjustment)}</span></div>
+        <div class="kitchen-stepper" data-stepper="baseCount">
+          <button type="button" data-step="decrease" aria-label="Decrease base cabinets">−</button>
+          <strong role="status" aria-live="polite">${kitchenState.baseCount}</strong>
+          <button type="button" data-step="increase" aria-label="Increase base cabinets">+</button>
+        </div>
+      </div>
+      <div class="kitchen-config-row">
+        <div><label>Wall Cabinets</label><span>${WALL_CABINET_MIN}–${WALL_CABINET_MAX} units · ${formatSignedCurrency(wallAdjustment)}</span></div>
+        <div class="kitchen-stepper" data-stepper="wallCount">
+          <button type="button" data-step="decrease" aria-label="Decrease wall cabinets">−</button>
+          <strong role="status" aria-live="polite">${kitchenState.wallCount}</strong>
+          <button type="button" data-step="increase" aria-label="Increase wall cabinets">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="kitchen-config-card">
+      <h3>Door style</h3>
+      <div class="kitchen-choice-grid">${doorStyles.map(style => `
+        <button type="button" class="kitchen-choice-card ${kitchenState.door===style.id?'is-selected':''}" data-kitchen-door="${style.id}" aria-pressed="${kitchenState.door===style.id}">
+          <strong>${style.name}</strong><span class="kitchen-price-mod">${formatSignedCurrency(style.mod)}</span>
+        </button>`).join('')}</div>
+    </div>
+    <div class="kitchen-config-card" style="grid-column:1 / -1;">
+      <h3>Cabinet colour</h3>
+      <div class="kitchen-swatch-grid">${cabinetColors.map(color => `
+        <button type="button" class="kitchen-swatch-btn ${kitchenState.color===color.id?'is-selected':''}" data-kitchen-color="${color.id}" aria-pressed="${kitchenState.color===color.id}">
+          <div class="kitchen-swatch-chip" style="background:${color.hex};"></div>
+          <strong>${color.name}</strong>
+          <span>${color.hex}</span>
+        </button>`).join('')}</div>
+    </div>
+  </div>`;
+}
+function renderKitchenBenchtopStep(){
+  return `<div class="kitchen-card-grid">${benchtops.map(bench => `
+    <button type="button" class="kitchen-option-card ${kitchenState.benchtop===bench.id?'is-selected':''}" data-kitchen-benchtop="${bench.id}" aria-pressed="${kitchenState.benchtop===bench.id}">
+      <div class="kitchen-option-top"><div><h3>${bench.brand}</h3><p style="margin:4px 0 0;">${bench.name}</p></div><span class="kitchen-price-mod">${bench.mod ? '+' + formatCurrency(bench.mod) : '+$0'}</span></div>
+      <div class="kitchen-swatch-chip" style="background:${bench.hex};height:54px;margin-top:14px;"></div>
+      <small>${bench.mod ? 'Upgrade applied to package base' : 'Included in package allowance'}</small>
+    </button>`).join('')}</div>`;
+}
+function renderKitchenSplashStep(){
+  const activeSplash = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  const activeSplashOption = getKitchenSplashOption();
+  if(kitchenState.splashPattern !== activeSplashOption.name) kitchenState.splashPattern = activeSplashOption.name;
+  return `<div>
+    <div class="kitchen-card-grid">${splashbackStyles.map(tile => `
+      <button type="button" class="kitchen-option-card ${kitchenState.splash===tile.id?'is-selected':''}" data-kitchen-splash="${tile.id}" aria-pressed="${kitchenState.splash===tile.id}">
+        <div class="kitchen-option-top"><div><h3>${tile.name}</h3><p style="margin:4px 0 0;">${tile.subtitle}</p></div><span class="kitchen-price-mod">${tile.mod ? '+' + formatCurrency(tile.mod) : '+$0'}</span></div>
+        <div class="kitchen-swatch-chip" style="background:${tile.options[0].hex};height:54px;margin-top:14px;"></div>
+        <small>${tile.options.map(option => option.name).join(' · ')}</small>
+      </button>`).join('')}
+    </div>
+    <div class="kitchen-config-card" style="margin-top:18px;">
+      <h3>${activeSplash.name} pattern options</h3>
+      <div class="kitchen-pattern-row">${activeSplash.options.map(option => `
+        <button type="button" class="kitchen-pattern-chip ${activeSplashOption.name===option.name?'is-selected':''}" data-kitchen-pattern="${option.name}">${option.name}</button>`).join('')}</div>
+    </div>
+  </div>`;
+}
+function renderKitchenApplianceBlock(label, key, list){
+  return `<div class="kitchen-appliance-block">
+    <h3>${label}</h3>
+    <div class="kitchen-choice-grid kitchen-choice-grid--wide">${list.map(item => `
+      <button type="button" class="kitchen-choice-card ${kitchenState[key]===item.id?'is-selected':''}" data-kitchen-appliance="${key}" data-kitchen-value="${item.id}" aria-pressed="${kitchenState[key]===item.id}">
+        <strong>${item.brand}</strong>
+        <span>${item.mod ? '+' + formatCurrency(item.mod) : '+$0'}</span>
+      </button>`).join('')}</div>
+  </div>`;
+}
+function renderKitchenApplianceStep(){
+  return `${renderKitchenApplianceBlock('Microwave', 'microwave', microwaves)}
+    ${renderKitchenApplianceBlock('Oven', 'oven', ovens)}
+    ${renderKitchenApplianceBlock('Cooktop', 'cooktop', cooktops)}
+    ${renderKitchenApplianceBlock('Rangehood', 'rangehood', rangehoods)}`;
+}
+function renderKitchenUpgradeStep(){
+  return `<div class="kitchen-upgrade-grid">${kitchenUpgrades.map(item => {
+    const active = kitchenState.upgrades.includes(item.id);
+    return `<button type="button" class="kitchen-upgrade-card ${active?'is-selected':''}" data-kitchen-upgrade="${item.id}" aria-pressed="${active}">
+      <div><div class="kitchen-option-top"><h3 style="font-size:16px;">${item.name}</h3><span class="kitchen-price-mod">+${formatCurrency(item.mod)}</span></div><p>${item.description}</p></div>
+      <span class="kitchen-toggle-pill" aria-hidden="true"></span>
+    </button>`;
+  }).join('')}</div>`;
+}
+function getKitchenSplashOption(){
+  const splashStyle = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  return splashStyle.options.find(option => option.name === kitchenState.splashPattern) || splashStyle.options[0];
+}
+function renderKitchenReviewSvg(){
+  const cabinetColor = getKitchenItemOrFallback(cabinetColors, kitchenState.color).hex;
+  const benchColor = getKitchenItemOrFallback(benchtops, kitchenState.benchtop).hex;
+  const splashColor = getKitchenSplashOption().hex;
+  const upperCount = Math.max(2, kitchenState.wallCount);
+  const baseCount = Math.max(2, kitchenState.baseCount);
+  const upperWidth = REVIEW_UPPER_CABINET_WIDTH / upperCount;
+  const baseWidth = REVIEW_BASE_CABINET_WIDTH / baseCount;
+  const upperCabinets = Array.from({length:upperCount}, (_, index) => {
+    const x = 24 + (index * upperWidth);
+    return `<rect x="${x}" y="28" width="${upperWidth-6}" height="48" rx="4" fill="${cabinetColor}" stroke="#00000030"/>`;
+  }).join('');
+  const baseCabinets = Array.from({length:baseCount}, (_, index) => {
+    const x = 24 + (index * baseWidth);
+    return `<rect x="${x}" y="176" width="${baseWidth-6}" height="70" rx="4" fill="${cabinetColor}" stroke="#00000030"/>`;
+  }).join('');
+  const layoutShapes = {
+    ushape:`<path d="M286 78 H406 V258 H356 V124 H336 V258 H286 Z" fill="${benchColor}" stroke="#00000030"/><path d="M24 248 H244 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/><path d="M24 78 H74 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/>`,
+    lshape:`<path d="M24 78 H74 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/><path d="M24 208 H316 V258 H24 Z" fill="${benchColor}" stroke="#00000030"/>`,
+    galley:`<path d="M24 88 H204 V138 H24 Z" fill="${benchColor}" stroke="#00000030"/><path d="M236 188 H416 V238 H236 Z" fill="${benchColor}" stroke="#00000030"/>`,
+    island:`<path d="M24 88 H416 V138 H24 Z" fill="${benchColor}" stroke="#00000030"/><rect x="160" y="188" width="120" height="44" rx="8" fill="${benchColor}" stroke="#00000030"/>`
+  };
+  return `<svg viewBox="0 0 440 280" width="100%" height="auto" aria-label="Kitchen design preview">
+    <rect width="440" height="280" fill="#F3EEE5" rx="18"/>
+    <rect x="20" y="82" width="240" height="70" rx="8" fill="${splashColor}" opacity=".85"/>
+    ${upperCabinets}
+    <rect x="20" y="152" width="244" height="12" fill="${benchColor}" opacity=".95"/>
+    ${baseCabinets}
+    ${layoutShapes[kitchenState.layout]}
+    <rect x="178" y="148" width="48" height="10" rx="5" fill="#15171A" opacity=".85"/>
+    <circle cx="188" cy="153" r="2.5" fill="#fff" opacity=".5"/><circle cx="202" cy="153" r="2.5" fill="#fff" opacity=".5"/><circle cx="216" cy="153" r="2.5" fill="#fff" opacity=".5"/>
+    <rect x="330" y="92" width="30" height="42" rx="4" fill="#d8dee2" stroke="#00000030"/>
+    <rect x="326" y="148" width="38" height="70" rx="4" fill="#c5ccd1" stroke="#00000030"/>
+    <rect x="288" y="142" width="62" height="10" rx="4" fill="#3A3F44" opacity=".85"/>
+    <text x="286" y="34" font-family="Work Sans, sans-serif" font-size="11" fill="#5B5346">${getKitchenItemOrFallback(kitchenLayouts, kitchenState.layout).name}</text>
   </svg>`;
-  document.getElementById('kitchenSvgWrap').innerHTML = svg;
 }
-
-/* ============================================================
-   KITCHEN 3D ISOMETRIC PREVIEW (SVG pseudo-iso projection)
-============================================================ */
-function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
-  const dx = d*0.55, dy = d*0.32;
-  return `
-    <polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${frontColor}" stroke="#00000022"/>
-    <polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${topColor}" stroke="#00000022"/>
-    <polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sideColor}" stroke="#00000022"/>
-  `;
+function buildKitchenSummaryRows(){
+  const breakdown = getKitchenPriceBreakdown();
+  const pkg = breakdown.pkg;
+  const splash = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  const layout = getKitchenItemOrFallback(kitchenLayouts, kitchenState.layout);
+  const door = getKitchenItemOrFallback(doorStyles, kitchenState.door);
+  const color = getKitchenItemOrFallback(cabinetColors, kitchenState.color);
+  const benchtop = getKitchenItemOrFallback(benchtops, kitchenState.benchtop);
+  const microwave = getKitchenItemOrFallback(microwaves, kitchenState.microwave);
+  const oven = getKitchenItemOrFallback(ovens, kitchenState.oven);
+  const cooktop = getKitchenItemOrFallback(cooktops, kitchenState.cooktop);
+  const rangehood = getKitchenItemOrFallback(rangehoods, kitchenState.rangehood);
+  const upgrades = kitchenUpgrades.filter(item => kitchenState.upgrades.includes(item.id));
+  return [
+    ['Package', pkg ? pkg.name : 'Not selected'],
+    ['Layout', layout.name],
+    ['Cabinets', `${kitchenState.baseCount} base + ${kitchenState.wallCount} wall`],
+    ['Door Style', `${door.name} — ${formatSignedCurrency(breakdown.doorStyleMod)}`],
+    ['Color', color.name],
+    ['Benchtop', `${benchtop.brand} ${benchtop.name} — ${formatSignedCurrency(breakdown.benchtopMod)}`],
+    ['Splashback', `${splash.name} (${kitchenState.splashPattern}) — ${formatSignedCurrency(breakdown.splashMod)}`],
+    ['Appliances', `${microwave.brand} / ${oven.brand} / ${cooktop.brand} / ${rangehood.brand} — ${formatSignedCurrency(breakdown.applianceMod)}`],
+    ['Upgrades', upgrades.length ? `${upgrades.map(item => item.name).join(', ')} — ${formatSignedCurrency(breakdown.upgradesMod)}` : 'None selected — included']
+  ];
 }
-function shade(hex, amt){
-  const c = hex.replace('#','');
-  const num = parseInt(c,16);
-  let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
-  r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
-  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+function buildKitchenDesignSummaryText(){
+  const breakdown = getKitchenPriceBreakdown();
+  const layout = getKitchenItemOrFallback(kitchenLayouts, kitchenState.layout);
+  const door = getKitchenItemOrFallback(doorStyles, kitchenState.door);
+  const color = getKitchenItemOrFallback(cabinetColors, kitchenState.color);
+  const benchtop = getKitchenItemOrFallback(benchtops, kitchenState.benchtop);
+  const splash = getKitchenItemOrFallback(splashbackStyles, kitchenState.splash);
+  const microwave = getKitchenItemOrFallback(microwaves, kitchenState.microwave);
+  const oven = getKitchenItemOrFallback(ovens, kitchenState.oven);
+  const cooktop = getKitchenItemOrFallback(cooktops, kitchenState.cooktop);
+  const rangehood = getKitchenItemOrFallback(rangehoods, kitchenState.rangehood);
+  if(!breakdown.pkg) return 'Kitchen package not selected yet.';
+  return [
+    `PACKAGE: ${breakdown.pkg.name}`,
+    `LAYOUT: ${layout.name}`,
+    `CABINETS: ${kitchenState.baseCount} base + ${kitchenState.wallCount} wall`,
+    `DOOR STYLE: ${door.name} — ${formatSignedCurrency(breakdown.doorStyleMod)}`,
+    `COLOR: ${color.name}`,
+    `BENCHTOP: ${benchtop.brand} ${benchtop.name} — ${formatSignedCurrency(breakdown.benchtopMod)}`,
+    `SPLASHBACK: ${splash.name} (${kitchenState.splashPattern}) — ${formatSignedCurrency(breakdown.splashMod)}`,
+    `APPLIANCES: ${microwave.brand} microwave / ${oven.brand} oven / ${cooktop.brand} cooktop / ${rangehood.brand} hood — ${formatSignedCurrency(breakdown.applianceMod)}`,
+    `UPGRADES: ${kitchenState.upgrades.length ? kitchenUpgrades.filter(item => kitchenState.upgrades.includes(item.id)).map(item => item.name).join(', ') : 'None'} — ${formatSignedCurrency(breakdown.upgradesMod)}`,
+    `TOTAL INVESTMENT: ${formatCurrency(breakdown.totalInvestment)}+`
+  ].join('\n');
 }
-function renderKitchen3D(){
-  const color = cabinetColors.find(c=>c.id===kState.color).hex;
-  const bench = benchtops.find(b=>b.id===kState.benchtop).hex;
-  const top = shade(color, 30), side = shade(color,-35);
-  const benchTop = shade(bench,20), benchSide = shade(bench,-25);
-
-  let parts = '';
-  // base run
-  parts += isoBox(60, 210, 300, 90, 36, color, top, side);
-  // divisions on base front
-  for(let i=1;i<kState.baseCount;i++){
-    const lx = 60 + (300/kState.baseCount)*i;
-    parts += `<line x1="${lx}" y1="120" x2="${lx}" y2="210" stroke="#00000020" stroke-width="1.5"/>`;
+function renderKitchenReviewStep(){
+  const breakdown = getKitchenPriceBreakdown();
+  const rows = buildKitchenSummaryRows().map(([label, value]) => `<div class="kitchen-summary-line"><strong>${label}</strong><span>${value}</span></div>`).join('');
+  return `<div class="kitchen-review-grid">
+    <div class="kitchen-review-card">
+      <h3>Visual Preview</h3>
+      <div class="kitchen-review-preview">${renderKitchenReviewSvg()}</div>
+    </div>
+    <div class="kitchen-review-card">
+      <h3>Summary Section</h3>
+      <div class="kitchen-summary-list">${rows}</div>
+    </div>
+    <div class="kitchen-review-card" style="grid-column:1 / -1;">
+      <div class="kitchen-price-table">
+        <div class="price-line"><span>Base Package</span><span>${breakdown.pkg ? `${formatCurrency(breakdown.pkg.low)}–${formatCurrency(breakdown.pkg.high)}` : 'Select package'}</span></div>
+        <div class="price-line"><span>Cabinet Adjustment</span><span>${formatSignedCurrency(breakdown.cabinetAdjustment)}</span></div>
+        <div class="price-line"><span>Door Style</span><span>${formatSignedCurrency(breakdown.doorStyleMod)}</span></div>
+        <div class="price-line"><span>Benchtop Upgrade</span><span>${formatSignedCurrency(breakdown.benchtopMod)}</span></div>
+        <div class="price-line"><span>Splashback</span><span>${formatSignedCurrency(breakdown.splashMod)}</span></div>
+        <div class="price-line"><span>Appliances</span><span>${formatSignedCurrency(breakdown.applianceMod)}</span></div>
+        <div class="price-line"><span>Extras &amp; Upgrades</span><span>${formatSignedCurrency(breakdown.upgradesMod)}</span></div>
+        <div class="price-line is-total"><span>TOTAL INVESTMENT</span><span>${formatCurrency(breakdown.totalInvestment)}+</span></div>
+        <div class="kitchen-fixed-note">Fixed quote after free consultation.</div>
+      </div>
+      <div class="kitchen-review-actions">
+        <button type="button" class="kitchen-cta-btn" id="kitchenRequestBtn" ${isKitchenWizardComplete() ? '' : 'disabled'}>Request This Design</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderKitchenCurrentStepContent(){
+  switch(kitchenState.currentStep){
+    case 1: return renderKitchenPackageStep();
+    case 2: return renderKitchenLayoutStep();
+    case 3: return renderKitchenCabinetStep();
+    case 4: return renderKitchenBenchtopStep();
+    case 5: return renderKitchenSplashStep();
+    case 6: return renderKitchenApplianceStep();
+    case 7: return renderKitchenUpgradeStep();
+    case 8: return renderKitchenReviewStep();
+    default: return '';
   }
-  // benchtop slab on top
-  parts += isoBox(56, 118, 308, 12, 40, benchTop, shade(bench,35), benchSide);
-  // wall cabinets
-  parts += isoBox(60, 70, 300, 55, 30, color, top, side);
-  for(let i=1;i<kState.wallCount;i++){
-    const lx = 60 + (300/kState.wallCount)*i;
-    parts += `<line x1="${lx}" y1="15" x2="${lx}" y2="70" stroke="#00000020" stroke-width="1.5"/>`;
+}
+function renderKitchenRunningTotal(){
+  const container = document.getElementById('kitchenRunningTotal');
+  if(kitchenState.currentStep === 1){
+    container.innerHTML = '';
+    return;
   }
-  // fridge box (side)
-  parts += isoBox(370, 210, 46, 130, 36, shade(color,10), shade(color,40), shade(color,-30));
-  // LED glow line
-  if(kState.led){
-    parts += `<rect x="60" y="106" width="300" height="4" fill="#FFE9AE" opacity=".9"/>`;
+  const breakdown = getKitchenPriceBreakdown();
+  const totalText = breakdown.pkg ? `${formatCurrency(breakdown.totalInvestment)}+` : 'Select package to calculate';
+  const noteText = breakdown.pkg
+    ? 'Live pricing updates instantly as you refine cabinets, finishes, appliances and upgrades.'
+    : 'Choose a package first to activate the investment estimate.';
+  container.innerHTML = `<div class="kitchen-running-total"><div><span>Running total</span><strong>${totalText}</strong></div><span>${noteText}</span></div>`;
+}
+function bindKitchenStepEvents(){
+  document.querySelectorAll('[data-kitchen-step-target]').forEach(button => {
+    button.addEventListener('click', () => goToKitchenStep(Number(button.dataset.kitchenStepTarget)));
+  });
+  document.querySelectorAll('[data-kitchen-package]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState.pkg = button.dataset.kitchenPackage; markKitchenStepVisited(1); renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-layout]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState.layout = button.dataset.kitchenLayout; renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-door]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState.door = button.dataset.kitchenDoor; renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-color]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState.color = button.dataset.kitchenColor; renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-benchtop]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState.benchtop = button.dataset.kitchenBenchtop; renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-splash]').forEach(button => {
+    button.addEventListener('click', () => {
+      kitchenState.splash = button.dataset.kitchenSplash;
+      kitchenState.splashPattern = getKitchenItem(splashbackStyles, kitchenState.splash).options[0].name;
+      renderKitchenWizard();
+    });
+  });
+  document.querySelectorAll('[data-kitchen-pattern]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState.splashPattern = button.dataset.kitchenPattern; renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-appliance]').forEach(button => {
+    button.addEventListener('click', () => { kitchenState[button.dataset.kitchenAppliance] = button.dataset.kitchenValue; renderKitchenWizard(); });
+  });
+  document.querySelectorAll('[data-kitchen-upgrade]').forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.kitchenUpgrade;
+      kitchenState.upgrades = kitchenState.upgrades.includes(id) ? kitchenState.upgrades.filter(item => item !== id) : [...kitchenState.upgrades, id];
+      renderKitchenWizard();
+    });
+  });
+  document.querySelectorAll('[data-stepper]').forEach(stepper => {
+    stepper.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', () => {
+        const key = stepper.dataset.stepper;
+        const delta = button.dataset.step === 'increase' ? 1 : -1;
+        const nextValue = kitchenState[key] + delta;
+        const bounds = key === 'baseCount' ? [BASE_CABINET_MIN, BASE_CABINET_MAX] : [WALL_CABINET_MIN, WALL_CABINET_MAX];
+        if(nextValue >= bounds[0] && nextValue <= bounds[1]){
+          kitchenState[key] = nextValue;
+          renderKitchenWizard();
+        }
+      });
+    });
+  });
+  const requestButton = document.getElementById('kitchenRequestBtn');
+  if(requestButton){
+    requestButton.addEventListener('click', openKitchenRequestModal);
   }
-  // rangehood hint
-  parts += `<polygon points="230,90 270,90 262,110 238,110" fill="${shade('#3A3F44',10)}"/>`;
-
-  const svg = `<svg viewBox="0 0 460 300" width="100%" height="auto">
-    <rect width="460" height="300" fill="#efeadb"/>
-    ${parts}
-  </svg>`;
-  document.getElementById('kitchenSvgWrap').innerHTML = svg;
 }
-
-function updateKitchenPreview(){
-  if(kState.view==='2d') renderKitchen2D(); else renderKitchen3D();
+function renderKitchenWizard(){
+  const stepMeta = kitchenStepDefinitions.find(item => item.step === kitchenState.currentStep);
+  document.getElementById('kitchenStepEyebrow').textContent = `Step ${stepMeta.step}`;
+  document.getElementById('kitchenStepTitle').textContent = stepMeta.title;
+  document.getElementById('kitchenStepDescription').textContent = stepMeta.description;
+  document.getElementById('kitchenWizardSteps').innerHTML = kitchenStepDefinitions.map(item => {
+    const complete = isKitchenStepMarkedComplete(item.step);
+    const active = item.step === kitchenState.currentStep;
+    return `<button type="button" class="kitchen-step-link ${active?'is-active':''} ${complete?'is-complete':''}" data-kitchen-step-target="${item.step}" aria-current="${active ? 'step' : 'false'}">
+      <span class="kitchen-step-indicator">${complete ? '✓' : item.step}</span>
+      <span class="kitchen-step-meta"><strong>${item.title}${active && complete ? '<span class="kitchen-step-badge">Completed</span>' : ''}</strong><span>${item.short}</span></span>
+    </button>`;
+  }).join('');
+  document.getElementById('kitchenStepContent').innerHTML = renderKitchenCurrentStepContent();
+  renderKitchenRunningTotal();
+  const backBtn = document.getElementById('kitchenBackBtn');
+  const nextBtn = document.getElementById('kitchenNextBtn');
+  backBtn.disabled = kitchenState.currentStep === 1;
+  nextBtn.disabled = kitchenState.currentStep === KITCHEN_STEP_COUNT || (kitchenState.currentStep === 1 && !kitchenState.pkg);
+  nextBtn.textContent = kitchenState.currentStep === KITCHEN_STEP_COUNT - 1 ? 'Review Design' : 'Next →';
+  bindKitchenStepEvents();
 }
-
-function updateKitchenPrice(){
-  const pkg = kitchenPackages.find(p=>p.id===kState.pkg);
-  if(!pkg) return;
-  const doorMod = doorStyles.find(d=>d.id===kState.door).mod;
-  const handleMod = handles.find(h=>h.id===kState.handle).mod;
-  const benchMod = benchtops.find(b=>b.id===kState.benchtop).mod;
-  const cabinetMod = (kState.baseCount-5)*450 + (kState.wallCount-3)*380;
-  const applianceMod = microwaves.find(a=>a.id===kState.microwave).mod
-    + ovens.find(a=>a.id===kState.oven).mod
-    + cooktops.find(a=>a.id===kState.cooktop).mod
-    + rangehoods.find(a=>a.id===kState.rangehood).mod;
-  const ledMod = kState.led?450:0;
-  const elecMod = kState.elecPlumb?1800:0;
-
-  const addOn = doorMod+handleMod+benchMod+cabinetMod+applianceMod+ledMod+elecMod;
-  const low = Math.max(pkg.low, pkg.low+addOn);
-  const high = Math.max(pkg.high, pkg.high+addOn);
-  document.getElementById('kitchenTotal').textContent = `$${low.toLocaleString()} – $${high.toLocaleString()}`;
-  document.getElementById('kitchenPriceLines').innerHTML = `
-    <div class="price-line"><span>${pkg.name} base package</span><span>$${pkg.low.toLocaleString()}–$${pkg.high.toLocaleString()}</span></div>
-    <div class="price-line"><span>Cabinet count adjustment</span><span>${cabinetMod?(cabinetMod>0?'+$'+cabinetMod.toLocaleString():'-$'+Math.abs(cabinetMod).toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>Door style</span><span>${doorMod?('+$'+doorMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>Benchtop upgrade</span><span>${benchMod?('+$'+benchMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>Handle style</span><span>${handleMod?('+$'+handleMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>Appliances (MW/Oven/Cooktop/Hood)</span><span>${applianceMod?('+$'+applianceMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>LED under-cabinet lighting</span><span>${ledMod?('+$'+ledMod.toLocaleString()):'not included'}</span></div>
-    <div class="price-line"><span>Electrical &amp; plumbing upgrade</span><span>${elecMod?('+$'+elecMod.toLocaleString()):'not included'}</span></div>
-  `;
+function openKitchenRequestModal(){
+  if(!isKitchenWizardComplete()) return;
+  previousKitchenFocusBeforeModal = document.activeElement;
+  document.getElementById('kitchenRequestSummary').textContent = buildKitchenDesignSummaryText();
+  document.getElementById('kitchenRequestModal').classList.add('is-open');
+  document.getElementById('kitchenRequestModal').setAttribute('aria-hidden', 'false');
+  document.getElementById('kitchenRequestDialog').focus();
 }
-function updateKitchen(){ updateKitchenPreview(); updateKitchenPrice(); }
+function closeKitchenRequestModal(){
+  document.getElementById('kitchenRequestModal').classList.remove('is-open');
+  document.getElementById('kitchenRequestModal').setAttribute('aria-hidden', 'true');
+  if(previousKitchenFocusBeforeModal && document.contains(previousKitchenFocusBeforeModal) && typeof previousKitchenFocusBeforeModal.focus === 'function'){
+    try { previousKitchenFocusBeforeModal.focus(); } catch (error) { /* focus restoration is best-effort */ }
+  }
+}
+function handleKitchenModalKeydown(event){
+  const modal = document.getElementById('kitchenRequestModal');
+  if(!modal.classList.contains('is-open')) return;
+  if(event.key === 'Escape'){
+    closeKitchenRequestModal();
+    return;
+  }
+  if(event.key !== 'Tab') return;
+  const dialog = document.getElementById('kitchenRequestDialog');
+  const focusable = [...dialog.querySelectorAll(KITCHEN_MODAL_FOCUS_SELECTOR)].filter(node => !node.hasAttribute('disabled'));
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if(event.shiftKey && document.activeElement === first){
+    event.preventDefault();
+    last.focus();
+  } else if(!event.shiftKey && document.activeElement === last){
+    event.preventDefault();
+    first.focus();
+  }
+}
+function initKitchenWizard(){
+  renderKitchenWizard();
+  document.getElementById('kitchenBackBtn').addEventListener('click', retreatKitchenStep);
+  document.getElementById('kitchenNextBtn').addEventListener('click', advanceKitchenStep);
+  document.getElementById('kitchenRequestClose').addEventListener('click', closeKitchenRequestModal);
+  document.getElementById('kitchenRequestModal').addEventListener('click', (event) => {
+    if(event.target.id === 'kitchenRequestModal') closeKitchenRequestModal();
+  });
+  document.addEventListener('keydown', handleKitchenModalKeydown);
+}
 
 /* ============================================================
    BATHROOM OPTIONS PANEL
@@ -749,17 +1146,12 @@ function updateBathroom(){ updateBathroomPreview(); updateBathroomPrice(); }
 /* ============================================================
    INIT + TABS + VIEW TOGGLES
 ============================================================ */
-function onKitchenPkgSelect(){
-  renderPkgGrid('kitchenPkgGrid', kitchenPackages, kState, onKitchenPkgSelect);
-  document.getElementById('kitchenConfig').classList.add('show');
-  renderKitchenOptions(); updateKitchen();
-}
 function onBathroomPkgSelect(){
   renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
   document.getElementById('bathroomConfig').classList.add('show');
   renderBathroomOptions(); updateBathroom();
 }
-renderPkgGrid('kitchenPkgGrid', kitchenPackages, kState, onKitchenPkgSelect);
+initKitchenWizard();
 renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
 
 document.querySelectorAll('.tab').forEach(tab=>{
@@ -777,8 +1169,7 @@ document.querySelectorAll('.view-btn').forEach(btn=>{
     const target = btn.dataset.target;
     document.querySelectorAll(`.view-btn[data-target="${target}"]`).forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    if(target==='kitchen'){ kState.view = btn.dataset.view; updateKitchenPreview(); }
-    else { bState.view = btn.dataset.view; updateBathroomPreview(); }
+    if(target==='bathroom'){ bState.view = btn.dataset.view; updateBathroomPreview(); }
   });
 });
 </script>
