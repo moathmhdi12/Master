@@ -207,7 +207,7 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
       <input id="quoteEmail" name="email" type="email" autocomplete="email" required>
 
       <label for="quotePhone">Phone Number</label>
-      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+()\\-\\s]{8,}" required>
+      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+()\\-\\s]{8,20}" maxlength="20" required>
 
       <div class="quote-modal-actions">
         <button type="button" class="quote-cancel" id="quoteCancelBtn">Cancel</button>
@@ -222,6 +222,7 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
    DATA
 ============================================================ */
 const WEB3FORMS_ACCESS_KEY = 'fc340379-cc05-4c4b-a7f0-47d2e0cfab53';
+const MIC_CONTACT_EMAIL = 'info@mic-nsw.com.au';
 
 const kitchenPackages = [
   {id:'essential', theme:'Sydney Essentials', name:'Essential Kitchen', badge:null, low:18000, high:28000,
@@ -825,6 +826,10 @@ function buildBathroomQuoteMessage(){
   ].join('\n');
 }
 
+function sanitizeText(value){
+  return String(value).replace(/[<>&]/g, '').trim();
+}
+
 const quoteModal = document.getElementById('quoteModal');
 const quoteModalTitle = document.getElementById('quoteModalTitle');
 const quoteRequestForm = document.getElementById('quoteRequestForm');
@@ -848,16 +853,22 @@ function openQuoteModal(serviceName, message, button){
 }
 
 async function submitQuoteRequest(contact){
-  if(!pendingQuoteRequest) return;
+  if(!pendingQuoteRequest){
+    console.warn('Quote submission attempted without an active quote request.');
+    return;
+  }
   const { serviceName, message, button, originalLabel } = pendingQuoteRequest;
 
   button.disabled = true;
   button.textContent = 'Sending quote request...';
   quoteSubmitBtn.disabled = true;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(()=>controller.abort(), 10000);
 
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
@@ -871,14 +882,16 @@ async function submitQuoteRequest(contact){
         message
       })
     });
+    clearTimeout(timeoutId);
     const result = await response.json();
-    if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request. Please try again or contact MIC NSW directly at info@mic-nsw.com.au.');
+    if(!response.ok || !result.success) throw new Error(result.message || `Unable to submit quote request. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`);
 
     button.textContent = 'Quote request sent ✓';
     closeQuoteModal();
-    alert(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
+    alert(`Thanks ${sanitizeText(contact.from_name)}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
   } catch (error) {
-    alert(error.message || 'Sorry, we could not send your quote request. Please try again or contact MIC NSW directly at info@mic-nsw.com.au.');
+    clearTimeout(timeoutId);
+    alert(error.message || `Sorry, we could not send your quote request. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`);
     button.textContent = originalLabel;
     button.disabled = false;
     quoteSubmitBtn.disabled = false;
