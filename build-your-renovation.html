@@ -26,7 +26,7 @@ body{margin:0;font-family:'Work Sans','Segoe UI',Arial,sans-serif;background:var
 .wrap{max-width:1220px;margin:0 auto;padding:30px 20px 100px;}
 
 .tabs{display:flex;gap:10px;margin-bottom:26px;}
-.tab{flex:1;text-align:center;padding:14px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;}
+.tab{flex:1;text-align:center;padding:14px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;justify-content:center;}
 .tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 
 h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:21px;margin:34px 0 4px;font-weight:600;}
@@ -262,29 +262,19 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
   <!-- ============ BATHROOM ============ -->
   <div id="bathroom-tab" style="display:none;">
-    <h2 class="section-title">Step 1 — Choose Your Bathroom Package</h2>
-    <div class="section-desc">Full strip-out, re-waterproofing, drainage &amp; plumbing rework, tiling, electrical and fit-off.</div>
-    <div class="pkg-grid" id="bathroomPkgGrid"></div>
-
-    <div class="config" id="bathroomConfig">
-      <div class="options-col" id="bathroomOptions"></div>
-      <div class="preview-col">
-        <div class="preview-box">
-          <h4 style="font-family:Georgia,serif;color:var(--navy);font-size:13px;margin:0 0 10px;">Live Design Preview</h4>
-          <div class="view-toggle">
-            <div class="view-btn active" data-view="2d" data-target="bathroom">2D Elevation</div>
-            <div class="view-btn" data-view="3d" data-target="bathroom">3D Isometric</div>
-          </div>
-          <div id="bathroomSvgWrap"></div>
-          <div class="floorplan-note">Illustrative style preview. Exact layout finalised during your free in-home measure.</div>
+    <div class="kitchen-wizard" id="bathroomWizard">
+      <aside class="kitchen-sidebar" aria-label="Bathroom design steps">
+        <h2>Design Your Bathroom</h2>
+        <div id="bathroomStepsList"></div>
+      </aside>
+      <section class="kitchen-main">
+        <div id="bathroomStepContent" class="kitchen-step-content" aria-live="polite"></div>
+        <div id="bathroomRunningTotal" class="kitchen-running-total" style="display:none;"></div>
+        <div class="kitchen-nav">
+          <button id="bathroomBackBtn" class="kitchen-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
+          <button id="bathroomNextBtn" class="kitchen-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
         </div>
-        <div class="price-box">
-          <h4>Estimated Investment</h4>
-          <div class="price-total" id="bathroomTotal">$0 – $0</div>
-          <div id="bathroomPriceLines"></div>
-          <button class="cta-final">Request This Quote</button>
-        </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>
@@ -334,6 +324,8 @@ const kitchenStepDefinitions = [
   {step:7, title:'Upgrades & Extras', short:'Optional enhancements', description:'Add practical extras and premium upgrades to elevate usability, storage and final detailing.'},
   {step:8, title:'Review & Summary', short:'Preview and request', description:'Review the visual concept, check the itemised pricing summary and request this exact kitchen design.'}
 ];
+/* Normalised alias used throughout the kitchen wizard */
+const kitchenSteps = kitchenStepDefinitions.map(s=>({id:s.step, title:s.title, desc:s.short}));
 
 const KITCHEN_FIRST_STEP = 1;
 const KITCHEN_TOTAL_STEPS = kitchenSteps.length;
@@ -485,8 +477,20 @@ let kState = {
   upgrades:{led:false,utility:false,handles:false,softClose:false,pantry:false},
   completed:{}
 };
-let bState = {pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
-  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d'};
+let bState = {step:1, pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
+  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d', completed:{}};
+
+const BATHROOM_FIRST_STEP = 1;
+const BATHROOM_TOTAL_STEPS = 6;
+const BATHROOM_REVIEW_STEP = 6;
+const bathroomSteps = [
+  {id:1, title:'Package', desc:'Essential, Premium or Luxury'},
+  {id:2, title:'Vanity', desc:'Style & colour'},
+  {id:3, title:'Tiling', desc:'Floor & wall tiles'},
+  {id:4, title:'Fixtures', desc:'Tapware & shower screen'},
+  {id:5, title:'Extras', desc:'Optional upgrades'},
+  {id:6, title:'Review', desc:'Summary & request quote'}
+];
 
 /* ============================================================
    HELPERS
@@ -896,7 +900,291 @@ function initKitchenWizard(){
 }
 
 /* ============================================================
-   PACKAGE CARDS (bathroom only)
+   BATHROOM WIZARD
+============================================================ */
+function calcBathroomTotals(){
+  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
+  if(!pkg) return null;
+  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
+  const tMod = tapware.find(t=>t.id===bState.tap).mod;
+  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
+  const ledMod = bState.ledMirror?550:0;
+  const elecMod = bState.elecPlumb?1500:0;
+  const addOn = vMod+tMod+sMod+ledMod+elecMod;
+  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vMod, tMod, sMod, ledMod, elecMod};
+}
+
+function getBathroomPreviewSVG(view){
+  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
+  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
+  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
+  const tap = tapware.find(t=>t.id===bState.tap).hex;
+  if(view==='3d'){
+    const shade=(hex,amt)=>{const c=hex.replace('#','');const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
+    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};
+    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
+    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
+    parts+=isoBox(60,260,140,55,34,vColor,shade(vColor,25),shade(vColor,-30));
+    parts+=`<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
+    if(bState.ledMirror) parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
+    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
+    parts+=isoBox(300,260,90,190,60,'#dbeef2','#eef9fb','#c3dee3');
+    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;">${parts}</svg>`;
+  }
+  const isFreestanding=bState.vanityStyle==='freestanding';
+  const isFramed=bState.screen==='framed';
+  const mirrorGlow=bState.ledMirror?`<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>`:'';
+  return `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;">
+    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
+    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
+    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
+    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
+    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
+    ${isFreestanding?`<rect x="20" y="150" width="150" height="4" fill="#00000022"/>`:`<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
+    <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
+    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
+    <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
+    ${mirrorGlow}
+  </svg>`;
+}
+
+function getBathroomSummaryText(){
+  const t = calcBathroomTotals();
+  if(!t) return 'No package selected.';
+  return [
+    `PACKAGE: ${t.pkg.name} ($${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()})`,
+    `VANITY: ${getSelectionName(vanityStyles, bState.vanityStyle)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
+    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `WALL TILE: ${getSelectionName(wallTiles, bState.wallTile)}`,
+    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tMod?'+$'+t.tMod.toLocaleString():'included'}`,
+    `SHOWER SCREEN: ${getSelectionName(showerScreens, bState.screen)} — ${t.sMod?'+$'+t.sMod.toLocaleString():'included'}`,
+    `LED MIRROR: ${bState.ledMirror?'Yes (+$550)':'No'}`,
+    `ELECTRICAL & PLUMBING UPGRADE: ${bState.elecPlumb?'Yes (+$1,500)':'No'}`,
+    `PRICE RANGE: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}`
+  ].join('\n');
+}
+
+function renderBathroomSidebar(){
+  const list = document.getElementById('bathroomStepsList');
+  list.innerHTML = bathroomSteps.map(step=>{
+    const complete = !!bState.completed[step.id];
+    return `<div class="kitchen-step-item ${bState.step===step.id?'active':''} ${complete?'completed':''}" data-bstep="${step.id}" role="button" tabindex="0" aria-label="Go to ${step.title}">
+      <div class="kitchen-step-index">${complete?'✓':step.id}</div>
+      <div class="kitchen-step-meta"><strong>${step.title}</strong><span>${step.desc}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderBathroomRunningTotal(){
+  const box = document.getElementById('bathroomRunningTotal');
+  if(bState.step===1 || !bState.pkg){ box.style.display='none'; return; }
+  const t = calcBathroomTotals();
+  if(!t){ box.style.display='none'; return; }
+  box.style.display = 'block';
+  box.innerHTML = `Price Range <span class="kitchen-total-amount">$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span>`;
+}
+
+function bSwatchCards(list, activeId, dataAttr){
+  return `<div class="kitchen-cards cols-3">${list.map(item=>`
+    <article class="kitchen-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}">
+      ${item.hex?`<div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>`:''}
+      <h4 style="font-size:14px;">${item.name||item.brand}</h4>
+      ${'mod' in item ? `<span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>`:'' }
+    </article>`).join('')}</div>`;
+}
+
+function renderBathroomStepContent(){
+  const container = document.getElementById('bathroomStepContent');
+  const step = bathroomSteps.find(s=>s.id===bState.step);
+  let content = `<div class="kitchen-step-head">
+    <div><h3>Step ${step.id}: ${step.title}</h3><p>${step.desc}</p></div>
+    ${bState.completed[step.id]?'<span class="kitchen-completed-badge">Completed</span>':''}
+  </div>`;
+
+  if(bState.step===1){
+    content += `<div class="kitchen-cards">${bathroomPackages.map(pkg=>`
+      <article class="kitchen-card ${bState.pkg===pkg.id?'selected':''}" data-bpkg="${pkg.id}">
+        ${pkg.badge?`<div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">${pkg.badge}</div>`:''}
+        <div style="font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">${pkg.theme}</div>
+        <h4>${pkg.name}</h4>
+        <div class="kitchen-range">$${pkg.low.toLocaleString()} – $${pkg.high.toLocaleString()}</div>
+        <ul style="margin:8px 0 10px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;">${pkg.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+        <div class="kitchen-suppliers">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
+      </article>`).join('')}</div>`;
+  }
+
+  if(bState.step===2){
+    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Vanity Style</p>
+    ${bSwatchCards(vanityStyles, bState.vanityStyle, 'data-bvanity')}
+    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Cabinet Colour</p>
+    ${bSwatchCards(vanityColors, bState.vanityColor, 'data-bvcolor')}`;
+  }
+
+  if(bState.step===3){
+    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Floor Tile</p>
+    ${bSwatchCards(floorTiles, bState.floorTile, 'data-bfloor')}
+    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Wall Tile</p>
+    ${bSwatchCards(wallTiles, bState.wallTile, 'data-bwall')}`;
+  }
+
+  if(bState.step===4){
+    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Tapware Finish</p>
+    <div class="kitchen-cards cols-3">${tapware.map(item=>`
+      <article class="kitchen-card ${bState.tap===item.id?'selected':''}" data-btap="${item.id}">
+        <div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>
+        <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">${item.brand}</div>
+        <h4 style="font-size:14px;">${item.name}</h4>
+        <span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>
+      </article>`).join('')}</div>
+    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Shower Screen</p>
+    ${bSwatchCards(showerScreens, bState.screen, 'data-bscreen')}`;
+  }
+
+  if(bState.step===5){
+    content += `<div class="kitchen-toggle-grid">
+      <article class="kitchen-toggle ${bState.ledMirror?'on':''}" data-btoggle="ledMirror">
+        <div><h4>LED Backlit Mirror</h4><p>Touch-sensor demister mirror.</p><span class="kitchen-mod">+$550</span></div>
+        <div class="check">${bState.ledMirror?'✓':''}</div>
+      </article>
+      <article class="kitchen-toggle ${bState.elecPlumb?'on':''}" data-btoggle="elecPlumb">
+        <div><h4>Electrical &amp; Plumbing Upgrade</h4><p>New points, exhaust fan, water relocation.</p><span class="kitchen-mod">+$1,500</span></div>
+        <div class="check">${bState.elecPlumb?'✓':''}</div>
+      </article>
+    </div>`;
+  }
+
+  if(bState.step===6){
+    const t = calcBathroomTotals();
+    content += `<div class="kitchen-review-grid">
+      <div>
+        <div class="kitchen-preview">
+          <div class="view-toggle" style="margin-bottom:10px;">
+            <div class="kitchen-nav-btn ${bState.view==='2d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="2d">2D Elevation</div>
+            <div class="kitchen-nav-btn ${bState.view==='3d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="3d">3D Isometric</div>
+          </div>
+          <div style="overflow:hidden;">${getBathroomPreviewSVG(bState.view)}</div>
+          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
+        </div>
+      </div>
+      <div>
+        <div class="kitchen-summary" style="margin-bottom:14px;"><pre>${getBathroomSummaryText()}</pre></div>
+        ${t?`<div class="kitchen-price-breakdown">
+          <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
+          <div class="line"><span>Vanity Style</span><span>${t.vMod?'+$'+t.vMod.toLocaleString():'included'}</span></div>
+          <div class="line"><span>Tapware</span><span>${t.tMod?'+$'+t.tMod.toLocaleString():'included'}</span></div>
+          <div class="line"><span>Shower Screen</span><span>${t.sMod?'+$'+t.sMod.toLocaleString():'included'}</span></div>
+          <div class="line"><span>LED Mirror</span><span>${t.ledMod?'+$'+t.ledMod.toLocaleString():'not included'}</span></div>
+          <div class="line"><span>Elec &amp; Plumbing</span><span>${t.elecMod?'+$'+t.elecMod.toLocaleString():'not included'}</span></div>
+          <div class="line"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
+        </div>
+        <button type="button" id="bathroomQuoteBtn" class="kitchen-nav-btn primary" style="width:100%;margin-top:10px;">Request This Quote</button>
+        <div style="font-size:11px;color:#7f7667;margin-top:6px;">(Fixed quote after free consultation)</div>`
+        :'<p style="color:#a14f39;">Please complete steps 1–5 first.</p>'}
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML = content;
+  updateBathroomNav();
+  renderBathroomRunningTotal();
+}
+
+function updateBathroomNav(){
+  const backBtn = document.getElementById('bathroomBackBtn');
+  const nextBtn = document.getElementById('bathroomNextBtn');
+  backBtn.disabled = bState.step===BATHROOM_FIRST_STEP;
+  backBtn.setAttribute('aria-disabled', backBtn.disabled?'true':'false');
+  if(bState.step===BATHROOM_REVIEW_STEP){
+    nextBtn.textContent = 'Review Design';
+    nextBtn.disabled = true;
+  } else {
+    nextBtn.textContent = 'Next →';
+    nextBtn.disabled = false;
+  }
+  nextBtn.setAttribute('aria-disabled', nextBtn.disabled?'true':'false');
+}
+
+function renderBathroomWizard(){
+  renderBathroomSidebar();
+  renderBathroomStepContent();
+}
+
+function changeBathroomStep(delta){
+  if(delta>0) bState.completed[bState.step] = true;
+  bState.step = Math.max(BATHROOM_FIRST_STEP, Math.min(BATHROOM_TOTAL_STEPS, bState.step + delta));
+  renderBathroomWizard();
+}
+
+function initBathroomWizard(){
+  const stepsList = document.getElementById('bathroomStepsList');
+  const stepContent = document.getElementById('bathroomStepContent');
+  const backBtn = document.getElementById('bathroomBackBtn');
+  const nextBtn = document.getElementById('bathroomNextBtn');
+
+  stepsList.addEventListener('click', (e)=>{
+    const item = e.target.closest('[data-bstep]');
+    if(!item) return;
+    bState.step = Number(item.dataset.bstep);
+    renderBathroomWizard();
+  });
+  stepsList.addEventListener('keydown', (e)=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const item = e.target.closest('[data-bstep]');
+    if(!item) return;
+    e.preventDefault();
+    bState.step = Number(item.dataset.bstep);
+    renderBathroomWizard();
+  });
+
+  backBtn.addEventListener('click', ()=>changeBathroomStep(-1));
+  nextBtn.addEventListener('click', ()=>changeBathroomStep(1));
+
+  stepContent.addEventListener('click', (e)=>{
+    const pkg = e.target.closest('[data-bpkg]');
+    if(pkg){ bState.pkg = pkg.dataset.bpkg; bState.completed[1]=true; renderBathroomWizard(); return; }
+
+    const vanity = e.target.closest('[data-bvanity]');
+    if(vanity){ bState.vanityStyle = vanity.dataset.bvanity; bState.completed[2]=true; renderBathroomWizard(); return; }
+
+    const vcolor = e.target.closest('[data-bvcolor]');
+    if(vcolor){ bState.vanityColor = vcolor.dataset.bvcolor; bState.completed[2]=true; renderBathroomWizard(); return; }
+
+    const floor = e.target.closest('[data-bfloor]');
+    if(floor){ bState.floorTile = floor.dataset.bfloor; bState.completed[3]=true; renderBathroomWizard(); return; }
+
+    const wall = e.target.closest('[data-bwall]');
+    if(wall){ bState.wallTile = wall.dataset.bwall; bState.completed[3]=true; renderBathroomWizard(); return; }
+
+    const tap = e.target.closest('[data-btap]');
+    if(tap){ bState.tap = tap.dataset.btap; bState.completed[4]=true; renderBathroomWizard(); return; }
+
+    const screen = e.target.closest('[data-bscreen]');
+    if(screen){ bState.screen = screen.dataset.bscreen; bState.completed[4]=true; renderBathroomWizard(); return; }
+
+    const toggle = e.target.closest('[data-btoggle]');
+    if(toggle){
+      const key = toggle.dataset.btoggle;
+      bState[key] = !bState[key];
+      bState.completed[5] = true;
+      renderBathroomWizard();
+      return;
+    }
+
+    const viewBtn = e.target.closest('[data-bview]');
+    if(viewBtn){ bState.view = viewBtn.dataset.bview; renderBathroomStepContent(); return; }
+
+    const quoteBtn = e.target.closest('#bathroomQuoteBtn');
+    if(quoteBtn){
+      openQuoteModal('Bathroom Renovation', buildBathroomQuoteMessage(), quoteBtn);
+      return;
+    }
+  });
+
+  renderBathroomWizard();
+}
+
+/* ============================================================
+   PACKAGE CARDS (kept for compatibility — no longer used)
 ============================================================ */
 function renderPkgGrid(gridId, packages, state, onSelect){
   const grid = document.getElementById(gridId);
@@ -1078,31 +1366,33 @@ function getSelectionName(options, id){
 }
 
 function buildKitchenQuoteMessage(){
-  const pkg = kitchenPackages.find(p=>p.id===kState.pkg);
+  const totals = calcKitchenTotals();
+  const pkg = totals.pkg;
+  const upgrades = kitchenUpgradeOptions.filter(opt=>kState.upgrades[opt.id]).map(opt=>opt.title);
   return [
     'Kitchen renovation quote request from the MIC NSW design studio.',
-    `Estimated total: ${document.getElementById('kitchenTotal').textContent}`,
-    `Package: ${pkg ? pkg.name : 'Not selected'} (${pkg ? pkg.theme : 'No theme'})`,
-    `Layout: ${getSelectionName(kitchenShapes, kState.shape)}`,
+    `Estimated total: $${totals.total.toLocaleString()}+`,
+    `Package: ${pkg ? pkg.name : 'Not selected'}`,
+    `Layout: ${getSelectionName(kitchenLayouts, kState.layout)}`,
     `Door style: ${getSelectionName(doorStyles, kState.door)}`,
+    `Cabinet colour: ${getSelectionName(cabinetColors, kState.color)}`,
     `Benchtop: ${getSelectionName(benchtops, kState.benchtop)}`,
-    `Handles: ${getSelectionName(handles, kState.handle)}`,
     `Microwave: ${getSelectionName(microwaves, kState.microwave)}`,
     `Oven: ${getSelectionName(ovens, kState.oven)}`,
     `Cooktop: ${getSelectionName(cooktops, kState.cooktop)}`,
     `Rangehood: ${getSelectionName(rangehoods, kState.rangehood)}`,
     `Base cabinets: ${kState.baseCount}`,
     `Wall cabinets: ${kState.wallCount}`,
-    `LED lighting: ${kState.led ? 'Yes' : 'No'}`,
-    `Electrical & plumbing upgrade: ${kState.elecPlumb ? 'Yes' : 'No'}`
+    `Upgrades: ${upgrades.length ? upgrades.join(', ') : 'None'}`
   ].join('\n');
 }
 
 function buildBathroomQuoteMessage(){
+  const t = calcBathroomTotals();
   const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
   return [
     'Bathroom renovation quote request from the MIC NSW design studio.',
-    `Estimated total: ${document.getElementById('bathroomTotal').textContent}`,
+    t ? `Estimated price range: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}` : 'No package selected.',
     `Package: ${pkg ? pkg.name : 'Not selected'} (${pkg ? pkg.theme : 'No theme'})`,
     `Vanity style: ${getSelectionName(vanityStyles, bState.vanityStyle)}`,
     `Vanity colour: ${getSelectionName(vanityColors, bState.vanityColor)}`,
@@ -1206,16 +1496,10 @@ async function submitQuoteRequest(contact){
 }
 
 /* ============================================================
-   INIT + TABS + VIEW TOGGLES
+   INIT + TABS
 ============================================================ */
-function onBathroomPkgSelect(){
-  renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
-  document.getElementById('bathroomConfig').classList.add('show');
-  renderBathroomOptions(); updateBathroom();
-}
-
 initKitchenWizard();
-renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
+initBathroomWizard();
 
 document.querySelectorAll('.tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
@@ -1224,26 +1508,6 @@ document.querySelectorAll('.tab').forEach(tab=>{
     const target = tab.dataset.tab;
     document.getElementById('kitchen-tab').style.display = target==='kitchen'?'block':'none';
     document.getElementById('bathroom-tab').style.display = target==='bathroom'?'block':'none';
-  });
-});
-
-document.querySelectorAll('.view-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const target = btn.dataset.target;
-    document.querySelectorAll(`.view-btn[data-target="${target}"]`).forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    if(target==='bathroom'){ bState.view = btn.dataset.view; updateBathroomPreview(); }
-  });
-});
-
-document.querySelectorAll('.cta-final').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const isKitchenQuote = !!btn.closest('#kitchen-tab');
-    openQuoteModal(
-      isKitchenQuote ? 'Kitchen Renovation' : 'Bathroom Renovation',
-      isKitchenQuote ? buildKitchenQuoteMessage() : buildBathroomQuoteMessage(),
-      btn
-    );
   });
 });
 
