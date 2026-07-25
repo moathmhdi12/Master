@@ -103,6 +103,18 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .price-line span:last-child{color:#fff;font-weight:600;}
 .cta-final{margin-top:16px;width:100%;padding:12px;border-radius:6px;background:var(--gold);color:var(--navy);border:none;font-weight:700;font-size:13px;cursor:pointer;}
 .disclaimer{font-size:10.5px;color:#a9a49a;margin-top:24px;line-height:1.6;max-width:1220px;padding:0 20px;}
+.quote-modal{position:fixed;inset:0;background:rgba(21,23,26,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;}
+.quote-modal.show{display:flex;}
+.quote-modal-card{width:min(100%,460px);background:var(--cream);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);}
+.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);}
+.quote-modal-card p{margin:0 0 16px;font-size:12.5px;color:#6b6555;line-height:1.6;}
+.quote-modal-card label{display:block;font-size:11px;font-weight:700;color:#7a7460;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;}
+.quote-modal-card input{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--gray);}
+.quote-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
+.quote-modal-actions button{border:none;border-radius:999px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;}
+.quote-cancel{background:#e8e0d0;color:var(--navy);}
+.quote-submit{background:var(--navy);color:#fff;}
+.quote-submit:disabled{opacity:.7;cursor:wait;}
 </style>
 </head>
 <body>
@@ -181,6 +193,28 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
 <div class="disclaimer">
   * All prices are indicative ranges for standard-size Sydney metro rooms, based on typical retail/trade pricing from the suppliers named. They exclude structural work, asbestos removal, council approvals and site-access surcharges. A fixed written quote follows your free site consultation. Brand names (Kaboodle, Kinsman, Freedom Kitchens, IKEA, Laminex, Caesarstone, Essastone, Smartstone, Dekton, Beaumont Tiles, National Tiles, Signorino, Reece, Caroma, Methven, Phoenix, Nero, Sussex Taps, Chef, Westinghouse, Bosch, Fisher &amp; Paykel, ILVE, Smeg, Miele, Blum, Hettich, Clipsal) are examples of Australian-available suppliers MIC NSW can source and install — availability and current pricing confirmed at consultation.
+</div>
+
+<div class="quote-modal" id="quoteModal" aria-hidden="true">
+  <div class="quote-modal-card">
+    <h3 id="quoteModalTitle">Request This Quote</h3>
+    <p>Enter your contact details and MIC NSW will receive your selected package and live estimate.</p>
+    <form id="quoteRequestForm">
+      <label for="quoteName">Full Name</label>
+      <input id="quoteName" name="from_name" type="text" autocomplete="name" required>
+
+      <label for="quoteEmail">Email Address</label>
+      <input id="quoteEmail" name="email" type="email" autocomplete="email" required>
+
+      <label for="quotePhone">Phone Number</label>
+      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+()\\-\\s]{8,}" required>
+
+      <div class="quote-modal-actions">
+        <button type="button" class="quote-cancel" id="quoteCancelBtn">Cancel</button>
+        <button type="submit" class="quote-submit" id="quoteSubmitBtn">Send Quote Request</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <script>
@@ -791,26 +825,35 @@ function buildBathroomQuoteMessage(){
   ].join('\n');
 }
 
-function collectQuoteContact(serviceName){
-  const from_name = window.prompt(`Enter your full name for this ${serviceName} quote request:`);
-  if(!from_name) return null;
+const quoteModal = document.getElementById('quoteModal');
+const quoteModalTitle = document.getElementById('quoteModalTitle');
+const quoteRequestForm = document.getElementById('quoteRequestForm');
+const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
+const quoteCancelBtn = document.getElementById('quoteCancelBtn');
+let pendingQuoteRequest = null;
 
-  const email = window.prompt('Enter your email address:');
-  if(!email) return null;
-
-  const phone = window.prompt('Enter your phone number:');
-  if(!phone) return null;
-
-  return { from_name: from_name.trim(), email: email.trim(), phone: phone.trim() };
+function closeQuoteModal(){
+  quoteModal.classList.remove('show');
+  quoteModal.setAttribute('aria-hidden', 'true');
+  pendingQuoteRequest = null;
 }
 
-async function submitQuoteRequest(serviceName, message, button){
-  const contact = collectQuoteContact(serviceName);
-  if(!contact) return;
+function openQuoteModal(serviceName, message, button){
+  pendingQuoteRequest = { serviceName, message, button, originalLabel: button.textContent };
+  quoteModalTitle.textContent = `Request Your ${serviceName} Quote`;
+  quoteRequestForm.reset();
+  quoteModal.classList.add('show');
+  quoteModal.setAttribute('aria-hidden', 'false');
+  document.getElementById('quoteName').focus();
+}
 
-  const originalLabel = button.textContent;
+async function submitQuoteRequest(contact){
+  if(!pendingQuoteRequest) return;
+  const { serviceName, message, button, originalLabel } = pendingQuoteRequest;
+
   button.disabled = true;
   button.textContent = 'Sending quote request...';
+  quoteSubmitBtn.disabled = true;
 
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
@@ -829,14 +872,16 @@ async function submitQuoteRequest(serviceName, message, button){
       })
     });
     const result = await response.json();
-    if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request.');
+    if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request. Please try again or contact MIC NSW directly at info@mic-nsw.com.au.');
 
     button.textContent = 'Quote request sent ✓';
+    closeQuoteModal();
     alert(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
   } catch (error) {
-    alert(error.message || 'Sorry, we could not send your quote request right now.');
+    alert(error.message || 'Sorry, we could not send your quote request. Please try again or contact MIC NSW directly at info@mic-nsw.com.au.');
     button.textContent = originalLabel;
     button.disabled = false;
+    quoteSubmitBtn.disabled = false;
     return;
   }
 
@@ -844,6 +889,7 @@ async function submitQuoteRequest(serviceName, message, button){
     button.textContent = originalLabel;
     button.disabled = false;
   }, 2500);
+  quoteSubmitBtn.disabled = false;
 }
 
 /* ============================================================
@@ -885,11 +931,26 @@ document.querySelectorAll('.view-btn').forEach(btn=>{
 document.querySelectorAll('.cta-final').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     const isKitchenQuote = !!btn.closest('#kitchen-tab');
-    submitQuoteRequest(
+    openQuoteModal(
       isKitchenQuote ? 'Kitchen Renovation' : 'Bathroom Renovation',
       isKitchenQuote ? buildKitchenQuoteMessage() : buildBathroomQuoteMessage(),
       btn
     );
+  });
+});
+
+quoteCancelBtn.addEventListener('click', closeQuoteModal);
+quoteModal.addEventListener('click', e=>{
+  if(e.target === quoteModal) closeQuoteModal();
+});
+quoteRequestForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  if(!quoteRequestForm.reportValidity()) return;
+
+  submitQuoteRequest({
+    from_name: document.getElementById('quoteName').value.trim(),
+    email: document.getElementById('quoteEmail').value.trim(),
+    phone: document.getElementById('quotePhone').value.trim()
   });
 });
 </script>
