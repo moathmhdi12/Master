@@ -203,6 +203,8 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   .kitchen-cards,.kitchen-cards.cols-3,.kitchen-step-grid,.kitchen-toggle-grid,.kitchen-review-grid{grid-template-columns:1fr;}
   .kitchen-nav{flex-direction:column;}
   .kitchen-nav-btn{width:100%;}
+  #kitchenStepsList{display:grid;overflow:visible;}
+  .kitchen-step-item{min-width:0;}
 }
 
 </style>
@@ -290,7 +292,7 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
       <input id="quoteEmail" name="email" type="email" autocomplete="email" required>
 
       <label for="quotePhone">Phone Number</label>
-      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+()\\-\\s]{8,20}" maxlength="20" title="Phone number with 8-20 digits, spaces, or +()- characters" required>
+      <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" maxlength="20" title="Phone number with 8-20 digits, spaces, or +()- characters" required>
 
       <label for="quoteSummaryText">Design Summary</label>
       <textarea id="quoteSummaryText" readonly></textarea>
@@ -851,7 +853,7 @@ function renderKitchenStepContent(){
       <div class="line"><span>Extras & Upgrades</span><span>${money(totals.upgradesMod)}</span></div>
       <div class="line"><strong>TOTAL INVESTMENT</strong><strong>$${totals.total.toLocaleString()}+</strong></div>
       <div style="font-size:11px;color:#7f7667;margin-top:8px;">(Fixed quote after free consultation)</div>
-      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'}>Request This Design</button>
+      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'} aria-disabled="${canRequest ? 'false' : 'true'}">Request This Design</button>
       ${!canRequest?'<div style="margin-top:6px;font-size:11px;color:#a14f39;">Complete Steps 1–7 to enable requests.</div>':''}
       <div style="margin-top:8px;font-size:11px;color:#7f7667;">Selected upgrades: ${upgrades.length?upgrades.map(u=>u.title).join(', '):'None'}.</div>
     </div>`;
