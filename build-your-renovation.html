@@ -1298,9 +1298,9 @@ async function submitQuoteRequest(contact){
     quoteSubmitBtn.disabled = false;
     setQuoteStatus(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
     setTimeout(()=>{
-      closeQuoteModal();
       button.textContent = originalLabel;
       button.disabled = false;
+      closeQuoteModal();
     }, 2500);
   } catch (error) {
     const errorMessage = error && error.name === 'AbortError'
