@@ -1243,7 +1243,11 @@ function closeQuoteModal(){
   quoteModal.classList.remove('show');
   quoteModal.setAttribute('aria-hidden', 'true');
   setQuoteStatus('');
+  const triggerBtn = pendingQuoteRequest && pendingQuoteRequest.button;
   pendingQuoteRequest = null;
+  if(triggerBtn && document.contains(triggerBtn)){
+    try { triggerBtn.focus(); } catch(e){ /* focus restoration is best-effort */ }
+  }
 }
 
 function openQuoteModal(serviceName, message, button){
