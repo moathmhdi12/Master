@@ -295,8 +295,21 @@ const kitchenSteps = [
   {id:8, title:'Review & Summary', desc:'Review your visual design and full itemized investment.'}
 ];
 
+const KITCHEN_FIRST_STEP = 1;
+const KITCHEN_TOTAL_STEPS = kitchenSteps.length;
+const KITCHEN_REVIEW_STEP = KITCHEN_TOTAL_STEPS;
+const KITCHEN_CONFIG_LAST_STEP = KITCHEN_REVIEW_STEP - 1;
+const BASE_CABINET_MIN = 2;
+const BASE_CABINET_MAX = 8;
+const BASE_CABINET_DEFAULT = 5;
+const BASE_CABINET_MOD = 450;
+const WALL_CABINET_MIN = 2;
+const WALL_CABINET_MAX = 6;
+const WALL_CABINET_DEFAULT = 3;
+const WALL_CABINET_MOD = 380;
+
 const kitchenPackages = [
-  {id:'essentials', name:'Essentials', low:18000, high:28000, detail:'Laminate benchtop, standard cabinetry', suppliers:['Kaboodle','Laminex','Chef']},
+  {id:'essential', name:'Essentials', low:18000, high:28000, detail:'Laminate benchtop, standard cabinetry', suppliers:['Kaboodle','Laminex','Chef']},
   {id:'premium', name:'Premium', low:35000, high:55000, detail:'Engineered stone, soft-close cabinetry', suppliers:['Kinsman','Caesarstone','Bosch']},
   {id:'luxury', name:'Luxury', low:65000, high:110000, detail:'Premium stone, custom handles', suppliers:['Freedom Kitchens','Dekton','Miele']}
 ];
@@ -410,7 +423,7 @@ const showerScreens = [
 ============================================================ */
 let kState = {
   step:1,
-  pkg:'essentials',
+  pkg:'essential',
   layout:'ushape',
   baseCount:5,
   wallCount:3,
@@ -446,13 +459,13 @@ function layoutById(){ return kitchenLayouts.find(l=>l.id===kState.layout); }
 
 function calcKitchenTotals(){
   const pkg = packageById();
-  const cabinetAdjustment = ((kState.baseCount-5)*450) + ((kState.wallCount-3)*380);
+  const cabinetAdjustment = ((kState.baseCount-BASE_CABINET_DEFAULT)*BASE_CABINET_MOD) + ((kState.wallCount-WALL_CABINET_DEFAULT)*WALL_CABINET_MOD);
   const benchtopMod = benchtopById().mod;
   const splashbackMod = splashById().mod;
-  const applianceMod = microwaves.find(a=>a.id===kState.microwave).mod
-    + ovens.find(a=>a.id===kState.oven).mod
-    + cooktops.find(a=>a.id===kState.cooktop).mod
-    + rangehoods.find(a=>a.id===kState.rangehood).mod;
+  const applianceMod = applianceModFor(microwaves, kState.microwave)
+    + applianceModFor(ovens, kState.oven)
+    + applianceModFor(cooktops, kState.cooktop)
+    + applianceModFor(rangehoods, kState.rangehood);
   const upgradesMod = kitchenUpgradeOptions.reduce((sum, opt)=>sum + (kState.upgrades[opt.id] ? opt.mod : 0), 0);
   const total = pkg.low + cabinetAdjustment + benchtopMod + splashbackMod + applianceMod + upgradesMod;
   return {pkg, cabinetAdjustment, benchtopMod, splashbackMod, applianceMod, upgradesMod, total};
@@ -460,8 +473,9 @@ function calcKitchenTotals(){
 
 function markKitchenStep(step){ kState.completed[step] = true; }
 function isKitchenStepComplete(step){ return !!kState.completed[step]; }
+function applianceModFor(list, id){ return list.find(item=>item.id===id).mod; }
 function areKitchenStepsComplete(){
-  for(let i=1;i<=7;i++) if(!isKitchenStepComplete(i)) return false;
+  for(let i=KITCHEN_FIRST_STEP;i<=KITCHEN_CONFIG_LAST_STEP;i++) if(!isKitchenStepComplete(i)) return false;
   return true;
 }
 
@@ -578,12 +592,12 @@ function renderKitchenStepContent(){
       <div class="kitchen-box">
         <h5>Base Cabinets</h5>
         <div class="kitchen-stepper"><button type="button" data-stepper="base" data-dir="-1" aria-label="Decrease base cabinets">−</button><span>${kState.baseCount}</span><button type="button" data-stepper="base" data-dir="1" aria-label="Increase base cabinets">+</button></div>
-        <div class="kitchen-mod">${money((kState.baseCount-5)*450)} adjustment</div>
+        <div class="kitchen-mod">${money((kState.baseCount-BASE_CABINET_DEFAULT)*BASE_CABINET_MOD)} adjustment</div>
       </div>
       <div class="kitchen-box">
         <h5>Wall Cabinets</h5>
         <div class="kitchen-stepper"><button type="button" data-stepper="wall" data-dir="-1" aria-label="Decrease wall cabinets">−</button><span>${kState.wallCount}</span><button type="button" data-stepper="wall" data-dir="1" aria-label="Increase wall cabinets">+</button></div>
-        <div class="kitchen-mod">${money((kState.wallCount-3)*380)} adjustment</div>
+        <div class="kitchen-mod">${money((kState.wallCount-WALL_CABINET_DEFAULT)*WALL_CABINET_MOD)} adjustment</div>
       </div>
       <div class="kitchen-box">
         <h5>Door Style</h5>
@@ -685,10 +699,10 @@ function updateKitchenNav(){
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
   backBtn.disabled = kState.step===1;
-  if(kState.step===8){
+  if(kState.step===KITCHEN_REVIEW_STEP){
     nextBtn.textContent = 'Review Design';
     nextBtn.disabled = true;
-  }else if(kState.step===7){
+  }else if(kState.step===KITCHEN_CONFIG_LAST_STEP){
     nextBtn.textContent = 'Review Design';
     nextBtn.disabled = false;
   }else{
@@ -704,8 +718,8 @@ function renderKitchenWizard(){
 
 function changeKitchenStep(delta){
   if(delta>0){ markKitchenStep(kState.step); }
-  const next = Math.min(8, Math.max(1, kState.step + delta));
-  if(next===8) markKitchenStep(7);
+  const next = Math.min(KITCHEN_TOTAL_STEPS, Math.max(KITCHEN_FIRST_STEP, kState.step + delta));
+  if(next===KITCHEN_REVIEW_STEP) markKitchenStep(KITCHEN_CONFIG_LAST_STEP);
   kState.step = next;
   renderKitchenWizard();
 }
@@ -749,8 +763,8 @@ function initKitchenWizard(){
     if(stepper){
       const key = stepper.dataset.stepper;
       const dir = Number(stepper.dataset.dir);
-      if(key==='base') kState.baseCount = Math.max(2, Math.min(8, kState.baseCount + dir));
-      if(key==='wall') kState.wallCount = Math.max(2, Math.min(6, kState.wallCount + dir));
+      if(key==='base') kState.baseCount = Math.max(BASE_CABINET_MIN, Math.min(BASE_CABINET_MAX, kState.baseCount + dir));
+      if(key==='wall') kState.wallCount = Math.max(WALL_CABINET_MIN, Math.min(WALL_CABINET_MAX, kState.wallCount + dir));
       markKitchenStep(3);
       renderKitchenWizard();
       return;
