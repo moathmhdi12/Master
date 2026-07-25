@@ -432,6 +432,12 @@ let kState = {
   benchtop:'laminex',
   splash:'subway',
   splashPattern:'Gloss White Brick',
+  splashPatterns:{
+    ceramic:'Warm White',
+    subway:'Gloss White Brick',
+    mosaic:'Stone Blend',
+    large:'Calacatta Vein'
+  },
   microwave:'chef',
   oven:'westinghouse',
   cooktop:'chef',
@@ -451,12 +457,12 @@ function money(value){
 }
 function clampValue(value, min, max){ return Math.max(min, Math.min(max, value)); }
 
-function packageById(){ return kitchenPackages.find(p=>p.id===kState.pkg); }
-function benchtopById(){ return benchtops.find(b=>b.id===kState.benchtop); }
-function splashById(){ return splashbacks.find(s=>s.id===kState.splash); }
-function doorById(){ return doorStyles.find(d=>d.id===kState.door); }
-function colorById(){ return cabinetColors.find(c=>c.id===kState.color); }
-function layoutById(){ return kitchenLayouts.find(l=>l.id===kState.layout); }
+function packageById(){ return kitchenPackages.find(p=>p.id===kState.pkg) || kitchenPackages[0]; }
+function benchtopById(){ return benchtops.find(b=>b.id===kState.benchtop) || benchtops[0]; }
+function splashById(){ return splashbacks.find(s=>s.id===kState.splash) || splashbacks[0]; }
+function doorById(){ return doorStyles.find(d=>d.id===kState.door) || doorStyles[0]; }
+function colorById(){ return cabinetColors.find(c=>c.id===kState.color) || cabinetColors[0]; }
+function layoutById(){ return kitchenLayouts.find(l=>l.id===kState.layout) || kitchenLayouts[0]; }
 
 function calcKitchenTotals(){
   const pkg = packageById();
@@ -592,12 +598,12 @@ function renderKitchenStepContent(){
     content += `<div class="kitchen-step-grid">
       <div class="kitchen-box">
         <h5>Base Cabinets</h5>
-        <div class="kitchen-stepper"><button type="button" data-stepper="base" data-dir="-1" aria-label="Decrease base cabinets">−</button><span>${kState.baseCount}</span><button type="button" data-stepper="base" data-dir="1" aria-label="Increase base cabinets">+</button></div>
+        <div class="kitchen-stepper"><button type="button" data-stepper="base" data-dir="-1" aria-label="Decrease base cabinets">−</button><span aria-live="polite" aria-label="Base cabinet count">${kState.baseCount}</span><button type="button" data-stepper="base" data-dir="1" aria-label="Increase base cabinets">+</button></div>
         <div class="kitchen-mod">${money((kState.baseCount-BASE_CABINET_DEFAULT)*BASE_CABINET_MOD)} adjustment</div>
       </div>
       <div class="kitchen-box">
         <h5>Wall Cabinets</h5>
-        <div class="kitchen-stepper"><button type="button" data-stepper="wall" data-dir="-1" aria-label="Decrease wall cabinets">−</button><span>${kState.wallCount}</span><button type="button" data-stepper="wall" data-dir="1" aria-label="Increase wall cabinets">+</button></div>
+        <div class="kitchen-stepper"><button type="button" data-stepper="wall" data-dir="-1" aria-label="Decrease wall cabinets">−</button><span aria-live="polite" aria-label="Wall cabinet count">${kState.wallCount}</span><button type="button" data-stepper="wall" data-dir="1" aria-label="Increase wall cabinets">+</button></div>
         <div class="kitchen-mod">${money((kState.wallCount-WALL_CABINET_DEFAULT)*WALL_CABINET_MOD)} adjustment</div>
       </div>
       <div class="kitchen-box">
@@ -610,7 +616,7 @@ function renderKitchenStepContent(){
       </div>
       <div class="kitchen-box kitchen-color-wrap">
         <h5>Cabinet Colour</h5>
-        <div class="kitchen-color-row">${cabinetColors.map(color=>`<button type="button" aria-label="Select ${color.name}" class="kitchen-color ${kState.color===color.id?'selected':''}" data-color="${color.id}" data-name="${color.name}" style="background:${color.hex};"></button>`).join('')}</div>
+        <div class="kitchen-color-row">${cabinetColors.map(color=>`<button type="button" aria-label="Select ${color.name}" aria-pressed="${kState.color===color.id?'true':'false'}" class="kitchen-color ${kState.color===color.id?'selected':''}" data-color="${color.id}" data-name="${color.name}" style="background:${color.hex};"></button>`).join('')}</div>
       </div>
     </div>`;
   }
@@ -700,6 +706,7 @@ function updateKitchenNav(){
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
   backBtn.disabled = kState.step===KITCHEN_FIRST_STEP;
+  backBtn.setAttribute('aria-disabled', backBtn.disabled ? 'true' : 'false');
   if(kState.step===KITCHEN_REVIEW_STEP){
     nextBtn.textContent = 'Review Design';
     nextBtn.disabled = true;
@@ -710,6 +717,7 @@ function updateKitchenNav(){
     nextBtn.textContent = 'Next →';
     nextBtn.disabled = false;
   }
+  nextBtn.setAttribute('aria-disabled', nextBtn.disabled ? 'true' : 'false');
 }
 
 function renderKitchenWizard(){
@@ -790,14 +798,21 @@ function initKitchenWizard(){
     const splash = event.target.closest('[data-splash]');
     if(splash){
       kState.splash = splash.dataset.splash;
-      kState.splashPattern = splashbacks.find(s=>s.id===kState.splash)?.patterns[0] ?? '';
+      const defaultPattern = splashbacks.find(s=>s.id===kState.splash)?.patterns[0] ?? '';
+      kState.splashPattern = kState.splashPatterns[kState.splash] || defaultPattern;
       markKitchenStep(5);
       renderKitchenWizard();
       return;
     }
 
     const pattern = event.target.closest('[data-pattern]');
-    if(pattern){ kState.splashPattern = pattern.dataset.pattern; markKitchenStep(5); renderKitchenWizard(); return; }
+    if(pattern){
+      kState.splashPattern = pattern.dataset.pattern;
+      kState.splashPatterns[kState.splash] = pattern.dataset.pattern;
+      markKitchenStep(5);
+      renderKitchenWizard();
+      return;
+    }
 
     const appliance = event.target.closest('[data-appliance]');
     if(appliance){ kState[appliance.dataset.appliance] = appliance.dataset.id; markKitchenStep(6); renderKitchenWizard(); return; }
@@ -830,7 +845,7 @@ function initKitchenWizard(){
   modal.addEventListener('keydown', (event)=>{
     if(event.key==='Escape'){ closeKitchenModal(); return; }
     if(event.key!=='Tab') return;
-    const focusable = [...modal.querySelectorAll('button,[href],textarea')].filter(node=>!node.disabled);
+    const focusable = [...modal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(node=>!node.disabled);
     if(!focusable.length) return;
     const first = focusable[0], last = focusable[focusable.length-1];
     if(event.shiftKey && document.activeElement===first){ event.preventDefault(); last.focus(); }
