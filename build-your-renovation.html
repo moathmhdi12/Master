@@ -364,19 +364,49 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
   <!-- ============ BATHROOM ============ -->
   <div id="bathroom-tab" style="display:none;">
-    <div class="kitchen-wizard" id="bathroomWizard">
-      <aside class="kitchen-sidebar" aria-label="Bathroom design steps">
-        <h2>Design Your Bathroom</h2>
-        <div id="bathroomStepsList"></div>
-      </aside>
-      <section class="kitchen-main">
-        <div id="bathroomStepContent" class="kitchen-step-content" aria-live="polite"></div>
-        <div id="bathroomRunningTotal" class="kitchen-running-total" style="display:none;"></div>
-        <div class="kitchen-nav">
-          <button id="bathroomBackBtn" class="kitchen-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
-          <button id="bathroomNextBtn" class="kitchen-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
+    <div class="bath-wizard" id="bathroomWizard">
+      <div class="bath-flow">
+        <main class="bath-main" aria-labelledby="bathStepTitle">
+          <div id="bathroomStepContent" class="bath-step-content" aria-live="polite"></div>
+          <div class="bath-nav" aria-label="Bathroom wizard navigation">
+            <button id="bathroomBackBtn" class="bath-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
+            <button id="bathroomNextBtn" class="bath-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
+          </div>
+        </main>
+
+        <nav class="bath-bottom-nav" aria-label="Mobile bathroom navigation">
+          <button id="bathroomBackBtnMobile" class="bath-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
+          <button id="bathroomNextBtnMobile" class="bath-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
+        </nav>
+      </div>
+
+      <aside class="bath-sticky" aria-label="Bathroom design preview and summary">
+        <div class="bath-preview">
+          <h4 class="bath-preview-title" style="margin:0 0 12px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:18px;">Live Preview</h4>
+          <div class="bath-viewbar" role="tablist" aria-label="Preview view">
+            <button class="view-btn active" type="button" data-bview="2d" role="tab" aria-selected="true" aria-controls="bathroomPreviewStage">2D Plan</button>
+            <button class="view-btn" type="button" data-bview="3d" role="tab" aria-selected="false" aria-controls="bathroomPreviewStage">3D View</button>
+          </div>
+          <div id="bathroomPreviewStage" class="bath-preview-stage" aria-live="polite">
+            <div class="bath-empty-state">
+              <h4>Start Designing</h4>
+              <p>Choose a bathroom package to see your live 2D/3D preview update in real-time.</p>
+            </div>
+          </div>
+          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
         </div>
-      </section>
+
+        <div id="bathroomDetails" class="bath-details" style="display:none;" aria-live="polite">
+          <h5>Selection Details</h5>
+          <div id="bathroomDetailsMedia" class="detail-img"></div>
+          <dl id="bathroomDetailsText"></dl>
+        </div>
+
+        <div id="bathroomSummary" class="bath-summary" style="display:none;" aria-live="polite">
+          <h4>Your Bathroom Summary</h4>
+          <div id="bathroomSummaryBody"></div>
+        </div>
+      </aside>
     </div>
   </div>
 </div>
