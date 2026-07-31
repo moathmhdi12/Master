@@ -26,7 +26,7 @@ body{margin:0;font-family:'Work Sans','Segoe UI',Arial,sans-serif;background:var
 .wrap{max-width:1220px;margin:0 auto;padding:30px 20px 100px;}
 
 .tabs{display:flex;gap:10px;margin-bottom:26px;}
-.tab{flex:1;text-align:center;padding:14px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;}
+.tab{flex:1;text-align:center;padding:14px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;justify-content:center;}
 .tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 
 h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:21px;margin:34px 0 4px;font-weight:600;}
@@ -103,6 +103,22 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .price-line span:last-child{color:#fff;font-weight:600;}
 .cta-final{margin-top:16px;width:100%;padding:12px;border-radius:6px;background:var(--gold);color:var(--navy);border:none;font-weight:700;font-size:13px;cursor:pointer;}
 .disclaimer{font-size:10.5px;color:#a9a49a;margin-top:24px;line-height:1.6;max-width:1220px;padding:0 20px;}
+.quote-modal{position:fixed;inset:0;background:rgba(21,23,26,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;}
+.quote-modal.show{display:flex;}
+.quote-modal-card{width:min(100%,560px);background:var(--cream);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);position:relative;}
+.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
+.quote-modal-card p{margin:0 0 16px;font-size:12.5px;color:#6b6555;line-height:1.6;}
+.quote-modal-card label{display:block;font-size:11px;font-weight:700;color:#7a7460;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;}
+.quote-modal-card input,.quote-modal-card textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--gray);}
+.quote-modal-card textarea{min-height:170px;resize:vertical;background:#fffdf7;}
+.quote-modal-close{position:absolute;right:16px;top:16px;border:1.5px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--navy);font-size:16px;}
+.quote-status{min-height:18px;margin-top:14px;font-size:12px;color:var(--sage);}
+.quote-status.error{color:#9b2c2c;}
+.quote-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
+.quote-modal-actions button{border:none;border-radius:999px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;}
+.quote-cancel{background:#e8e0d0;color:var(--navy);}
+.quote-submit{background:var(--navy);color:#fff;}
+.quote-submit:disabled{opacity:.7;cursor:wait;}
 
 
 /* Kitchen step wizard */
@@ -173,22 +189,6 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .kitchen-price-breakdown .line{display:flex;justify-content:space-between;border-bottom:1px solid #e9dfca;padding:6px 0;font-size:12px;color:#524a3f;}
 .kitchen-price-breakdown .line strong{font-size:13px;color:var(--navy);}
 .kitchen-request-btn{width:100%;margin-top:10px;}
-.quote-modal{position:fixed;inset:0;background:rgba(21,23,26,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;}
-.quote-modal.show{display:flex;}
-.quote-modal-card{width:min(100%,560px);background:var(--cream);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);position:relative;}
-.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
-.quote-modal-card p{margin:0 0 16px;font-size:12.5px;color:#6b6555;line-height:1.6;}
-.quote-modal-card label{display:block;font-size:11px;font-weight:700;color:#7a7460;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;}
-.quote-modal-card input,.quote-modal-card textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--gray);}
-.quote-modal-card textarea{min-height:170px;resize:vertical;background:#fffdf7;}
-.quote-modal-close{position:absolute;right:16px;top:16px;border:1.5px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--navy);font-size:16px;}
-.quote-status{min-height:18px;margin-top:14px;font-size:12px;color:var(--sage);}
-.quote-status.error{color:#9b2c2c;}
-.quote-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
-.quote-modal-actions button{border:none;border-radius:999px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;}
-.quote-cancel{background:#e8e0d0;color:var(--navy);}
-.quote-submit{background:var(--navy);color:#fff;}
-.quote-submit:disabled{opacity:.7;cursor:wait;}
 
 @media (max-width:1199px){
   .kitchen-wizard{grid-template-columns:1fr;}
@@ -206,7 +206,6 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   #kitchenStepsList{display:grid;overflow:visible;}
   .kitchen-step-item{min-width:0;}
 }
-
 </style>
 </head>
 <body>
@@ -248,29 +247,19 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
   <!-- ============ BATHROOM ============ -->
   <div id="bathroom-tab" style="display:none;">
-    <h2 class="section-title">Step 1 — Choose Your Bathroom Package</h2>
-    <div class="section-desc">Full strip-out, re-waterproofing, drainage &amp; plumbing rework, tiling, electrical and fit-off.</div>
-    <div class="pkg-grid" id="bathroomPkgGrid"></div>
-
-    <div class="config" id="bathroomConfig">
-      <div class="options-col" id="bathroomOptions"></div>
-      <div class="preview-col">
-        <div class="preview-box">
-          <h4 style="font-family:Georgia,serif;color:var(--navy);font-size:13px;margin:0 0 10px;">Live Design Preview</h4>
-          <div class="view-toggle">
-            <div class="view-btn active" data-view="2d" data-target="bathroom">2D Elevation</div>
-            <div class="view-btn" data-view="3d" data-target="bathroom">3D Isometric</div>
-          </div>
-          <div id="bathroomSvgWrap"></div>
-          <div class="floorplan-note">Illustrative style preview. Exact layout finalised during your free in-home measure.</div>
+    <div class="kitchen-wizard" id="bathroomWizard">
+      <aside class="kitchen-sidebar" aria-label="Bathroom design steps">
+        <h2>Design Your Bathroom</h2>
+        <div id="bathroomStepsList"></div>
+      </aside>
+      <section class="kitchen-main">
+        <div id="bathroomStepContent" class="kitchen-step-content" aria-live="polite"></div>
+        <div id="bathroomRunningTotal" class="kitchen-running-total" style="display:none;"></div>
+        <div class="kitchen-nav">
+          <button id="bathroomBackBtn" class="kitchen-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
+          <button id="bathroomNextBtn" class="kitchen-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
         </div>
-        <div class="price-box">
-          <h4>Estimated Investment</h4>
-          <div class="price-total" id="bathroomTotal">$0 – $0</div>
-          <div id="bathroomPriceLines"></div>
-          <button class="cta-final">Request This Quote</button>
-        </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>
@@ -279,7 +268,7 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   * All prices are indicative ranges for standard-size Sydney metro rooms, based on typical retail/trade pricing from the suppliers named. They exclude structural work, asbestos removal, council approvals and site-access surcharges. A fixed written quote follows your free site consultation. Brand names (Kaboodle, Kinsman, Freedom Kitchens, IKEA, Laminex, Caesarstone, Essastone, Smartstone, Dekton, Beaumont Tiles, National Tiles, Signorino, Reece, Caroma, Methven, Phoenix, Nero, Sussex Taps, Chef, Westinghouse, Bosch, Fisher &amp; Paykel, ILVE, Smeg, Miele, Blum, Hettich, Clipsal) are examples of Australian-available suppliers MIC NSW can source and install — availability and current pricing confirmed at consultation.
 </div>
 
-<div class="quote-modal" id="quoteModal" aria-hidden="true" role="dialog" aria-labelledby="quoteModalTitle">
+<div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle" aria-hidden="true">
   <div class="quote-modal-card">
     <button type="button" class="quote-modal-close" id="quoteCloseBtn" aria-label="Close quote request modal">✕</button>
     <h3 id="quoteModalTitle">Request This Design</h3>
@@ -314,17 +303,18 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 const WEB3FORMS_ACCESS_KEY = 'fc340379-cc05-4c4b-a7f0-47d2e0cfab53';
 const MIC_CONTACT_EMAIL = 'info@mic-nsw.com.au';
 const QUOTE_REQUEST_TIMEOUT_MS = 10000;
-
-const kitchenSteps = [
-  {id:1, title:'Package Selection', desc:'Choose your renovation package tier and supplier direction.'},
-  {id:2, title:'Kitchen Layout', desc:'Select the floorplan that best suits your space.'},
-  {id:3, title:'Cabinetry Configuration', desc:'Set cabinet quantities, door style and finish colour.'},
-  {id:4, title:'Benchtop Selection', desc:'Choose your benchtop material and finish.'},
-  {id:5, title:'Splashback Tiles', desc:'Pick tile style and pattern to complete the wall finish.'},
-  {id:6, title:'Appliances', desc:'Select appliance brands by category.'},
-  {id:7, title:'Upgrades & Extras', desc:'Toggle optional comfort and storage upgrades.'},
-  {id:8, title:'Review & Summary', desc:'Review your visual design and full itemized investment.'}
+const kitchenStepDefinitions = [
+  {step:1, title:'Package Selection', short:'Choose your package', description:'Select the renovation package that matches your desired level of finish, benchtop quality and supplier direction.'},
+  {step:2, title:'Kitchen Layout', short:'Choose your layout', description:'Pick the floorplan that best suits your room footprint and how you want to move through the space.'},
+  {step:3, title:'Cabinetry Configuration', short:'Cabinets, doors & colour', description:'Set cabinet quantities, choose your door profile and lock in a cabinet finish that suits the package.'},
+  {step:4, title:'Benchtop Selection', short:'Choose your benchtop', description:'Compare benchtop surfaces, brands and upgrades to refine the overall look and durability.'},
+  {step:5, title:'Splashback Tiles', short:'Tiles & pattern', description:'Select the splashback style and pattern direction to complement your cabinetry and benchtop.'},
+  {step:6, title:'Appliances', short:'Set your appliance suite', description:'Choose the appliance brands and performance tier for each key cooking zone.'},
+  {step:7, title:'Upgrades & Extras', short:'Optional enhancements', description:'Add practical extras and premium upgrades to elevate usability, storage and final detailing.'},
+  {step:8, title:'Review & Summary', short:'Preview and request', description:'Review the visual concept, check the itemised pricing summary and request this exact kitchen design.'}
 ];
+/* Normalised alias used throughout the kitchen wizard */
+const kitchenSteps = kitchenStepDefinitions.map(s=>({id:s.step, title:s.title, desc:s.short}));
 
 const KITCHEN_FIRST_STEP = 1;
 const KITCHEN_TOTAL_STEPS = kitchenSteps.length;
@@ -476,8 +466,20 @@ let kState = {
   upgrades:{led:false,utility:false,handles:false,softClose:false,pantry:false},
   completed:{}
 };
-let bState = {pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
-  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d'};
+let bState = {step:1, pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
+  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d', completed:{}};
+
+const BATHROOM_FIRST_STEP = 1;
+const BATHROOM_TOTAL_STEPS = 6;
+const BATHROOM_REVIEW_STEP = 6;
+const bathroomSteps = [
+  {id:1, title:'Package', desc:'Essential, Premium or Luxury'},
+  {id:2, title:'Vanity', desc:'Style & colour'},
+  {id:3, title:'Tiling', desc:'Floor & wall tiles'},
+  {id:4, title:'Fixtures', desc:'Tapware & shower screen'},
+  {id:5, title:'Extras', desc:'Optional upgrades'},
+  {id:6, title:'Review', desc:'Summary & request quote'}
+];
 
 /* ============================================================
    HELPERS
@@ -487,8 +489,6 @@ function money(value){
   return (value>0?'+$':'-$') + Math.abs(value).toLocaleString();
 }
 function clampValue(value, min, max){ return Math.max(min, Math.min(max, value)); }
-function optionName(list, id, fallback='Not selected'){ return list.find(item=>item.id===id)?.name || fallback; }
-function optionBrand(list, id, fallback='Not selected'){ return list.find(item=>item.id===id)?.brand || fallback; }
 
 function packageById(){ return kitchenPackages.find(p=>p.id===kState.pkg) || kitchenPackages[0]; }
 function benchtopById(){ return benchtops.find(b=>b.id===kState.benchtop) || benchtops[0]; }
@@ -496,137 +496,6 @@ function splashById(){ return splashbacks.find(s=>s.id===kState.splash) || splas
 function doorById(){ return doorStyles.find(d=>d.id===kState.door) || doorStyles[0]; }
 function colorById(){ return cabinetColors.find(c=>c.id===kState.color) || cabinetColors[0]; }
 function layoutById(){ return kitchenLayouts.find(l=>l.id===kState.layout) || kitchenLayouts[0]; }
-
-function buildKitchenQuoteMessage(){
-  const totals = calcKitchenTotals();
-  return [
-    'Kitchen renovation quote request from the MIC NSW design studio.',
-    `Estimated total: $${totals.total.toLocaleString()}+`,
-    '',
-    kitchenDesignSummaryText()
-  ].join('\n');
-}
-
-function buildBathroomQuoteMessage(){
-  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
-  const vanity = vanityStyles.find(item=>item.id===bState.vanityStyle);
-  const tap = tapware.find(item=>item.id===bState.tap);
-  const screen = showerScreens.find(item=>item.id===bState.screen);
-  const ledMod = bState.ledMirror ? 550 : 0;
-  const elecMod = bState.elecPlumb ? 1500 : 0;
-  const totalLow = (pkg?.low || 0) + (vanity?.mod || 0) + (tap?.mod || 0) + (screen?.mod || 0) + ledMod + elecMod;
-  const totalHigh = (pkg?.high || 0) + (vanity?.mod || 0) + (tap?.mod || 0) + (screen?.mod || 0) + ledMod + elecMod;
-
-  return [
-    'Bathroom renovation quote request from the MIC NSW design studio.',
-    `Estimated total: $${totalLow.toLocaleString()} – $${totalHigh.toLocaleString()}`,
-    `Package: ${pkg ? `${pkg.name} ($${pkg.low.toLocaleString()} – $${pkg.high.toLocaleString()})` : 'Not selected'}`,
-    `Vanity style: ${optionName(vanityStyles, bState.vanityStyle)}`,
-    `Vanity colour: ${optionName(vanityColors, bState.vanityColor)}`,
-    `Floor tile: ${optionName(floorTiles, bState.floorTile)}`,
-    `Wall tile: ${optionName(wallTiles, bState.wallTile)}`,
-    `Tapware: ${optionBrand(tapware, bState.tap)} ${optionName(tapware, bState.tap)}`,
-    `Shower screen: ${optionName(showerScreens, bState.screen)}`,
-    `LED backlit mirror: ${bState.ledMirror ? 'Yes' : 'No'}`,
-    `Electrical & plumbing upgrade: ${bState.elecPlumb ? 'Yes' : 'No'}`
-  ].join('\n');
-}
-
-const quoteModal = document.getElementById('quoteModal');
-const quoteModalTitle = document.getElementById('quoteModalTitle');
-const quoteCloseBtn = document.getElementById('quoteCloseBtn');
-const quoteCancelBtn = document.getElementById('quoteCancelBtn');
-const quoteRequestForm = document.getElementById('quoteRequestForm');
-const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
-const quoteSummaryText = document.getElementById('quoteSummaryText');
-const quoteFormStatus = document.getElementById('quoteFormStatus');
-let pendingQuoteRequest = null;
-let quoteModalTrigger = null;
-
-function setQuoteStatus(message, isError=false){
-  quoteFormStatus.textContent = message;
-  quoteFormStatus.classList.toggle('error', isError);
-}
-
-function closeQuoteModal(){
-  quoteModal.classList.remove('show');
-  quoteModal.setAttribute('aria-hidden', 'true');
-  quoteSubmitBtn.disabled = false;
-  setQuoteStatus('');
-  pendingQuoteRequest = null;
-  if(quoteModalTrigger){
-    quoteModalTrigger.focus();
-    quoteModalTrigger = null;
-  }
-}
-
-function openQuoteModal(serviceName, message, trigger){
-  pendingQuoteRequest = { serviceName, message, trigger, originalLabel: trigger.textContent };
-  quoteModalTrigger = trigger;
-  quoteModalTitle.textContent = `Request Your ${serviceName} Quote`;
-  quoteRequestForm.reset();
-  quoteSummaryText.value = message;
-  setQuoteStatus('');
-  quoteModal.classList.add('show');
-  quoteModal.setAttribute('aria-hidden', 'false');
-  document.getElementById('quoteName').focus();
-}
-
-async function submitQuoteRequest(contact){
-  if(!pendingQuoteRequest){
-    setQuoteStatus(`Sorry, something went wrong. Please reopen the quote form or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`, true);
-    return;
-  }
-
-  const { serviceName, message, trigger, originalLabel } = pendingQuoteRequest;
-  trigger.disabled = true;
-  trigger.textContent = 'Sending quote request...';
-  quoteSubmitBtn.disabled = true;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(()=>{
-    controller.abort();
-  }, QUOTE_REQUEST_TIMEOUT_MS);
-
-  try {
-    const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `${serviceName} Quote Request`,
-        from_name: contact.from_name,
-        email: contact.email,
-        phone: contact.phone,
-        message
-      })
-    });
-    const result = await response.json();
-    if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request.');
-
-    trigger.textContent = 'Quote request sent ✓';
-    quoteSubmitBtn.disabled = false;
-    setQuoteStatus(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
-    setTimeout(()=>{
-      closeQuoteModal();
-      trigger.textContent = originalLabel;
-      trigger.disabled = false;
-    }, 2500);
-  } catch (error) {
-    const errorMessage = error && error.name === 'AbortError'
-      ? `Your quote request timed out. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`
-      : `Sorry, we could not send your quote request. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`;
-    setQuoteStatus(errorMessage, true);
-    trigger.textContent = originalLabel;
-    trigger.disabled = false;
-    quoteSubmitBtn.disabled = false;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
 
 function calcKitchenTotals(){
   const pkg = packageById();
@@ -655,7 +524,6 @@ function layoutIcon(id){
   if(id==='ushape') return `<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H30 V45 H70 V10 H90 V60 H10 Z" ${s}/></svg>`;
   if(id==='lshape') return `<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H90 V30 H40 V60 H10 Z" ${s}/></svg>`;
   if(id==='galley') return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="10" y="46" width="80" height="14" ${s}/></svg>`;
-  if(id==='island') return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
   return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
 }
 
@@ -875,8 +743,9 @@ function updateKitchenNav(){
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
   backBtn.disabled = kState.step===KITCHEN_FIRST_STEP;
+  backBtn.setAttribute('aria-disabled', backBtn.disabled ? 'true' : 'false');
   if(kState.step===KITCHEN_REVIEW_STEP){
-    nextBtn.textContent = 'Review Design';
+    nextBtn.textContent = 'Design Complete';
     nextBtn.disabled = true;
   }else if(kState.step===KITCHEN_CONFIG_LAST_STEP){
     nextBtn.textContent = 'Review Design';
@@ -885,6 +754,7 @@ function updateKitchenNav(){
     nextBtn.textContent = 'Next →';
     nextBtn.disabled = false;
   }
+  nextBtn.setAttribute('aria-disabled', nextBtn.disabled ? 'true' : 'false');
 }
 
 function renderKitchenWizard(){
@@ -995,7 +865,291 @@ function initKitchenWizard(){
 }
 
 /* ============================================================
-   PACKAGE CARDS (bathroom only)
+   BATHROOM WIZARD
+============================================================ */
+function calcBathroomTotals(){
+  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
+  if(!pkg) return null;
+  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
+  const tMod = tapware.find(t=>t.id===bState.tap).mod;
+  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
+  const ledMod = bState.ledMirror?550:0;
+  const elecMod = bState.elecPlumb?1500:0;
+  const addOn = vMod+tMod+sMod+ledMod+elecMod;
+  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vMod, tMod, sMod, ledMod, elecMod};
+}
+
+function getBathroomPreviewSVG(view){
+  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
+  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
+  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
+  const tap = tapware.find(t=>t.id===bState.tap).hex;
+  if(view==='3d'){
+    const shade=(hex,amt)=>{const c=String(hex || '').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
+    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};
+    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
+    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
+    parts+=isoBox(60,260,140,55,34,vColor,shade(vColor,25),shade(vColor,-30));
+    parts+=`<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
+    if(bState.ledMirror) parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
+    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
+    parts+=isoBox(300,260,90,190,60,'#dbeef2','#eef9fb','#c3dee3');
+    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;">${parts}</svg>`;
+  }
+  const isFreestanding=bState.vanityStyle==='freestanding';
+  const isFramed=bState.screen==='framed';
+  const mirrorGlow=bState.ledMirror?`<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>`:'';
+  return `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;">
+    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
+    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
+    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
+    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
+    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
+    ${isFreestanding?`<rect x="20" y="150" width="150" height="4" fill="#00000022"/>`:`<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
+    <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
+    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
+    <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
+    ${mirrorGlow}
+  </svg>`;
+}
+
+function getBathroomSummaryText(){
+  const t = calcBathroomTotals();
+  if(!t) return 'No package selected.';
+  return [
+    `PACKAGE: ${t.pkg.name} ($${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()})`,
+    `VANITY: ${getSelectionName(vanityStyles, bState.vanityStyle)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
+    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `WALL TILE: ${getSelectionName(wallTiles, bState.wallTile)}`,
+    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tMod?'+$'+t.tMod.toLocaleString():'included'}`,
+    `SHOWER SCREEN: ${getSelectionName(showerScreens, bState.screen)} — ${t.sMod?'+$'+t.sMod.toLocaleString():'included'}`,
+    `LED MIRROR: ${bState.ledMirror?'Yes (+$550)':'No'}`,
+    `ELECTRICAL & PLUMBING UPGRADE: ${bState.elecPlumb?'Yes (+$1,500)':'No'}`,
+    `PRICE RANGE: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}`
+  ].join('\n');
+}
+
+function renderBathroomSidebar(){
+  const list = document.getElementById('bathroomStepsList');
+  list.innerHTML = bathroomSteps.map(step=>{
+    const complete = !!bState.completed[step.id];
+    return `<div class="kitchen-step-item ${bState.step===step.id?'active':''} ${complete?'completed':''}" data-bstep="${step.id}" role="button" tabindex="0" aria-label="Go to ${step.title}">
+      <div class="kitchen-step-index">${complete?'✓':step.id}</div>
+      <div class="kitchen-step-meta"><strong>${step.title}</strong><span>${step.desc}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderBathroomRunningTotal(){
+  const box = document.getElementById('bathroomRunningTotal');
+  if(bState.step===1 || !bState.pkg){ box.style.display='none'; return; }
+  const t = calcBathroomTotals();
+  if(!t){ box.style.display='none'; return; }
+  box.style.display = 'block';
+  box.innerHTML = `Price Range <span class="kitchen-total-amount">$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span>`;
+}
+
+function bSwatchCards(list, activeId, dataAttr){
+  return `<div class="kitchen-cards cols-3">${list.map(item=>`
+    <article class="kitchen-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}">
+      ${item.hex?`<div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>`:''}
+      <h4 style="font-size:14px;">${item.name||item.brand}</h4>
+      ${'mod' in item ? `<span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>`:'' }
+    </article>`).join('')}</div>`;
+}
+
+function renderBathroomStepContent(){
+  const container = document.getElementById('bathroomStepContent');
+  const step = bathroomSteps.find(s=>s.id===bState.step);
+  let content = `<div class="kitchen-step-head">
+    <div><h3>Step ${step.id}: ${step.title}</h3><p>${step.desc}</p></div>
+    ${bState.completed[step.id]?'<span class="kitchen-completed-badge">Completed</span>':''}
+  </div>`;
+
+  if(bState.step===1){
+    content += `<div class="kitchen-cards">${bathroomPackages.map(pkg=>`
+      <article class="kitchen-card ${bState.pkg===pkg.id?'selected':''}" data-bpkg="${pkg.id}">
+        ${pkg.badge?`<div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">${pkg.badge}</div>`:''}
+        <div style="font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">${pkg.theme}</div>
+        <h4>${pkg.name}</h4>
+        <div class="kitchen-range">$${pkg.low.toLocaleString()} – $${pkg.high.toLocaleString()}</div>
+        <ul style="margin:8px 0 10px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;">${pkg.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+        <div class="kitchen-suppliers">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
+      </article>`).join('')}</div>`;
+  }
+
+  if(bState.step===2){
+    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Vanity Style</p>
+    ${bSwatchCards(vanityStyles, bState.vanityStyle, 'data-bvanity')}
+    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Cabinet Colour</p>
+    ${bSwatchCards(vanityColors, bState.vanityColor, 'data-bvcolor')}`;
+  }
+
+  if(bState.step===3){
+    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Floor Tile</p>
+    ${bSwatchCards(floorTiles, bState.floorTile, 'data-bfloor')}
+    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Wall Tile</p>
+    ${bSwatchCards(wallTiles, bState.wallTile, 'data-bwall')}`;
+  }
+
+  if(bState.step===4){
+    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Tapware Finish</p>
+    <div class="kitchen-cards cols-3">${tapware.map(item=>`
+      <article class="kitchen-card ${bState.tap===item.id?'selected':''}" data-btap="${item.id}">
+        <div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>
+        <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">${item.brand}</div>
+        <h4 style="font-size:14px;">${item.name}</h4>
+        <span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>
+      </article>`).join('')}</div>
+    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Shower Screen</p>
+    ${bSwatchCards(showerScreens, bState.screen, 'data-bscreen')}`;
+  }
+
+  if(bState.step===5){
+    content += `<div class="kitchen-toggle-grid">
+      <article class="kitchen-toggle ${bState.ledMirror?'on':''}" data-btoggle="ledMirror">
+        <div><h4>LED Backlit Mirror</h4><p>Touch-sensor demister mirror.</p><span class="kitchen-mod">+$550</span></div>
+        <div class="check">${bState.ledMirror?'✓':''}</div>
+      </article>
+      <article class="kitchen-toggle ${bState.elecPlumb?'on':''}" data-btoggle="elecPlumb">
+        <div><h4>Electrical &amp; Plumbing Upgrade</h4><p>New points, exhaust fan, water relocation.</p><span class="kitchen-mod">+$1,500</span></div>
+        <div class="check">${bState.elecPlumb?'✓':''}</div>
+      </article>
+    </div>`;
+  }
+
+  if(bState.step===6){
+    const t = calcBathroomTotals();
+    content += `<div class="kitchen-review-grid">
+      <div>
+        <div class="kitchen-preview">
+          <div class="view-toggle" style="margin-bottom:10px;">
+            <div class="kitchen-nav-btn ${bState.view==='2d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="2d">2D Elevation</div>
+            <div class="kitchen-nav-btn ${bState.view==='3d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="3d">3D Isometric</div>
+          </div>
+          <div style="overflow:hidden;">${getBathroomPreviewSVG(bState.view)}</div>
+          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
+        </div>
+      </div>
+      <div>
+        <div class="kitchen-summary" style="margin-bottom:14px;"><pre>${getBathroomSummaryText()}</pre></div>
+        ${t?`<div class="kitchen-price-breakdown">
+          <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
+          <div class="line"><span>Vanity Style</span><span>${t.vMod?'+$'+t.vMod.toLocaleString():'included'}</span></div>
+          <div class="line"><span>Tapware</span><span>${t.tMod?'+$'+t.tMod.toLocaleString():'included'}</span></div>
+          <div class="line"><span>Shower Screen</span><span>${t.sMod?'+$'+t.sMod.toLocaleString():'included'}</span></div>
+          <div class="line"><span>LED Mirror</span><span>${t.ledMod?'+$'+t.ledMod.toLocaleString():'not included'}</span></div>
+          <div class="line"><span>Elec &amp; Plumbing</span><span>${t.elecMod?'+$'+t.elecMod.toLocaleString():'not included'}</span></div>
+          <div class="line"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
+        </div>
+        <button type="button" id="bathroomQuoteBtn" class="kitchen-nav-btn primary" style="width:100%;margin-top:10px;">Request This Quote</button>
+        <div style="font-size:11px;color:#7f7667;margin-top:6px;">(Fixed quote after free consultation)</div>`
+        :'<p style="color:#a14f39;">Please complete steps 1–5 first.</p>'}
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML = content;
+  updateBathroomNav();
+  renderBathroomRunningTotal();
+}
+
+function updateBathroomNav(){
+  const backBtn = document.getElementById('bathroomBackBtn');
+  const nextBtn = document.getElementById('bathroomNextBtn');
+  backBtn.disabled = bState.step===BATHROOM_FIRST_STEP;
+  backBtn.setAttribute('aria-disabled', backBtn.disabled?'true':'false');
+  if(bState.step===BATHROOM_REVIEW_STEP){
+    nextBtn.textContent = 'Review Design';
+    nextBtn.disabled = true;
+  } else {
+    nextBtn.textContent = 'Next →';
+    nextBtn.disabled = false;
+  }
+  nextBtn.setAttribute('aria-disabled', nextBtn.disabled?'true':'false');
+}
+
+function renderBathroomWizard(){
+  renderBathroomSidebar();
+  renderBathroomStepContent();
+}
+
+function changeBathroomStep(delta){
+  if(delta>0) bState.completed[bState.step] = true;
+  bState.step = Math.max(BATHROOM_FIRST_STEP, Math.min(BATHROOM_TOTAL_STEPS, bState.step + delta));
+  renderBathroomWizard();
+}
+
+function initBathroomWizard(){
+  const stepsList = document.getElementById('bathroomStepsList');
+  const stepContent = document.getElementById('bathroomStepContent');
+  const backBtn = document.getElementById('bathroomBackBtn');
+  const nextBtn = document.getElementById('bathroomNextBtn');
+
+  stepsList.addEventListener('click', (e)=>{
+    const item = e.target.closest('[data-bstep]');
+    if(!item) return;
+    bState.step = Number(item.dataset.bstep);
+    renderBathroomWizard();
+  });
+  stepsList.addEventListener('keydown', (e)=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const item = e.target.closest('[data-bstep]');
+    if(!item) return;
+    e.preventDefault();
+    bState.step = Number(item.dataset.bstep);
+    renderBathroomWizard();
+  });
+
+  backBtn.addEventListener('click', ()=>changeBathroomStep(-1));
+  nextBtn.addEventListener('click', ()=>changeBathroomStep(1));
+
+  stepContent.addEventListener('click', (e)=>{
+    const pkg = e.target.closest('[data-bpkg]');
+    if(pkg){ bState.pkg = pkg.dataset.bpkg; bState.completed[1]=true; renderBathroomWizard(); return; }
+
+    const vanity = e.target.closest('[data-bvanity]');
+    if(vanity){ bState.vanityStyle = vanity.dataset.bvanity; bState.completed[2]=true; renderBathroomWizard(); return; }
+
+    const vcolor = e.target.closest('[data-bvcolor]');
+    if(vcolor){ bState.vanityColor = vcolor.dataset.bvcolor; bState.completed[2]=true; renderBathroomWizard(); return; }
+
+    const floor = e.target.closest('[data-bfloor]');
+    if(floor){ bState.floorTile = floor.dataset.bfloor; bState.completed[3]=true; renderBathroomWizard(); return; }
+
+    const wall = e.target.closest('[data-bwall]');
+    if(wall){ bState.wallTile = wall.dataset.bwall; bState.completed[3]=true; renderBathroomWizard(); return; }
+
+    const tap = e.target.closest('[data-btap]');
+    if(tap){ bState.tap = tap.dataset.btap; bState.completed[4]=true; renderBathroomWizard(); return; }
+
+    const screen = e.target.closest('[data-bscreen]');
+    if(screen){ bState.screen = screen.dataset.bscreen; bState.completed[4]=true; renderBathroomWizard(); return; }
+
+    const toggle = e.target.closest('[data-btoggle]');
+    if(toggle){
+      const key = toggle.dataset.btoggle;
+      bState[key] = !bState[key];
+      bState.completed[5] = true;
+      renderBathroomWizard();
+      return;
+    }
+
+    const viewBtn = e.target.closest('[data-bview]');
+    if(viewBtn){ bState.view = viewBtn.dataset.bview; renderBathroomStepContent(); return; }
+
+    const quoteBtn = e.target.closest('#bathroomQuoteBtn');
+    if(quoteBtn){
+      openQuoteModal('Bathroom Renovation', buildBathroomQuoteMessage(), quoteBtn);
+      return;
+    }
+  });
+
+  renderBathroomWizard();
+}
+
+/* ============================================================
+   PACKAGE CARDS (kept for compatibility — no longer used)
 ============================================================ */
 function renderPkgGrid(gridId, packages, state, onSelect){
   const grid = document.getElementById(gridId);
@@ -1102,10 +1256,7 @@ function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
 }
 function shade(hex, amt){
   const c = String(hex || '').replace('#','');
-  if(!/^[0-9a-fA-F]{6}$/.test(c)){
-    console.warn(`Invalid hex colour passed to shade(): "${hex}"`);
-    return '#808080';
-  }
+  if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';
   const num = parseInt(c,16);
   let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
   r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
@@ -1175,17 +1326,130 @@ function updateBathroomPrice(){
 }
 function updateBathroom(){ updateBathroomPreview(); updateBathroomPrice(); }
 
-/* ============================================================
-   INIT + TABS + VIEW TOGGLES
-============================================================ */
-function onBathroomPkgSelect(){
-  renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
-  document.getElementById('bathroomConfig').classList.add('show');
-  renderBathroomOptions(); updateBathroom();
+function getSelectionName(options, id){
+  const match = options.find(option=>option.id===id);
+  return match ? match.name : 'Not selected';
 }
 
+function buildKitchenQuoteMessage(){
+  const totals = calcKitchenTotals();
+  return [
+    'Kitchen renovation quote request from the MIC NSW design studio.',
+    `Estimated total: $${totals.total.toLocaleString()}+`,
+    '',
+    kitchenDesignSummaryText()
+  ].join('\n');
+}
+
+function buildBathroomQuoteMessage(){
+  const t = calcBathroomTotals();
+  return [
+    'Bathroom renovation quote request from the MIC NSW design studio.',
+    t ? `Estimated price range: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}` : 'No package selected.',
+    '',
+    getBathroomSummaryText()
+  ].join('\n');
+}
+
+const quoteModal = document.getElementById('quoteModal');
+const quoteModalTitle = document.getElementById('quoteModalTitle');
+const quoteCloseBtn = document.getElementById('quoteCloseBtn');
+const quoteRequestForm = document.getElementById('quoteRequestForm');
+const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
+const quoteCancelBtn = document.getElementById('quoteCancelBtn');
+const quoteSummaryText = document.getElementById('quoteSummaryText');
+const quoteFormStatus = document.getElementById('quoteFormStatus');
+let pendingQuoteRequest = null;
+
+function setQuoteStatus(message, isError=false){
+  quoteFormStatus.textContent = message;
+  quoteFormStatus.classList.toggle('error', isError);
+}
+
+function closeQuoteModal(){
+  quoteModal.classList.remove('show');
+  quoteModal.setAttribute('aria-hidden', 'true');
+  quoteSubmitBtn.disabled = false;
+  setQuoteStatus('');
+  const triggerBtn = pendingQuoteRequest && pendingQuoteRequest.button;
+  pendingQuoteRequest = null;
+  if(triggerBtn && document.contains(triggerBtn)){
+    try { triggerBtn.focus(); } catch(e){ /* focus restoration is best-effort */ }
+  }
+}
+
+function openQuoteModal(serviceName, message, button){
+  pendingQuoteRequest = { serviceName, message, button, originalLabel: button.textContent };
+  quoteModalTitle.textContent = `Request Your ${serviceName} Quote`;
+  quoteRequestForm.reset();
+  quoteSummaryText.value = message;
+  setQuoteStatus('');
+  quoteModal.classList.add('show');
+  quoteModal.setAttribute('aria-hidden', 'false');
+  document.getElementById('quoteName').focus();
+}
+
+async function submitQuoteRequest(contact){
+  if(!pendingQuoteRequest){
+    console.warn('Quote submission attempted without an active quote request.');
+    setQuoteStatus(`Sorry, something went wrong. Please reopen the quote form or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`, true);
+    return;
+  }
+  const { serviceName, message, button, originalLabel } = pendingQuoteRequest;
+
+  button.disabled = true;
+  button.textContent = 'Sending quote request...';
+  quoteSubmitBtn.disabled = true;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(()=>controller.abort(), QUOTE_REQUEST_TIMEOUT_MS);
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `${serviceName} Quote Request`,
+        from_name: contact.from_name,
+        email: contact.email,
+        phone: contact.phone,
+        message
+      })
+    });
+    const result = await response.json();
+    if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request.');
+
+    button.textContent = 'Quote request sent ✓';
+    quoteSubmitBtn.disabled = false;
+    setQuoteStatus(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
+    setTimeout(()=>{
+      button.textContent = originalLabel;
+      button.disabled = false;
+      closeQuoteModal();
+    }, 2500);
+  } catch (error) {
+    const errorMessage = error && error.name === 'AbortError'
+      ? `Your quote request timed out. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`
+      : `Sorry, we could not send your quote request. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`;
+    setQuoteStatus(errorMessage, true);
+    button.textContent = originalLabel;
+    button.disabled = false;
+    quoteSubmitBtn.disabled = false;
+    return;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/* ============================================================
+   INIT + TABS
+============================================================ */
 initKitchenWizard();
-renderPkgGrid('bathroomPkgGrid', bathroomPackages, bState, onBathroomPkgSelect);
+initBathroomWizard();
 
 document.querySelectorAll('.tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
@@ -1197,23 +1461,10 @@ document.querySelectorAll('.tab').forEach(tab=>{
   });
 });
 
-document.querySelectorAll('.view-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const target = btn.dataset.target;
-    document.querySelectorAll(`.view-btn[data-target="${target}"]`).forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    if(target==='bathroom'){ bState.view = btn.dataset.view; updateBathroomPreview(); }
-  });
-});
-
-document.querySelector('#bathroom-tab .cta-final').addEventListener('click', event=>{
-  openQuoteModal('Bathroom Renovation', buildBathroomQuoteMessage(), event.currentTarget);
-});
-
 quoteCloseBtn.addEventListener('click', closeQuoteModal);
 quoteCancelBtn.addEventListener('click', closeQuoteModal);
-quoteModal.addEventListener('click', event=>{
-  if(event.target===quoteModal) closeQuoteModal();
+quoteModal.addEventListener('click', e=>{
+  if(e.target === quoteModal) closeQuoteModal();
 });
 quoteModal.addEventListener('keydown', event=>{
   if(event.key==='Escape'){ closeQuoteModal(); return; }
@@ -1225,14 +1476,20 @@ quoteModal.addEventListener('keydown', event=>{
   if(event.shiftKey && document.activeElement===first){ event.preventDefault(); last.focus(); }
   else if(!event.shiftKey && document.activeElement===last){ event.preventDefault(); first.focus(); }
 });
-quoteRequestForm.addEventListener('submit', event=>{
-  event.preventDefault();
+quoteRequestForm.addEventListener('submit', e=>{
+  e.preventDefault();
   if(!quoteRequestForm.reportValidity()) return;
-  submitQuoteRequest({
-    from_name: document.getElementById('quoteName').value.trim(),
-    email: document.getElementById('quoteEmail').value.trim(),
-    phone: document.getElementById('quotePhone').value.trim()
-  });
+
+  const from_name = document.getElementById('quoteName').value.trim();
+  const email = document.getElementById('quoteEmail').value.trim();
+  const phone = document.getElementById('quotePhone').value.trim();
+
+  if(!from_name || !email || !phone){
+    setQuoteStatus('Please enter your name, email, and phone number.', true);
+    return;
+  }
+
+  submitQuoteRequest({ from_name, email, phone });
 });
 </script>
 <footer style="background:var(--navy);color:#c9c2b3;padding:50px 20px 26px;margin-top:20px;">
