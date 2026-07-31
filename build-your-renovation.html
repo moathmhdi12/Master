@@ -206,6 +206,123 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   #kitchenStepsList{display:grid;overflow:visible;}
   .kitchen-step-item{min-width:0;}
 }
+
+/* =========================================================
+ PREMIUM BATHROOM CONFIGURATOR — new luxury UX styles
+ ========================================================= */
+.bath-wizard{display:grid;grid-template-columns:1fr 380px;gap:26px;align-items:start;}
+.bath-main{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,.06);}
+.bath-step-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:18px;}
+.bath-step-head h3{margin:0;color:var(--navy);font-family:'Fraunces',Georgia,serif;font-size:26px;}
+.bath-step-head p{margin:7px 0 0;color:#6b6555;font-size:14px;line-height:1.5;}
+.bath-progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.bath-progress .dot{width:10px;height:10px;border-radius:50%;background:#e1d9c8;transition:.25s;}
+.bath-progress .dot.active{background:var(--gold);box-shadow:0 0 8px rgba(169,129,47,.45);}
+.bath-progress .dot.completed{background:var(--sage);}
+.bath-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.bath-search{flex:1;min-width:180px;padding:10px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fbf9f3;font:inherit;font-size:13px;}
+.bath-search:focus{outline:none;border-color:var(--gold);}
+.bath-filter{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;}
+.bath-filter:hover{border-color:var(--gold);}
+.bath-cards{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr));animation:bathFade .25s ease;}
+.bath-cards.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+@keyframes bathFade{from{opacity:.2;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.bath-card{position:relative;border:1.5px solid var(--line);background:var(--cream);border-radius:16px;padding:14px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;overflow:hidden;}
+.bath-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 12px 26px rgba(21,23,26,.1);border-color:#d4c9b2;}
+.bath-card.selected{border-color:var(--gold);box-shadow:0 0 0 1px rgba(169,129,47,.5) inset,0 12px 28px rgba(169,129,47,.18);}
+.bath-card.selected::after{content:"✓";position:absolute;top:10px;right:10px;background:var(--gold);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;z-index:2;}
+.bath-card .media{aspect-ratio:4/3;background:#f2efe8;border-radius:12px;margin-bottom:12px;overflow:hidden;position:relative;border:1px solid var(--line);}
+.bath-card .media svg,.bath-card .media img{width:100%;height:100%;object-fit:cover;display:block;}
+.bath-card .badges{display:flex;gap:5px;flex-wrap:wrap;position:absolute;top:8px;left:8px;z-index:2;}
+.bath-card .badges span{font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:4px 8px;border-radius:20px;color:#fff;}
+.bath-card .badge-luxury{background:linear-gradient(135deg,#b8963a,#8a6a26);}
+.bath-card .badge-bestseller{background:#2f4a42;}
+.bath-card .badge-new{background:#4a4e52;}
+.bath-card .badge-eco{background:#5b7f52;}
+.bath-card .brand{display:inline-block;font-size:10px;font-weight:800;color:var(--gold-dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.bath-card .collection{font-size:12px;color:#8a8478;margin-bottom:3px;}
+.bath-card h4{margin:0 0 4px;font-family:'Fraunces',Georgia,serif;font-size:15px;color:var(--navy);line-height:1.25;}
+.bath-card .specs{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px;}
+.bath-card .specs span{font-size:10px;color:#6b6555;background:#f2efe8;border:1px solid var(--line);padding:3px 7px;border-radius:8px;}
+.bath-card .desc{font-size:12px;color:#7a7460;line-height:1.4;margin:6px 0 0;}
+.bath-card .foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:10px;gap:8px;}
+.bath-card .price{font-size:14px;font-weight:700;color:var(--gold-dark);white-space:nowrap;}
+.bath-card .warranty{font-size:10px;color:#9a9384;text-transform:uppercase;letter-spacing:.3px;}
+.bath-subheading{font-size:12px;font-weight:700;color:#7a7460;text-transform:uppercase;letter-spacing:.45px;margin:18px 0 10px;}
+.bath-layout-card .media svg{stroke:#1c2b33;stroke-width:3.5;fill:#e9e4d6;}
+.bath-layout-card .meta{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:11px;color:#6b6555;margin-top:8px;}
+.bath-layout-card .meta strong{color:var(--navy);}
+.bath-layout-card:hover .media svg{stroke:var(--gold);}
+.bath-color-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.bath-color-btn{width:46px;height:46px;border-radius:12px;border:2px solid transparent;cursor:pointer;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transition:.15s;}
+.bath-color-btn.selected{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,129,47,.2);}
+.bath-color-btn::after{content:attr(data-name);position:absolute;left:50%;transform:translateX(-50%);bottom:-20px;font-size:10px;color:#675f50;white-space:nowrap;}
+.bath-color-wrap{padding-bottom:22px;}
+.bath-toggle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.bath-toggle{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1.5px solid var(--line);background:var(--cream);border-radius:14px;padding:14px;cursor:pointer;transition:.18s ease;}
+.bath-toggle:hover{border-color:var(--gold);box-shadow:0 8px 18px rgba(0,0,0,.08);}
+.bath-toggle.on{border-color:var(--gold);background:#fff8ea;}
+.bath-toggle h4{margin:0 0 3px;color:var(--navy);font-size:14px;}
+.bath-toggle p{margin:0;color:#6d6558;font-size:12px;}
+.bath-toggle .check{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;background:#d3c7ae;transition:.18s;}
+.bath-toggle.on .check{border-color:var(--gold);background:var(--gold);}
+.bath-sticky{position:sticky;top:20px;align-self:start;display:flex;flex-direction:column;gap:16px;}
+.bath-preview{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 8px 24px rgba(0,0,0,.06);}
+.bath-viewbar{display:flex;gap:8px;margin-bottom:12px;}
+.bath-viewbar .view-btn{flex:1;text-align:center;padding:9px;border-radius:10px;border:1.5px solid var(--line);background:#fbf9f3;color:var(--navy);font-size:12px;font-weight:700;cursor:pointer;transition:.15s;}
+.bath-viewbar .view-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.bath-preview-stage{background:#f2efe8;border-radius:14px;padding:12px;min-height:220px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.bath-preview svg{width:100%;height:auto;display:block;}
+.bath-details{background:#fbf9f3;border:1.5px solid var(--line);border-radius:16px;padding:16px;}
+.bath-details h5{margin:0 0 10px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:16px;}
+.bath-details .detail-img{background:#f2efe8;border-radius:12px;border:1px solid var(--line);aspect-ratio:16/10;margin-bottom:12px;overflow:hidden;}
+.bath-details .detail-img svg,.bath-details .detail-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.bath-details dl{margin:0;font-size:12px;line-height:1.55;color:#524a3f;}
+.bath-details dt{display:inline;font-weight:700;color:var(--navy);}
+.bath-details dd{display:inline;margin:0 0 8px;}
+.bath-summary{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.06);}
+.bath-summary h4{margin:0 0 12px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:18px;}
+.bath-summary .line{display:flex;justify-content:space-between;border-bottom:1px solid #ede6d6;padding:7px 0;font-size:12px;color:#524a3f;}
+.bath-summary .line strong{color:var(--navy);}
+.bath-summary .total-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;margin-top:6px;border-top:2px solid var(--gold);}
+.bath-summary .total-row strong{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:18px;}
+.bath-summary .total-row span{font-size:22px;font-weight:700;color:var(--gold-dark);animation:kitchenPricePop .24s ease;}
+.bath-summary .muted{font-size:11px;color:#9a9384;margin-top:8px;line-height:1.5;}
+.bath-cta{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(120deg,var(--gold),var(--gold-dark));color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;}
+.bath-cta:hover{filter:brightness(1.05);transform:translateY(-1px);}
+.bath-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px;}
+.bath-nav-btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-size:14px;font-weight:700;cursor:pointer;transition:.15s;}
+.bath-nav-btn:hover:not(:disabled){border-color:var(--gold);}
+.bath-nav-btn.primary{background:linear-gradient(120deg,var(--gold),var(--gold-dark));border-color:var(--gold-dark);color:#fff;}
+.bath-nav-btn:disabled{opacity:.45;cursor:not-allowed;}
+.bath-review-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:14px;}
+.bath-review-list{font-size:12px;line-height:1.6;color:#4b463d;background:#fbf9f3;border:1.5px solid var(--line);border-radius:14px;padding:14px;}
+.bath-review-list div{display:flex;justify-content:space-between;border-bottom:1px solid #ede6d6;padding:6px 0;}
+.bath-review-list div:last-child{border-bottom:none;}
+.bath-review-list span:first-child{color:#6b6555;}
+.bath-review-list span:last-child{font-weight:600;color:var(--navy);text-align:right;max-width:60%;}
+.bath-empty-state{color:#7a7460;text-align:center;padding:40px 20px;}
+.bath-empty-state h4{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:20px;margin-bottom:8px;}
+.bath-empty-state p{font-size:13px;line-height:1.5;max-width:420px;margin:0 auto;}
+
+@media (max-width:1199px){
+.bath-wizard{grid-template-columns:1fr;}
+.bath-sticky{position:static;}
+.bath-cards,.bath-cards.cols-3,.bath-toggle-grid,.bath-review-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:767px){
+.bath-main{padding:16px;}
+.bath-step-head h3{font-size:22px;}
+.bath-cards,.bath-cards.cols-3,.bath-toggle-grid,.bath-review-grid{grid-template-columns:1fr;}
+.bath-nav{flex-direction:column;}
+.bath-nav-btn{width:100%;}
+.bath-toolbar .bath-search{width:100%;}
+.bath-bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1.5px solid var(--line);padding:10px 14px 14px;display:flex;justify-content:space-between;gap:10px;z-index:100;box-shadow:0 -6px 20px rgba(0,0,0,.08);}
+.bath-bottom-nav .bath-nav-btn{flex:1;}
+}
+@media (min-width:768px){
+.bath-bottom-nav{display:none;}
+}
 </style>
 </head>
 <body>
@@ -247,19 +364,49 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
   <!-- ============ BATHROOM ============ -->
   <div id="bathroom-tab" style="display:none;">
-    <div class="kitchen-wizard" id="bathroomWizard">
-      <aside class="kitchen-sidebar" aria-label="Bathroom design steps">
-        <h2>Design Your Bathroom</h2>
-        <div id="bathroomStepsList"></div>
-      </aside>
-      <section class="kitchen-main">
-        <div id="bathroomStepContent" class="kitchen-step-content" aria-live="polite"></div>
-        <div id="bathroomRunningTotal" class="kitchen-running-total" style="display:none;"></div>
-        <div class="kitchen-nav">
-          <button id="bathroomBackBtn" class="kitchen-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
-          <button id="bathroomNextBtn" class="kitchen-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
+    <div class="bath-wizard" id="bathroomWizard">
+      <div class="bath-flow">
+        <main class="bath-main" aria-labelledby="bathStepTitle">
+          <div id="bathroomStepContent" class="bath-step-content" aria-live="polite"></div>
+          <div class="bath-nav" aria-label="Bathroom wizard navigation">
+            <button id="bathroomBackBtn" class="bath-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
+            <button id="bathroomNextBtn" class="bath-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
+          </div>
+        </main>
+
+        <nav class="bath-bottom-nav" aria-label="Mobile bathroom navigation">
+          <button id="bathroomBackBtnMobile" class="bath-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
+          <button id="bathroomNextBtnMobile" class="bath-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
+        </nav>
+      </div>
+
+      <aside class="bath-sticky" aria-label="Bathroom design preview and summary">
+        <div class="bath-preview">
+          <h4 class="bath-preview-title" style="margin:0 0 12px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:18px;">Live Preview</h4>
+          <div class="bath-viewbar" role="tablist" aria-label="Preview view">
+            <button class="view-btn active" type="button" data-bview="2d" role="tab" aria-selected="true" aria-controls="bathroomPreviewStage">2D Plan</button>
+            <button class="view-btn" type="button" data-bview="3d" role="tab" aria-selected="false" aria-controls="bathroomPreviewStage">3D View</button>
+          </div>
+          <div id="bathroomPreviewStage" class="bath-preview-stage" aria-live="polite">
+            <div class="bath-empty-state">
+              <h4>Start Designing</h4>
+              <p>Choose a bathroom package to see your live 2D/3D preview update in real-time.</p>
+            </div>
+          </div>
+          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
         </div>
-      </section>
+
+        <div id="bathroomDetails" class="bath-details" style="display:none;" aria-live="polite">
+          <h5>Selection Details</h5>
+          <div id="bathroomDetailsMedia" class="detail-img"></div>
+          <dl id="bathroomDetailsText"></dl>
+        </div>
+
+        <div id="bathroomSummary" class="bath-summary" style="display:none;" aria-live="polite">
+          <h4>Your Bathroom Summary</h4>
+          <div id="bathroomSummaryBody"></div>
+        </div>
+      </aside>
     </div>
   </div>
 </div>
@@ -404,40 +551,141 @@ const kitchenUpgradeOptions = [
 ];
 
 /* Bathroom data */
+/* ---------- Luxury Bathroom Data ---------- */
 const bathroomPackages = [
-  {id:'essential', theme:'Sydney Essentials', name:'Essential Bathroom', badge:null, low:18000, high:26000,
+  {id:'essential', theme:'Sydney Essentials', name:'Essential Bathroom', badge:null, low:18000, high:26000, estBuildDays:14, estInstallDays:8,
    items:['Full strip-out & re-waterproofing','Ceramic wall & floor tiles','Standard vanity','Caroma tapware, semi-frameless screen'],
    suppliers:['Bunnings / Caroma','Beaumont Tiles','Methven Tapware']},
-  {id:'premium', theme:'Sydney Premium', name:'Premium Bathroom', badge:'MOST POPULAR', low:28000, high:45000,
+  {id:'premium', theme:'Sydney Premium', name:'Premium Bathroom', badge:'MOST POPULAR', low:28000, high:45000, estBuildDays:18, estInstallDays:10,
    items:['Full strip-out & re-waterproofing','Large-format porcelain tiles','Floating vanity','Phoenix tapware, frameless screen'],
    suppliers:['Reece','National Tiles','Phoenix Tapware']},
-  {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000,
+  {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000, estBuildDays:25, estInstallDays:14,
    items:['Full strip-out, re-waterproof & re-plumb','Natural stone-look porcelain','Freestanding bath','Brushed brass/black tapware, LED mirror'],
    suppliers:['Custom Joinery','Signorino / Artedomus','Nero / Sussex Taps']}
 ];
 
-const vanityStyles = [
-  {id:'wallhung', name:'Wall-Hung', mod:0},{id:'freestanding', name:'Freestanding', mod:900},{id:'timber', name:'Timber Vanity', mod:1400}
+const bathroomLayouts = [
+  {id:'single-wall', name:'Single Wall', dims:'2.0m × 2.8m', rec:'2.2m × 3.0m', apartment:true, family:false,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="22" fill="#e9e4d6"/><rect x="20" y="45" width="32" height="22" rx="2" fill="#e9e4d6"/><rect x="70" y="45" width="28" height="22" rx="2" fill="#e9e4d6"/></svg>'},
+  {id:'corner', name:'Corner Bathroom', dims:'2.2m × 2.4m', rec:'2.4m × 2.8m', apartment:true, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="50" height="22" fill="#e9e4d6"/><rect x="15" y="42" width="26" height="33" fill="#e9e4d6"/><rect x="68" y="45" width="32" height="22" rx="2" fill="#e9e4d6"/></svg>'},
+  {id:'walkin', name:'Walk-In Shower', dims:'2.4m × 3.0m', rec:'2.6m × 3.2m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="12" fill="#e9e4d6"/><rect x="20" y="35" width="34" height="22" rx="2" fill="#e9e4d6"/><rect x="70" y="35" width="30" height="40" fill="#e9e4d6"/><line x1="70" y1="35" x2="70" y2="75" stroke="#1C2B33" stroke-width="2" stroke-dasharray="3,2"/></svg>'},
+  {id:'freestanding-bath', name:'Freestanding Bath Layout', dims:'2.6m × 3.2m', rec:'2.8m × 3.5m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><ellipse cx="75" cy="45" rx="22" ry="14" fill="#e9e4d6"/><rect x="20" y="35" width="32" height="22" rx="2" fill="#e9e4d6"/><rect x="15" y="15" width="90" height="12" fill="#e9e4d6"/></svg>'},
+  {id:'double-vanity', name:'Double Vanity Layout', dims:'2.8m × 3.4m', rec:'3.0m × 3.6m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="22" fill="#e9e4d6"/><rect x="20" y="45" width="26" height="22" rx="2" fill="#e9e4d6"/><rect x="52" y="45" width="26" height="22" rx="2" fill="#e9e4d6"/><rect x="85" y="42" width="16" height="30" fill="#e9e4d6"/></svg>'},
+  {id:'ensuite', name:'Luxury Ensuite', dims:'2.2m × 2.8m', rec:'2.4m × 3.0m', apartment:true, family:false,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="18" fill="#e9e4d6"/><rect x="20" y="40" width="28" height="18" rx="2" fill="#e9e4d6"/><rect x="68" y="40" width="32" height="30" fill="#e9e4d6"/><line x1="68" y1="40" x2="68" y2="70" stroke="#1C2B33" stroke-width="2" stroke-dasharray="3,2"/></svg>'},
+  {id:'compact', name:'Compact Bathroom', dims:'1.8m × 2.4m', rec:'2.0m × 2.6m', apartment:true, family:false,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="20" fill="#e9e4d6"/><rect x="20" y="42" width="28" height="22" rx="2" fill="#e9e4d6"/><rect x="70" y="42" width="28" height="26" fill="#e9e4d6"/></svg>'},
+  {id:'large-family', name:'Large Family Bathroom', dims:'3.0m × 4.0m', rec:'3.2m × 4.2m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="18" fill="#e9e4d6"/><rect x="20" y="40" width="24" height="18" rx="2" fill="#e9e4d6"/><rect x="50" y="40" width="24" height="18" rx="2" fill="#e9e4d6"/><ellipse cx="85" cy="55" rx="14" ry="9" fill="#e9e4d6"/></svg>'}
+];
+
+const vanities = [
+  {id:'floating', name:'Floating Vanity', type:'Floating', brand:'ADP', collection:'Glacier', material:'Moisture-resistant MDF', finish:'Satin', dims:'900mm W', drawers:'2 soft-close', stone:'Carrara-look ceramic', softClose:true, colors:['white','oak','black','sage'], mod:0, warranty:'7 years', rating:'4 Star WELS', badge:'best'},
+  {id:'freestanding', name:'Freestanding Vanity', type:'Freestanding', brand:'Timberline', collection:'Bastian', material:'Solid oak & plywood', finish:'Natural oak', dims:'1200mm W', drawers:'3 soft-close', stone:'Engineered stone', softClose:true, colors:['oak','black','white'], mod:900, warranty:'10 years', rating:'4 Star WELS', badge:'luxury'},
+  {id:'double', name:'Double Vanity', type:'Double', brand:'Kado', collection:'Arc', material:'Polyurethane', finish:'Matte', dims:'1500mm W', drawers:'4 soft-close', stone:'40mm engineered stone', softClose:true, colors:['white','black'], mod:2200, warranty:'10 years', rating:'4 Star WELS', badge:'luxury'},
+  {id:'timber', name:'Timber Vanity', type:'Timber', brand:'Loughlin Furniture', collection:'Coastal', material:'Tasmanian oak', finish:'Oiled', dims:'1050mm W', drawers:'2 timber-dovetail', stone:'Solid surface', softClose:true, colors:['oak'], mod:1800, warranty:'10 years', rating:'4 Star WELS', badge:'premium'},
+  {id:'stone', name:'Stone Vanity', type:'Stone', brand:'Marquis', collection:'Arco', material:'Concrete stone composite', finish:'Honed', dims:'900mm W', drawers:'2 push-to-open', stone:'Integrated stone basin', softClose:true, colors:['white','charcoal'], mod:2400, warranty:'10 years', rating:'5 Star WELS', badge:'luxury'},
+  {id:'custom', name:'Custom Vanity', type:'Custom', brand:'MIC Joinery', collection:'Bespoke', material:'Custom', finish:'Made-to-order', dims:'Any size', drawers:'Custom config', stone:'Your choice', softClose:true, colors:['white','oak','black','sage'], mod:4500, warranty:'7 years', rating:'4 Star WELS', badge:'new'}
 ];
 const vanityColors = [
   {id:'white', name:'Matte White', hex:'#F4F2ED'},{id:'oak', name:'Natural Oak', hex:'#C9A876'},
-  {id:'black', name:'Matte Black', hex:'#26282A'},{id:'sage', name:'Sage Green', hex:'#8A9A80'}
+  {id:'black', name:'Matte Black', hex:'#26282A'},{id:'sage', name:'Sage Green', hex:'#8A9A80'},{id:'charcoal', name:'Charcoal', hex:'#4A4E52'}
 ];
-const floorTiles = [
-  {id:'subway', name:'Matte Porcelain — Grey', hex:'#D8D2C4'},{id:'stone', name:'Stone-Look Porcelain', hex:'#C8C2B4'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'charcoal', name:'Charcoal Matte', hex:'#3A3D40'}
+
+const tileStyles = [
+  {id:'large-porcelain', name:'Large Porcelain', texture:'large', size:'600×1200mm', slip:'P3', brand:'National Tiles', hex:'#E8E4DA', eco:false, badge:'best'},
+  {id:'marble-look', name:'Marble Look', texture:'marble', size:'600×1200mm', slip:'P2', brand:'Signorino', hex:'#EAE6DC', eco:false, badge:'luxury'},
+  {id:'concrete', name:'Concrete', texture:'concrete', size:'600×600mm', slip:'P3', brand:'Beaumont Tiles', hex:'#B8B2A7', eco:true, badge:'eco'},
+  {id:'terrazzo', name:'Terrazzo', texture:'terrazzo', size:'600×600mm', slip:'P3', brand:'Artedomus', hex:'#DCD3C2', eco:false, badge:'new'},
+  {id:'travertine', name:'Travertine', texture:'travertine', size:'450×900mm', slip:'P2', brand:'Artedomus', hex:'#D5CDBA', eco:false, badge:'luxury'},
+  {id:'stone', name:'Stone', texture:'stone', size:'400×800mm', slip:'P4', brand:'National Tiles', hex:'#C8C2B4', eco:true, badge:'premium'},
+  {id:'timber-look', name:'Timber Look', texture:'timber', size:'200×1200mm', slip:'P3', brand:'Beaumont Tiles', hex:'#C9A876', eco:true, badge:'eco'},
+  {id:'matt', name:'Matt Ceramic', texture:'matt', size:'300×600mm', slip:'P3', brand:'National Tiles', hex:'#D8D2C4', eco:false, badge:null},
+  {id:'gloss', name:'Gloss Ceramic', texture:'gloss', size:'300×600mm', slip:'P2', brand:'Beaumont Tiles', hex:'#F7F6F2', eco:false, badge:null}
 ];
-const wallTiles = [
-  {id:'subway', name:'Subway Tile — White', hex:'#F7F6F2'},{id:'marble', name:'Marble-Look Large Format', hex:'#EAE6DC'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'black', name:'Matte Black Large Format', hex:'#2B2C2E'}
-];
+const floorTiles = tileStyles;
+const wallTiles = tileStyles;
+
 const tapware = [
-  {id:'chrome', brand:'Caroma', name:'Chrome', hex:'#C7CBCE', mod:0},{id:'black', brand:'Nero', name:'Matte Black', hex:'#26282A', mod:250},
-  {id:'brass', brand:'Sussex', name:'Brushed Brass', hex:'#C9A24B', mod:350},{id:'nickel', brand:'Phoenix', name:'Brushed Nickel', hex:'#A9ACAE', mod:300}
+  {id:'chrome', brand:'Caroma', name:'Chrome', finish:'Polished Chrome', hex:'#C7CBCE', mod:0, material:'Solid brass', warranty:'15 years', desc:'Timeless mirror finish that suits every bathroom.', badge:'best'},
+  {id:'black', brand:'Nero', name:'Matte Black', finish:'Matte Black', hex:'#26282A', mod:250, material:'Brass', warranty:'15 years', desc:'Bold modern finish for high-contrast designs.', badge:'premium'},
+  {id:'brass', brand:'Sussex', name:'Brushed Brass', finish:'Brushed Brass', hex:'#C9A24B', mod:350, material:'Solid brass', warranty:'15 years', desc:'Warm, luxurious brushed gold tone.', badge:'luxury'},
+  {id:'nickel', brand:'Phoenix', name:'Brushed Nickel', finish:'Brushed Nickel', hex:'#A9ACAE', mod:300, material:'Brass', warranty:'15 years', desc:'Subtle metallic sheen, fingerprint resistant.', badge:'premium'},
+  {id:'gunmetal', brand:'Nero', name:'Gunmetal', finish:'Gunmetal Grey', hex:'#4A4E52', mod:320, material:'Brass', warranty:'15 years', desc:'Industrial-luxe dark metallic finish.', badge:'new'},
+  {id:'rose-gold', brand:'Sussex', name:'Rose Gold', finish:'Rose Gold', hex:'#C98B7B', mod:380, material:'Brass', warranty:'15 years', desc:'Soft pink-gold statement finish.', badge:'luxury'}
 ];
+
 const showerScreens = [
-  {id:'framed', name:'Framed', mod:0},{id:'semi', name:'Semi-Frameless', mod:400},{id:'frameless', name:'Frameless', mod:900}
+  {id:'frameless', name:'Frameless Glass', type:'Frameless', glass:'10mm toughened', mod:900, brand:'Bathrooms By Design', warranty:'10 years', desc:'Minimalist fully frameless screen.', badge:'luxury'},
+  {id:'semi-frameless', name:'Semi-Frameless', type:'Semi-Frameless', glass:'6mm toughened', mod:400, brand:'Dorf', warranty:'7 years', desc:'Clean lines with slim top and bottom rails.', badge:'best'},
+  {id:'black-frame', name:'Black Frame', type:'Framed', glass:'6mm toughened', mod:550, brand:'Phoenix', warranty:'7 years', desc:'Industrial black aluminium framing.', badge:'premium'},
+  {id:'brass-frame', name:'Brass Frame', type:'Framed', glass:'6mm toughened', mod:750, brand:'Sussex', warranty:'10 years', desc:'Brushed brass framed statement screen.', badge:'luxury'},
+  {id:'sliding', name:'Sliding Door', type:'Sliding', glass:'6mm toughened', mod:600, brand:'Dorf', warranty:'7 years', desc:'Space-saving sliding entry door.', badge:'premium'},
+  {id:'pivot', name:'Pivot Door', type:'Pivot', glass:'6mm toughened', mod:500, brand:'Caroma', warranty:'7 years', desc:'Classic pivot opening for easy access.', badge:null},
+  {id:'walkin', name:'Walk-In', type:'Walk-In', glass:'10mm toughened', mod:1100, brand:'Bathrooms By Design', warranty:'10 years', desc:'Open wet-room panel, no door required.', badge:'luxury'},
+  {id:'corner', name:'Corner Shower', type:'Corner', glass:'6mm toughened', mod:650, brand:'Dorf', warranty:'7 years', desc:'Compact framed corner enclosure.', badge:null}
 ];
+
+const baths = [
+  {id:'freestanding', name:'Freestanding Bath', type:'Freestanding', material:'Acrylic', capacity:'180L', finish:'Gloss white', dims:'1500×750mm', brand:'Kado', mod:1800, warranty:'10 years', desc:'Sculptural centre-piece bath.', badge:'luxury'},
+  {id:'builtin', name:'Built-in Bath', type:'Built-in', material:'Steel enamel', capacity:'160L', finish:'Gloss white', dims:'1520×760mm', brand:'Caroma', mod:800, warranty:'10 years', desc:'Durable classic built-in bath.', badge:'best'},
+  {id:'back-to-wall', name:'Back-to-Wall Bath', type:'Back-to-Wall', material:'Acrylic', capacity:'170L', finish:'Gloss white', dims:'1500×750mm', brand:'Timberline', mod:1200, warranty:'10 years', desc:'Freestanding look with easy cleaning.', badge:'premium'},
+  {id:'corner-bath', name:'Corner Bath', type:'Corner', material:'Acrylic', capacity:'190L', finish:'Gloss white', dims:'1400×1400mm', brand:'Decina', mod:1400, warranty:'10 years', desc:'Maximise space with a relaxing corner fit.', badge:null},
+  {id:'stone-bath', name:'Luxury Stone Bath', type:'Stone', material:'Solid surface', capacity:'200L', finish:'Honed matte', dims:'1600×800mm', brand:'Apaiser', mod:5200, warranty:'10 years', desc:'Statement stone bath with thermal mass.', badge:'luxury'}
+];
+
+const toilets = [
+  {id:'wallhung', name:'Wall Hung Toilet', type:'Wall-Hung', brand:'Geberit', flush:'Rimless', efficiency:'4 Star WELS', warranty:'10 years', mod:1400, desc:'Floating pan for easy floor cleaning.', badge:'luxury'},
+  {id:'backtowall', name:'Back-To-Wall Toilet', type:'Back-To-Wall', brand:'Caroma', flush:'Rimless', efficiency:'4 Star WELS', warranty:'10 years', mod:600, desc:'Sleek close-coupled back-to-wall design.', badge:'best'},
+  {id:'closecoupled', name:'Close Coupled Toilet', type:'Close-Coupled', brand:'Mondella', flush:'Dual flush', efficiency:'4 Star WELS', warranty:'7 years', mod:0, desc:'Reliable classic close-coupled suite.', badge:null},
+  {id:'smart', name:'Smart Toilet', type:'Smart', brand:'Toto', flush:'Tornado', efficiency:'5 Star WELS', warranty:'10 years', mod:3500, desc:'Heated seat, bidet and auto flush.', badge:'new'}
+];
+
+const basins = [
+  {id:'above-counter', name:'Above Counter Basin', type:'Above-Counter', material:'Ceramic', finish:'Gloss white', brand:'Caroma', mod:0, warranty:'10 years', desc:'Vessel basin that sits proud of the vanity.', badge:'premium'},
+  {id:'undermount', name:'Undermount Basin', type:'Undermount', material:'Ceramic', finish:'Gloss white', brand:'Kado', mod:200, warranty:'10 years', desc:'Seamless under-bench basin for clean lines.', badge:'best'},
+  {id:'semi-recessed', name:'Semi-Recessed Basin', type:'Semi-Recessed', material:'Ceramic', finish:'Gloss white', brand:'Mondella', mod:150, warranty:'7 years', desc:' Basin partly proud for compact vanities.', badge:null},
+  {id:'integrated', name:'Integrated Basin', type:'Integrated', material:'Engineered stone', finish:'Matte', brand:'Marquis', mod:650, warranty:'10 years', desc:'One-piece stone top and basin.', badge:'luxury'},
+  {id:'stone-basin', name:'Stone Basin', type:'Stone', material:'Solid surface', finish:'Honed', brand:'Apaiser', mod:1200, warranty:'10 years', desc:'Natural-feel solid surface basin.', badge:'luxury'},
+  {id:'ceramic-basin', name:'Ceramic Basin', type:'Ceramic', material:'Ceramic', finish:'Gloss white', brand:'Caroma', mod:0, warranty:'10 years', desc:'Durable everyday ceramic basin.', badge:null}
+];
+
+const mirrors = [
+  {id:'standard', name:'Standard Mirror', type:'Standard', brand:'ADP', finish:'Polished edge', mod:0, warranty:'5 years', desc:'Bevelled edge mirror.', badge:null},
+  {id:'led', name:'LED Mirror', type:'LED', brand:'Remer', finish:'Backlit / demister', mod:550, warranty:'5 years', desc:'Touch-sensor LED with demister pad.', badge:'best'},
+  {id:'smart', name:'Smart Mirror', type:'Smart', brand:'Remer', finish:'Anti-fog, touch', mod:950, warranty:'5 years', desc:'Demister, clock and colour-temp control.', badge:'premium'},
+  {id:'bluetooth', name:'Bluetooth Mirror', type:'Bluetooth', brand:'Remer', finish:'Speaker + LED', mod:1250, warranty:'5 years', desc:'Built-in speakers and LED lighting.', badge:'new'},
+  {id:'round', name:'Round Mirror', type:'Decorative', brand:'Fienza', finish:'Brass frame', mod:450, warranty:'5 years', desc:'Circular mirror with brass frame.', badge:'luxury'},
+  {id:'black-frame', name:'Black Frame Mirror', type:'Decorative', brand:'Fienza', finish:'Matte black frame', mod:420, warranty:'5 years', desc:'Bold black framed feature mirror.', badge:'premium'}
+];
+
+const lighting = [
+  {id:'led-mirror', name:'LED Mirror Light', type:'LED Mirror', warmth:'Warm / Cool', mod:0, brand:'Remer', warranty:'5 years', desc:'Integrated mirror illumination.', badge:'best'},
+  {id:'downlights', name:'Ceiling Downlights', type:'Downlights', warmth:'3000K warm white', mod:350, brand:'Clipsal', warranty:'3 years', desc:'Recessed LED downlights.', badge:null},
+  {id:'pendant', name:'Pendant Lights', type:'Pendant', warmth:'2700K warm', mod:650, brand:'Beacon Lighting', warranty:'2 years', desc:'Designer pendants over vanity.', badge:'luxury'},
+  {id:'wall', name:'Wall Lights', type:'Wall', warmth:'3000K warm white', mod:480, brand:'Beacon Lighting', warranty:'2 years', desc:'Sconce lights either side of mirror.', badge:'premium'},
+  {id:'motion', name:'Motion Sensor Lighting', type:'Motion', warmth:'4000K cool white', mod:420, brand:'Clipsal', warranty:'3 years', desc:'Automatic night/path lighting.', badge:'new'},
+  {id:'ambient', name:'Ambient Lighting', type:'Ambient', warmth:'Warm dimmable', mod:520, brand:'HPM', warranty:'3 years', desc:'Indirect cove lighting for atmosphere.', badge:'luxury'}
+];
+
+const accessories = [
+  {id:'heated-rail', name:'Heated Towel Rail', type:'Heated Rail', finish:'Chrome', mod:780, brand:'Kado', warranty:'10 years', desc:'Warm, dry towels all year.', badge:'luxury'},
+  {id:'towel-ring', name:'Towel Ring', type:'Ring', finish:'Matching tapware', mod:85, brand:'Phoenix', warranty:'10 years', desc:'Coordinated hand-towel ring.', badge:null},
+  {id:'toilet-roll', name:'Toilet Roll Holder', type:'Holder', finish:'Matching tapware', mod:75, brand:'Phoenix', warranty:'10 years', desc:'Matching toilet roll holder.', badge:null},
+  {id:'soap-niche', name:'Soap Niche', type:'Niche', finish:'Tiled recess', mod:220, brand:'Custom', warranty:'7 years', desc:'Recessed shower niche for toiletries.', badge:'premium'},
+  {id:'shower-shelf', name:'Shower Shelf', type:'Shelf', finish:'Glass / metal', mod:180, brand:'Phoenix', warranty:'7 years', desc:'Glass corner shower shelf.', badge:null},
+  {id:'robe-hook', name:'Robe Hook', type:'Hook', finish:'Matching tapware', mod:45, brand:'Phoenix', warranty:'10 years', desc:'Robe hook on back of door.', badge:null},
+  {id:'floor-waste', name:'Floor Waste', type:'Waste', finish:'Chrome / tile insert', mod:120, brand:'Mondella', warranty:'5 years', desc:'Linear or tile-insert floor waste.', badge:null},
+  {id:'smart-mirror', name:'Smart Mirror', type:'Smart', finish:'Anti-fog touch', mod:950, brand:'Remer', warranty:'5 years', desc:'Demister and colour-temp control.', badge:'new'}
+];
+
+const bathroomFilters = ['Brand','Colour','Material','Finish','Luxury','Premium','Australian Made','Best Seller','Eco Friendly','Price'];
+
+const vanityStyles = vanities;
 
 /* ============================================================
    STATE
@@ -466,19 +714,40 @@ let kState = {
   upgrades:{led:false,utility:false,handles:false,softClose:false,pantry:false},
   completed:{}
 };
-let bState = {step:1, pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
-  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d', completed:{}};
+let bState = {
+  step:1, pkg:null, layout:null,
+  vanity:'floating', vanityColor:'white',
+  floorTile:'large-porcelain', wallTile:'large-porcelain',
+  shower:'semi-frameless',
+  bath:'builtin',
+  toilet:'closecoupled',
+  basin:'above-counter',
+  tap:'chrome',
+  mirror:'standard',
+  lighting:'led-mirror',
+  accessories:{},
+  view:'2d', completed:{}, search:''
+};
 
 const BATHROOM_FIRST_STEP = 1;
-const BATHROOM_TOTAL_STEPS = 6;
-const BATHROOM_REVIEW_STEP = 6;
+const BATHROOM_TOTAL_STEPS = 15;
+const BATHROOM_REVIEW_STEP = 15;
 const bathroomSteps = [
-  {id:1, title:'Package', desc:'Essential, Premium or Luxury'},
-  {id:2, title:'Vanity', desc:'Style & colour'},
-  {id:3, title:'Tiling', desc:'Floor & wall tiles'},
-  {id:4, title:'Fixtures', desc:'Tapware & shower screen'},
-  {id:5, title:'Extras', desc:'Optional upgrades'},
-  {id:6, title:'Review', desc:'Summary & request quote'}
+  {id:1, title:'Choose Bathroom Package', desc:'Essential, Premium or Luxury'},
+  {id:2, title:'Choose Bathroom Layout', desc:'Floor plan that fits your space'},
+  {id:3, title:'Choose Vanity', desc:'Style, size and storage'},
+  {id:4, title:'Choose Vanity Colour', desc:'Cabinet and stone finish'},
+  {id:5, title:'Choose Wall Tiles', desc:'Wall surface and texture'},
+  {id:6, title:'Choose Floor Tiles', desc:'Floor surface and slip rating'},
+  {id:7, title:'Choose Shower', desc:'Screen style and glass'},
+  {id:8, title:'Choose Bath', desc:'Freestanding, built-in or stone'},
+  {id:9, title:'Choose Toilet', desc:'Wall hung, BTW or smart'},
+  {id:10, title:'Choose Basin', desc:'Above counter, undermount or integrated'},
+  {id:11, title:'Choose Tapware', desc:'Premium finishes'},
+  {id:12, title:'Choose Mirror', desc:'Standard, LED or smart'},
+  {id:13, title:'Choose Lighting', desc:'Ambient, task and accent'},
+  {id:14, title:'Choose Accessories', desc:'Optional finishing touches'},
+  {id:15, title:'Review & Request Quote', desc:'Summary, pricing and quote'}
 ];
 
 /* ============================================================
@@ -870,67 +1139,113 @@ function initKitchenWizard(){
 function calcBathroomTotals(){
   const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
   if(!pkg) return null;
-  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
-  const tMod = tapware.find(t=>t.id===bState.tap).mod;
-  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
-  const ledMod = bState.ledMirror?550:0;
-  const elecMod = bState.elecPlumb?1500:0;
-  const addOn = vMod+tMod+sMod+ledMod+elecMod;
-  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vMod, tMod, sMod, ledMod, elecMod};
+  const vanityMod = (vanities.find(v=>v.id===bState.vanity)||vanities[0]).mod;
+  const tapMod = (tapware.find(t=>t.id===bState.tap)||tapware[0]).mod;
+  const showerMod = (showerScreens.find(s=>s.id===bState.shower)||showerScreens[0]).mod;
+  const bathMod = (baths.find(b=>b.id===bState.bath)||baths[0]).mod;
+  const toiletMod = (toilets.find(t=>t.id===bState.toilet)||toilets[0]).mod;
+  const basinMod = (basins.find(b=>b.id===bState.basin)||basins[0]).mod;
+  const mirrorMod = (mirrors.find(m=>m.id===bState.mirror)||mirrors[0]).mod;
+  const lightingMod = (lighting.find(l=>l.id===bState.lighting)||lighting[0]).mod;
+  const accessoryMod = Object.keys(bState.accessories).reduce((sum, key)=>{
+    const acc = accessories.find(a=>a.id===key);
+    return sum + (acc && bState.accessories[key] ? acc.mod : 0);
+  },0);
+  const addOn = vanityMod + tapMod + showerMod + bathMod + toiletMod + basinMod + mirrorMod + lightingMod + accessoryMod;
+  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vanityMod, tapMod, showerMod, bathMod, toiletMod, basinMod, mirrorMod, lightingMod, accessoryMod, addOn};
 }
 
 function getBathroomPreviewSVG(view){
-  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
-  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
-  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
-  const tap = tapware.find(t=>t.id===bState.tap).hex;
+  if(!bState.pkg) return '';
+  const vColor = (vanityColors.find(c=>c.id===bState.vanityColor)||vanityColors[0]).hex;
+  const wTileHex = (wallTiles.find(t=>t.id===bState.wallTile)||wallTiles[0]).hex;
+  const fTileHex = (floorTiles.find(t=>t.id===bState.floorTile)||floorTiles[0]).hex;
+  const tapHex = (tapware.find(t=>t.id===bState.tap)||tapware[0]).hex;
+  const shower = showerScreens.find(s=>s.id===bState.shower)||showerScreens[0];
+  const bath = baths.find(b=>b.id===bState.bath)||baths[0];
+  const mirror = mirrors.find(m=>m.id===bState.mirror)||mirrors[0];
+  const vanity = vanities.find(v=>v.id===bState.vanity)||vanities[0];
+  const isFramed = shower.type==='Framed';
+
   if(view==='3d'){
     const shade=(hex,amt)=>{const c=String(hex || '').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
-    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};
-    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
-    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
+    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};};
+    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTileHex,10)}"/>`;
+    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTileHex,-10)}"/>`;
     parts+=isoBox(60,260,140,55,34,vColor,shade(vColor,25),shade(vColor,-30));
     parts+=`<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
-    if(bState.ledMirror) parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
-    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
+    if(mirror.type==='LED'||mirror.type==='Smart'||mirror.type==='Bluetooth') parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
+    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tapHex}"/><circle cx="121" cy="226" r="5" fill="${tapHex}"/>`;
     parts+=isoBox(300,260,90,190,60,'#dbeef2','#eef9fb','#c3dee3');
-    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;">${parts}</svg>`;
+    if(bath.type!=='Built-in') parts+=`<ellipse cx="230" cy="270" rx="34" ry="18" fill="#f4f4f4" stroke="#00000022"/>`;
+    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;" aria-label="3D bathroom preview">${parts}</svg>`;
   }
-  const isFreestanding=bState.vanityStyle==='freestanding';
-  const isFramed=bState.screen==='framed';
-  const mirrorGlow=bState.ledMirror?`<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>`:'';
-  return `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;">
-    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
-    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
-    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
-    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
-    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
+
+  const isFreestanding = vanity.type==='Freestanding';
+  const mirrorGlow = (mirror.type==='LED'||mirror.type==='Smart'||mirror.type==='Bluetooth') ? `<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>` : '';
+  const screenStroke = isFramed ? '#2b2c2e' : '#9fb8bd';
+  const screenWeight = isFramed ? 6 : 2;
+
+  let svg = `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;" aria-label="2D bathroom preview">
+    <rect x="0" y="0" width="420" height="190" fill="${wTileHex}"/>
+    <rect x="0" y="190" width="420" height="70" fill="${fTileHex}"/>
+    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${screenStroke}" stroke-width="${screenWeight}"/>
+    <rect x="270" y="30" width="6" height="230" fill="${screenStroke}"/>`;
+
+  if(bath.type!=='Built-in'){
+    svg += `<ellipse cx="210" cy="225" rx="28" ry="16" fill="#f4f4f4" stroke="#00000022"/>`;
+  }
+
+  svg += `<rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
     ${isFreestanding?`<rect x="20" y="150" width="150" height="4" fill="#00000022"/>`:`<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
     <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
-    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
+    <rect x="90" y="118" width="6" height="24" fill="${tapHex}"/><circle cx="93" cy="116" r="5" fill="${tapHex}"/>
     <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
     ${mirrorGlow}
-  </svg>`;
+    <rect x="300" y="200" width="26" height="34" rx="3" fill="#fff" stroke="#00000022"/>
+    <rect x="300" y="190" width="8" height="10" fill="${tapHex}"/>`;
+
+  svg += `</svg>`;
+  return svg;
 }
 
 function getBathroomSummaryText(){
   const t = calcBathroomTotals();
   if(!t) return 'No package selected.';
+  const accNames = accessories.filter(a=>bState.accessories[a.id]).map(a=>a.name).join(', ') || 'None';
+  const layoutName = bState.layout ? (bathroomLayouts.find(l=>l.id===bState.layout)||bathroomLayouts[0]).name : 'Not selected';
   return [
     `PACKAGE: ${t.pkg.name} ($${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()})`,
-    `VANITY: ${getSelectionName(vanityStyles, bState.vanityStyle)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
-    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `LAYOUT: ${layoutName}`,
+    `VANITY: ${getSelectionName(vanities, bState.vanity)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
     `WALL TILE: ${getSelectionName(wallTiles, bState.wallTile)}`,
-    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tMod?'+$'+t.tMod.toLocaleString():'included'}`,
-    `SHOWER SCREEN: ${getSelectionName(showerScreens, bState.screen)} — ${t.sMod?'+$'+t.sMod.toLocaleString():'included'}`,
-    `LED MIRROR: ${bState.ledMirror?'Yes (+$550)':'No'}`,
-    `ELECTRICAL & PLUMBING UPGRADE: ${bState.elecPlumb?'Yes (+$1,500)':'No'}`,
+    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `SHOWER: ${getSelectionName(showerScreens, bState.shower)} — ${t.showerMod?'+$'+t.showerMod.toLocaleString():'included'}`,
+    `BATH: ${getSelectionName(baths, bState.bath)} — ${t.bathMod?'+$'+t.bathMod.toLocaleString():'included'}`,
+    `TOILET: ${getSelectionName(toilets, bState.toilet)} — ${t.toiletMod?'+$'+t.toiletMod.toLocaleString():'included'}`,
+    `BASIN: ${getSelectionName(basins, bState.basin)} — ${t.basinMod?'+$'+t.basinMod.toLocaleString():'included'}`,
+    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tapMod?'+$'+t.tapMod.toLocaleString():'included'}`,
+    `MIRROR: ${getSelectionName(mirrors, bState.mirror)} — ${t.mirrorMod?'+$'+t.mirrorMod.toLocaleString():'included'}`,
+    `LIGHTING: ${getSelectionName(lighting, bState.lighting)} — ${t.lightingMod?'+$'+t.lightingMod.toLocaleString():'included'}`,
+    `ACCESSORIES: ${accNames} — ${t.accessoryMod?'+$'+t.accessoryMod.toLocaleString():'none'}`,
     `PRICE RANGE: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}`
   ].join('\n');
 }
 
+function renderBathroomProgress(){
+  const progress = document.getElementById('bathroomProgress');
+  if(!progress) return;
+  progress.innerHTML = bathroomSteps.map(step=>{
+    let cls='dot';
+    if(bState.step===step.id) cls+=' active';
+    else if(bState.completed[step.id]) cls+=' completed';
+    return `<span class="${cls}" aria-label="Step ${step.id}: ${step.title}"></span>`;
+  }).join('');
+}
+
 function renderBathroomSidebar(){
   const list = document.getElementById('bathroomStepsList');
+  if(!list) return;
   list.innerHTML = bathroomSteps.map(step=>{
     const complete = !!bState.completed[step.id];
     return `<div class="kitchen-step-item ${bState.step===step.id?'active':''} ${complete?'completed':''}" data-bstep="${step.id}" role="button" tabindex="0" aria-label="Go to ${step.title}">
@@ -941,132 +1256,328 @@ function renderBathroomSidebar(){
 }
 
 function renderBathroomRunningTotal(){
-  const box = document.getElementById('bathroomRunningTotal');
-  if(bState.step===1 || !bState.pkg){ box.style.display='none'; return; }
-  const t = calcBathroomTotals();
-  if(!t){ box.style.display='none'; return; }
-  box.style.display = 'block';
-  box.innerHTML = `Price Range <span class="kitchen-total-amount">$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span>`;
+  // Running total is now shown in the sticky summary panel.
 }
 
-function bSwatchCards(list, activeId, dataAttr){
-  return `<div class="kitchen-cards cols-3">${list.map(item=>`
-    <article class="kitchen-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}">
-      ${item.hex?`<div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>`:''}
-      <h4 style="font-size:14px;">${item.name||item.brand}</h4>
-      ${'mod' in item ? `<span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>`:'' }
-    </article>`).join('')}</div>`;
+function renderBathroomSticky(){
+  const stage = document.getElementById('bathroomPreviewStage');
+  const details = document.getElementById('bathroomDetails');
+  const summary = document.getElementById('bathroomSummary');
+  const t = calcBathroomTotals();
+
+  if(stage){
+    if(!bState.pkg){
+      stage.innerHTML = `<div class="bath-empty-state"><h4>Start Designing</h4><p>Choose a bathroom package to see your live 2D/3D preview update in real-time.</p></div>`;
+    } else {
+      stage.innerHTML = getBathroomPreviewSVG(bState.view);
+    }
+  }
+
+  if(details && bState.pkg){
+    details.style.display='block';
+    const item = currentBathroomSelectionDetails();
+    const color = item && item.hex ? `<div style="width:100%;height:100%;background:${item.hex};"></div>` : (item && item.svg ? item.svg : '');
+    document.getElementById('bathroomDetailsMedia').innerHTML = color || '';
+    const text = [
+      item.name ? `<dt>Name</dt><dd>${item.name}</dd><br>` : '',
+      item.brand ? `<dt>Brand</dt><dd>${item.brand}</dd><br>` : '',
+      item.collection ? `<dt>Collection</dt><dd>${item.collection}</dd><br>` : '',
+      item.material ? `<dt>Material</dt><dd>${item.material}</dd><br>` : '',
+      item.finish ? `<dt>Finish</dt><dd>${item.finish}</dd><br>` : '',
+      item.warranty ? `<dt>Warranty</dt><dd>${item.warranty}</dd><br>` : '',
+      item.dims ? `<dt>Dimensions</dt><dd>${item.dims}</dd><br>` : '',
+      item.desc ? `<dt>Description</dt><dd>${item.desc}</dd><br>` : '',
+      ('mod' in item) ? `<dt>Upgrade Price</dt><dd>${item.mod?'+$'+item.mod.toLocaleString():'included'}</dd><br>` : ''
+    ].join('');
+    document.getElementById('bathroomDetailsText').innerHTML = text || `<dt>Details</dt><dd>Make a selection to see product details.</dd>`;
+  }
+
+  if(summary && bState.pkg){
+    summary.style.display='block';
+    const accNames = accessories.filter(a=>bState.accessories[a.id]).map(a=>a.name).join(', ') || 'None';
+    const layoutName = bState.layout ? (bathroomLayouts.find(l=>l.id===bState.layout)||bathroomLayouts[0]).name : 'Not selected';
+    const gst = Math.round(t.low/11);
+    const savings = Math.round(t.low * 0.05);
+    document.getElementById('bathroomSummaryBody').innerHTML = `
+      <div class="line"><span>Selected Package</span><span>${t.pkg.name}</span></div>
+      <div class="line"><span>Bathroom Layout</span><span>${layoutName}</span></div>
+      <div class="line"><span>Vanity</span><span>${getSelectionName(vanities, bState.vanity)}</span></div>
+      <div class="line"><span>Mirror</span><span>${getSelectionName(mirrors, bState.mirror)}</span></div>
+      <div class="line"><span>Wall Tiles</span><span>${getSelectionName(wallTiles, bState.wallTile)}</span></div>
+      <div class="line"><span>Floor Tiles</span><span>${getSelectionName(floorTiles, bState.floorTile)}</span></div>
+      <div class="line"><span>Shower</span><span>${getSelectionName(showerScreens, bState.shower)}</span></div>
+      <div class="line"><span>Bath</span><span>${getSelectionName(baths, bState.bath)}</span></div>
+      <div class="line"><span>Toilet</span><span>${getSelectionName(toilets, bState.toilet)}</span></div>
+      <div class="line"><span>Basin</span><span>${getSelectionName(basins, bState.basin)}</span></div>
+      <div class="line"><span>Tapware</span><span>${getSelectionName(tapware, bState.tap)}</span></div>
+      <div class="line"><span>Lighting</span><span>${getSelectionName(lighting, bState.lighting)}</span></div>
+      <div class="line"><span>Accessories</span><span>${accNames}</span></div>
+      <div class="line"><span>Est. Build Time</span><span>${t.pkg.estBuildDays} days</span></div>
+      <div class="line"><span>Est. Install Time</span><span>${t.pkg.estInstallDays} days</span></div>
+      <div class="line"><span>Upgrade Costs</span><span>+$${t.addOn.toLocaleString()}</span></div>
+      <div class="line"><span>GST Included</span><span>~$${gst.toLocaleString()}</span></div>
+      <div class="line"><span>Indicative Savings*</span><span>~$${savings.toLocaleString()}</span></div>
+      <div class="total-row"><strong>Total Investment</strong><span>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span></div>
+      <div class="muted">*Estimated range only. Fixed written quote after free consultation.</div>
+      ${bState.step===BATHROOM_REVIEW_STEP ? `<button type="button" id="bathroomQuoteBtn" class="bath-cta" style="margin-top:14px;">Request This Quote</button>` : ''}
+    `;
+  }
+}
+
+function currentBathroomSelectionDetails(){
+  switch(bState.step){
+    case 1: return bathroomPackages.find(p=>p.id===bState.pkg) || bathroomPackages[0];
+    case 2: return bathroomLayouts.find(l=>l.id===bState.layout) || bathroomLayouts[0];
+    case 3: return vanities.find(v=>v.id===bState.vanity) || vanities[0];
+    case 4: return vanityColors.find(c=>c.id===bState.vanityColor) || vanityColors[0];
+    case 5: return wallTiles.find(t=>t.id===bState.wallTile) || wallTiles[0];
+    case 6: return floorTiles.find(t=>t.id===bState.floorTile) || floorTiles[0];
+    case 7: return showerScreens.find(s=>s.id===bState.shower) || showerScreens[0];
+    case 8: return baths.find(b=>b.id===bState.bath) || baths[0];
+    case 9: return toilets.find(t=>t.id===bState.toilet) || toilets[0];
+    case 10: return basins.find(b=>b.id===bState.basin) || basins[0];
+    case 11: return tapware.find(t=>t.id===bState.tap) || tapware[0];
+    case 12: return mirrors.find(m=>m.id===bState.mirror) || mirrors[0];
+    case 13: return lighting.find(l=>l.id===bState.lighting) || lighting[0];
+    case 14: return accessories.find(a=>bState.accessories[a.id]) || accessories[0];
+    case 15: return bathroomPackages.find(p=>p.id===bState.pkg) || bathroomPackages[0];
+    default: return bathroomPackages[0];
+  }
+}
+
+function badgeHTML(item){
+  if(!item.badge) return '';
+  return `<div class="badges"><span class="badge-${item.badge}">${item.badge}</span></div>`;
+}
+
+function productMedia(item){
+  if(item.svg) return item.svg;
+  if(item.hex){
+    const pattern = item.texture ? tilePattern(item.texture, item.hex) : '';
+    return `<div style="width:100%;height:100%;background:${item.hex};display:flex;align-items:center;justify-content:center;">${pattern ? `<div style="width:100%;height:100%;opacity:.35;">${pattern}</div>` : ''}</div>`;
+  }
+  return '';
+}
+
+function tilePattern(texture, hex){
+  if(texture==='marble') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M10 90 Q30 50 55 80 T95 30" fill="none" stroke="#fff" stroke-width="1.5" opacity=".4"/></svg>`;
+  if(texture==='concrete') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><circle cx="20" cy="30" r="12" fill="#000" opacity=".06"/><circle cx="70" cy="70" r="16" fill="#000" opacity=".05"/></svg>`;
+  if(texture==='terrazzo') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><circle cx="25" cy="25" r="4" fill="#555" opacity=".25"/><circle cx="65" cy="55" r="3" fill="#333" opacity=".2"/><circle cx="45" cy="80" r="5" fill="#777" opacity=".2"/><circle cx="80" cy="20" r="2" fill="#444" opacity=".25"/></svg>`;
+  if(texture==='travertine') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M0 40 H100 M0 70 H100" stroke="#a89f8e" stroke-width="1" opacity=".25"/></svg>`;
+  if(texture==='timber') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M0 20 H100 M0 50 H100 M0 80 H100" stroke="#8a6a26" stroke-width=".6" opacity=".25"/></svg>`;
+  if(texture==='stone') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M20 20 L50 50 L30 80 M60 10 L80 40" stroke="#666" stroke-width=".7" opacity=".15"/></svg>`;
+  if(texture==='gloss') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M0 0 L100 100" stroke="#fff" stroke-width="1.5" opacity=".25"/></svg>`;
+  return '';
+}
+
+function bathCard(item, activeId, dataAttr, extra=''){
+  const price = 'mod' in item ? `<span class="price">${item.mod?'+$'+item.mod.toLocaleString():'included'}</span>` : '';
+  const brand = item.brand ? `<div class="brand">${item.brand}</div>` : '';
+  const collection = item.collection ? `<div class="collection">${item.collection}</div>` : '';
+  const specs = [];
+  if(item.material) specs.push(item.material);
+  if(item.finish) specs.push(item.finish);
+  if(item.size) specs.push(item.size);
+  if(item.dims) specs.push(item.dims);
+  if(item.glass) specs.push(item.glass);
+  if(item.capacity) specs.push(item.capacity);
+  if(item.warranty) specs.push(item.warranty);
+  const specHTML = specs.length ? `<div class="specs">${specs.map(s=>`<span>${s}</span>`).join('')}</div>` : '';
+  return `<article class="bath-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}" tabindex="0" role="radio" aria-checked="${activeId===item.id?'true':'false'}">
+    <div class="media">${badgeHTML(item)}${productMedia(item)}</div>
+    ${brand}${collection}
+    <h4>${item.name}</h4>
+    ${specHTML}
+    ${item.desc ? `<p class="desc">${item.desc}</p>` : ''}
+    <div class="foot">${price}${extra}</div>
+  </article>`;
+}
+
+function bathCards(list, activeId, dataAttr, classes=''){
+  return `<div class="bath-cards ${classes}">${list.map(item=>bathCard(item, activeId, dataAttr)).join('')}</div>`;
+}
+
+function bathFilterBar(){
+  return `<div class="bath-toolbar">
+    <input type="search" class="bath-search" id="bathroomSearch" placeholder="Search this step..." value="${escapeHtml(bState.search)}" aria-label="Search products">
+    ${bathroomFilters.map(f=>`<button type="button" class="bath-filter" data-filter="${f}">${f}</button>`).join('')}
+  </div>`;
+}
+
+function escapeHtml(str){ return String(str || '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function filterList(list, step){
+  const term = (bState.search || '').toLowerCase();
+  if(!term) return list;
+  return list.filter(item=>{
+    const text = [item.name, item.brand, item.collection, item.material, item.finish, item.desc].join(' ').toLowerCase();
+    return text.includes(term);
+  });
 }
 
 function renderBathroomStepContent(){
   const container = document.getElementById('bathroomStepContent');
   const step = bathroomSteps.find(s=>s.id===bState.step);
-  let content = `<div class="kitchen-step-head">
+  let content = `<div class="bath-step-head" id="bathStepTitle">
     <div><h3>Step ${step.id}: ${step.title}</h3><p>${step.desc}</p></div>
     ${bState.completed[step.id]?'<span class="kitchen-completed-badge">Completed</span>':''}
   </div>`;
 
+  content += `<div class="bath-progress" id="bathroomProgress" aria-label="Design progress"></div>`;
+
   if(bState.step===1){
-    content += `<div class="kitchen-cards">${bathroomPackages.map(pkg=>`
-      <article class="kitchen-card ${bState.pkg===pkg.id?'selected':''}" data-bpkg="${pkg.id}">
-        ${pkg.badge?`<div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">${pkg.badge}</div>`:''}
-        <div style="font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">${pkg.theme}</div>
-        <h4>${pkg.name}</h4>
-        <div class="kitchen-range">$${pkg.low.toLocaleString()} – $${pkg.high.toLocaleString()}</div>
-        <ul style="margin:8px 0 10px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;">${pkg.items.map(i=>`<li>${i}</li>`).join('')}</ul>
-        <div class="kitchen-suppliers">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
-      </article>`).join('')}</div>`;
+    content += bathCards(bathroomPackages, bState.pkg, 'data-bpkg', 'cols-3');
   }
 
   if(bState.step===2){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Vanity Style</p>
-    ${bSwatchCards(vanityStyles, bState.vanityStyle, 'data-bvanity')}
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Cabinet Colour</p>
-    ${bSwatchCards(vanityColors, bState.vanityColor, 'data-bvcolor')}`;
+    content += bathFilterBar();
+    content += `<div class="bath-cards bath-layout-card">${filterList(bathroomLayouts).map(layout=>`
+      <article class="bath-card ${bState.layout===layout.id?'selected':''}" data-blayout="${layout.id}" tabindex="0" role="radio" aria-checked="${bState.layout===layout.id?'true':'false'}">
+        <div class="media">${layout.svg}</div>
+        <h4>${layout.name}</h4>
+        <div class="meta">
+          <div><strong>Dimensions</strong><br>${layout.dims}</div>
+          <div><strong>Recommended</strong><br>${layout.rec}</div>
+          <div><strong>Apartments</strong><br>${layout.apartment?'Yes':'No'}</div>
+          <div><strong>Family Home</strong><br>${layout.family?'Yes':'No'}</div>
+        </div>
+      </article>`).join('')}</div>`;
   }
 
   if(bState.step===3){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Floor Tile</p>
-    ${bSwatchCards(floorTiles, bState.floorTile, 'data-bfloor')}
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Wall Tile</p>
-    ${bSwatchCards(wallTiles, bState.wallTile, 'data-bwall')}`;
+    content += bathFilterBar();
+    content += bathCards(filterList(vanities), bState.vanity, 'data-bvanity');
   }
 
   if(bState.step===4){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Tapware Finish</p>
-    <div class="kitchen-cards cols-3">${tapware.map(item=>`
-      <article class="kitchen-card ${bState.tap===item.id?'selected':''}" data-btap="${item.id}">
-        <div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">${item.brand}</div>
-        <h4 style="font-size:14px;">${item.name}</h4>
-        <span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>
-      </article>`).join('')}</div>
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Shower Screen</p>
-    ${bSwatchCards(showerScreens, bState.screen, 'data-bscreen')}`;
+    content += `<p class="bath-subheading">Cabinet &amp; Stone Colour</p>
+    <div class="bath-color-btns">${vanityColors.map(c=>`
+      <button type="button" class="bath-color-btn ${bState.vanityColor===c.id?'selected':''}" data-bvcolor="${c.id}" data-name="${c.name}" style="background:${c.hex};" aria-label="Select ${c.name}" aria-pressed="${bState.vanityColor===c.id?'true':'false'}"></button>
+    `).join('')}</div>`;
   }
 
   if(bState.step===5){
-    content += `<div class="kitchen-toggle-grid">
-      <article class="kitchen-toggle ${bState.ledMirror?'on':''}" data-btoggle="ledMirror">
-        <div><h4>LED Backlit Mirror</h4><p>Touch-sensor demister mirror.</p><span class="kitchen-mod">+$550</span></div>
-        <div class="check">${bState.ledMirror?'✓':''}</div>
-      </article>
-      <article class="kitchen-toggle ${bState.elecPlumb?'on':''}" data-btoggle="elecPlumb">
-        <div><h4>Electrical &amp; Plumbing Upgrade</h4><p>New points, exhaust fan, water relocation.</p><span class="kitchen-mod">+$1,500</span></div>
-        <div class="check">${bState.elecPlumb?'✓':''}</div>
-      </article>
-    </div>`;
+    content += bathFilterBar();
+    content += `<p class="bath-subheading">Wall Tiles</p>`;
+    content += bathCards(filterList(wallTiles), bState.wallTile, 'data-bwall', 'cols-3');
   }
 
   if(bState.step===6){
+    content += bathFilterBar();
+    content += `<p class="bath-subheading">Floor Tiles</p>`;
+    content += bathCards(filterList(floorTiles), bState.floorTile, 'data-bfloor', 'cols-3');
+  }
+
+  if(bState.step===7){
+    content += bathFilterBar();
+    content += bathCards(filterList(showerScreens), bState.shower, 'data-bshower');
+  }
+
+  if(bState.step===8){
+    content += bathFilterBar();
+    content += bathCards(filterList(baths), bState.bath, 'data-bbath');
+  }
+
+  if(bState.step===9){
+    content += bathFilterBar();
+    content += bathCards(filterList(toilets), bState.toilet, 'data-btoilet');
+  }
+
+  if(bState.step===10){
+    content += bathFilterBar();
+    content += bathCards(filterList(basins), bState.basin, 'data-bbasin');
+  }
+
+  if(bState.step===11){
+    content += bathFilterBar();
+    content += bathCards(filterList(tapware), bState.tap, 'data-btap', 'cols-3');
+  }
+
+  if(bState.step===12){
+    content += bathFilterBar();
+    content += bathCards(filterList(mirrors), bState.mirror, 'data-bmirror');
+  }
+
+  if(bState.step===13){
+    content += bathFilterBar();
+    content += bathCards(filterList(lighting), bState.lighting, 'data-blighting');
+  }
+
+  if(bState.step===14){
+    content += bathFilterBar();
+    content += `<p class="bath-subheading">Optional Accessories</p>
+    <div class="bath-toggle-grid">${accessories.map(item=>`
+      <article class="bath-toggle ${bState.accessories[item.id]?'on':''}" data-bacc="${item.id}" tabindex="0" role="checkbox" aria-checked="${bState.accessories[item.id]?'true':'false'}">
+        <div><h4>${item.name}</h4><p>${item.desc}</p><span class="kitchen-mod">${item.mod?'+$'+item.mod.toLocaleString():'included'}</span></div>
+        <div class="check">${bState.accessories[item.id]?'✓':''}</div>
+      </article>`).join('')}</div>`;
+  }
+
+  if(bState.step===15){
     const t = calcBathroomTotals();
-    content += `<div class="kitchen-review-grid">
-      <div>
-        <div class="kitchen-preview">
-          <div class="view-toggle" style="margin-bottom:10px;">
-            <div class="kitchen-nav-btn ${bState.view==='2d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="2d">2D Elevation</div>
-            <div class="kitchen-nav-btn ${bState.view==='3d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="3d">3D Isometric</div>
-          </div>
-          <div style="overflow:hidden;">${getBathroomPreviewSVG(bState.view)}</div>
-          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
-        </div>
+    content += `<div class="bath-review-grid">
+      <div class="bath-preview" style="padding:12px;">
+        ${getBathroomPreviewSVG(bState.view)}
+        <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
       </div>
-      <div>
-        <div class="kitchen-summary" style="margin-bottom:14px;"><pre>${getBathroomSummaryText()}</pre></div>
-        ${t?`<div class="kitchen-price-breakdown">
-          <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
-          <div class="line"><span>Vanity Style</span><span>${t.vMod?'+$'+t.vMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>Tapware</span><span>${t.tMod?'+$'+t.tMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>Shower Screen</span><span>${t.sMod?'+$'+t.sMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>LED Mirror</span><span>${t.ledMod?'+$'+t.ledMod.toLocaleString():'not included'}</span></div>
-          <div class="line"><span>Elec &amp; Plumbing</span><span>${t.elecMod?'+$'+t.elecMod.toLocaleString():'not included'}</span></div>
-          <div class="line"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
-        </div>
-        <button type="button" id="bathroomQuoteBtn" class="kitchen-nav-btn primary" style="width:100%;margin-top:10px;">Request This Quote</button>
-        <div style="font-size:11px;color:#7f7667;margin-top:6px;">(Fixed quote after free consultation)</div>`
-        :'<p style="color:#a14f39;">Please complete steps 1–5 first.</p>'}
+      <div class="bath-review-list">
+        ${bathroomSteps.slice(0,14).map(s=>`<div><span>${s.title.replace('Choose ','')}</span><span>${currentBathroomValueForStep(s.id)}</span></div>`).join('')}
       </div>
-    </div>`;
+    </div>
+    ${t?`<div class="bath-summary" style="margin-top:14px;">
+      <h4>Price Breakdown</h4>
+      <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
+      <div class="line"><span>Vanity</span><span>${t.vanityMod?'+$'+t.vanityMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Tapware</span><span>${t.tapMod?'+$'+t.tapMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Shower</span><span>${t.showerMod?'+$'+t.showerMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Bath</span><span>${t.bathMod?'+$'+t.bathMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Toilet</span><span>${t.toiletMod?'+$'+t.toiletMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Basin</span><span>${t.basinMod?'+$'+t.basinMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Mirror</span><span>${t.mirrorMod?'+$'+t.mirrorMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Lighting</span><span>${t.lightingMod?'+$'+t.lightingMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Accessories</span><span>${t.accessoryMod?'+$'+t.accessoryMod.toLocaleString():'none'}</span></div>
+      <div class="total-row"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
+    </div>`
+    :'<p style="color:#a14f39;">Please select a package first.</p>'}`;
   }
 
   container.innerHTML = content;
+  renderBathroomProgress();
   updateBathroomNav();
-  renderBathroomRunningTotal();
+  renderBathroomSticky();
+}
+
+function currentBathroomValueForStep(stepId){
+  switch(stepId){
+    case 1: return bState.pkg ? (bathroomPackages.find(p=>p.id===bState.pkg)||bathroomPackages[0]).name : 'Not selected';
+    case 2: return bState.layout ? (bathroomLayouts.find(l=>l.id===bState.layout)||bathroomLayouts[0]).name : 'Not selected';
+    case 3: return (vanities.find(v=>v.id===bState.vanity)||vanities[0]).name;
+    case 4: return (vanityColors.find(c=>c.id===bState.vanityColor)||vanityColors[0]).name;
+    case 5: return (wallTiles.find(t=>t.id===bState.wallTile)||wallTiles[0]).name;
+    case 6: return (floorTiles.find(t=>t.id===bState.floorTile)||floorTiles[0]).name;
+    case 7: return (showerScreens.find(s=>s.id===bState.shower)||showerScreens[0]).name;
+    case 8: return (baths.find(b=>b.id===bState.bath)||baths[0]).name;
+    case 9: return (toilets.find(t=>t.id===bState.toilet)||toilets[0]).name;
+    case 10: return (basins.find(b=>b.id===bState.basin)||basins[0]).name;
+    case 11: return (tapware.find(t=>t.id===bState.tap)||tapware[0]).name;
+    case 12: return (mirrors.find(m=>m.id===bState.mirror)||mirrors[0]).name;
+    case 13: return (lighting.find(l=>l.id===bState.lighting)||lighting[0]).name;
+    case 14: return accessories.filter(a=>bState.accessories[a.id]).map(a=>a.name).join(', ') || 'None';
+    default: return '';
+  }
 }
 
 function updateBathroomNav(){
   const backBtn = document.getElementById('bathroomBackBtn');
   const nextBtn = document.getElementById('bathroomNextBtn');
-  backBtn.disabled = bState.step===BATHROOM_FIRST_STEP;
-  backBtn.setAttribute('aria-disabled', backBtn.disabled?'true':'false');
-  if(bState.step===BATHROOM_REVIEW_STEP){
-    nextBtn.textContent = 'Review Design';
-    nextBtn.disabled = true;
-  } else {
-    nextBtn.textContent = 'Next →';
-    nextBtn.disabled = false;
-  }
-  nextBtn.setAttribute('aria-disabled', nextBtn.disabled?'true':'false');
+  const mobileBack = document.getElementById('bathroomBackBtnMobile');
+  const mobileNext = document.getElementById('bathroomNextBtnMobile');
+  const disabled = bState.step===BATHROOM_FIRST_STEP;
+  [backBtn, mobileBack].forEach(btn=>{ if(btn){ btn.disabled = disabled; btn.setAttribute('aria-disabled', disabled?'true':'false'); } });
+  const atReview = bState.step===BATHROOM_REVIEW_STEP;
+  const label = atReview ? 'Review Complete' : 'Next →';
+  const nextDisabled = atReview;
+  [nextBtn, mobileNext].forEach(btn=>{ if(btn){ btn.textContent = label; btn.disabled = nextDisabled; btn.setAttribute('aria-disabled', nextDisabled?'true':'false'); } });
 }
 
 function renderBathroomWizard(){
