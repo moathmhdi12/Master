@@ -1212,21 +1212,40 @@ function getBathroomPreviewSVG(view){
 function getBathroomSummaryText(){
   const t = calcBathroomTotals();
   if(!t) return 'No package selected.';
+  const accNames = accessories.filter(a=>bState.accessories[a.id]).map(a=>a.name).join(', ') || 'None';
+  const layoutName = bState.layout ? (bathroomLayouts.find(l=>l.id===bState.layout)||bathroomLayouts[0]).name : 'Not selected';
   return [
     `PACKAGE: ${t.pkg.name} ($${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()})`,
-    `VANITY: ${getSelectionName(vanityStyles, bState.vanityStyle)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
-    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `LAYOUT: ${layoutName}`,
+    `VANITY: ${getSelectionName(vanities, bState.vanity)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
     `WALL TILE: ${getSelectionName(wallTiles, bState.wallTile)}`,
-    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tMod?'+$'+t.tMod.toLocaleString():'included'}`,
-    `SHOWER SCREEN: ${getSelectionName(showerScreens, bState.screen)} — ${t.sMod?'+$'+t.sMod.toLocaleString():'included'}`,
-    `LED MIRROR: ${bState.ledMirror?'Yes (+$550)':'No'}`,
-    `ELECTRICAL & PLUMBING UPGRADE: ${bState.elecPlumb?'Yes (+$1,500)':'No'}`,
+    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
+    `SHOWER: ${getSelectionName(showerScreens, bState.shower)} — ${t.showerMod?'+$'+t.showerMod.toLocaleString():'included'}`,
+    `BATH: ${getSelectionName(baths, bState.bath)} — ${t.bathMod?'+$'+t.bathMod.toLocaleString():'included'}`,
+    `TOILET: ${getSelectionName(toilets, bState.toilet)} — ${t.toiletMod?'+$'+t.toiletMod.toLocaleString():'included'}`,
+    `BASIN: ${getSelectionName(basins, bState.basin)} — ${t.basinMod?'+$'+t.basinMod.toLocaleString():'included'}`,
+    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tapMod?'+$'+t.tapMod.toLocaleString():'included'}`,
+    `MIRROR: ${getSelectionName(mirrors, bState.mirror)} — ${t.mirrorMod?'+$'+t.mirrorMod.toLocaleString():'included'}`,
+    `LIGHTING: ${getSelectionName(lighting, bState.lighting)} — ${t.lightingMod?'+$'+t.lightingMod.toLocaleString():'included'}`,
+    `ACCESSORIES: ${accNames} — ${t.accessoryMod?'+$'+t.accessoryMod.toLocaleString():'none'}`,
     `PRICE RANGE: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}`
   ].join('\n');
 }
 
+function renderBathroomProgress(){
+  const progress = document.getElementById('bathroomProgress');
+  if(!progress) return;
+  progress.innerHTML = bathroomSteps.map(step=>{
+    let cls='dot';
+    if(bState.step===step.id) cls+=' active';
+    else if(bState.completed[step.id]) cls+=' completed';
+    return `<span class="${cls}" aria-label="Step ${step.id}: ${step.title}"></span>`;
+  }).join('');
+}
+
 function renderBathroomSidebar(){
   const list = document.getElementById('bathroomStepsList');
+  if(!list) return;
   list.innerHTML = bathroomSteps.map(step=>{
     const complete = !!bState.completed[step.id];
     return `<div class="kitchen-step-item ${bState.step===step.id?'active':''} ${complete?'completed':''}" data-bstep="${step.id}" role="button" tabindex="0" aria-label="Go to ${step.title}">
@@ -1237,12 +1256,93 @@ function renderBathroomSidebar(){
 }
 
 function renderBathroomRunningTotal(){
-  const box = document.getElementById('bathroomRunningTotal');
-  if(bState.step===1 || !bState.pkg){ box.style.display='none'; return; }
+  // Running total is now shown in the sticky summary panel.
+}
+
+function renderBathroomSticky(){
+  const stage = document.getElementById('bathroomPreviewStage');
+  const details = document.getElementById('bathroomDetails');
+  const summary = document.getElementById('bathroomSummary');
   const t = calcBathroomTotals();
-  if(!t){ box.style.display='none'; return; }
-  box.style.display = 'block';
-  box.innerHTML = `Price Range <span class="kitchen-total-amount">$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span>`;
+
+  if(stage){
+    if(!bState.pkg){
+      stage.innerHTML = `<div class="bath-empty-state"><h4>Start Designing</h4><p>Choose a bathroom package to see your live 2D/3D preview update in real-time.</p></div>`;
+    } else {
+      stage.innerHTML = getBathroomPreviewSVG(bState.view);
+    }
+  }
+
+  if(details && bState.pkg){
+    details.style.display='block';
+    const item = currentBathroomSelectionDetails();
+    const color = item && item.hex ? `<div style="width:100%;height:100%;background:${item.hex};"></div>` : (item && item.svg ? item.svg : '');
+    document.getElementById('bathroomDetailsMedia').innerHTML = color || '';
+    const text = [
+      item.name ? `<dt>Name</dt><dd>${item.name}</dd><br>` : '',
+      item.brand ? `<dt>Brand</dt><dd>${item.brand}</dd><br>` : '',
+      item.collection ? `<dt>Collection</dt><dd>${item.collection}</dd><br>` : '',
+      item.material ? `<dt>Material</dt><dd>${item.material}</dd><br>` : '',
+      item.finish ? `<dt>Finish</dt><dd>${item.finish}</dd><br>` : '',
+      item.warranty ? `<dt>Warranty</dt><dd>${item.warranty}</dd><br>` : '',
+      item.dims ? `<dt>Dimensions</dt><dd>${item.dims}</dd><br>` : '',
+      item.desc ? `<dt>Description</dt><dd>${item.desc}</dd><br>` : '',
+      ('mod' in item) ? `<dt>Upgrade Price</dt><dd>${item.mod?'+$'+item.mod.toLocaleString():'included'}</dd><br>` : ''
+    ].join('');
+    document.getElementById('bathroomDetailsText').innerHTML = text || `<dt>Details</dt><dd>Make a selection to see product details.</dd>`;
+  }
+
+  if(summary && bState.pkg){
+    summary.style.display='block';
+    const accNames = accessories.filter(a=>bState.accessories[a.id]).map(a=>a.name).join(', ') || 'None';
+    const layoutName = bState.layout ? (bathroomLayouts.find(l=>l.id===bState.layout)||bathroomLayouts[0]).name : 'Not selected';
+    const gst = Math.round(t.low/11);
+    const savings = Math.round(t.low * 0.05);
+    document.getElementById('bathroomSummaryBody').innerHTML = `
+      <div class="line"><span>Selected Package</span><span>${t.pkg.name}</span></div>
+      <div class="line"><span>Bathroom Layout</span><span>${layoutName}</span></div>
+      <div class="line"><span>Vanity</span><span>${getSelectionName(vanities, bState.vanity)}</span></div>
+      <div class="line"><span>Mirror</span><span>${getSelectionName(mirrors, bState.mirror)}</span></div>
+      <div class="line"><span>Wall Tiles</span><span>${getSelectionName(wallTiles, bState.wallTile)}</span></div>
+      <div class="line"><span>Floor Tiles</span><span>${getSelectionName(floorTiles, bState.floorTile)}</span></div>
+      <div class="line"><span>Shower</span><span>${getSelectionName(showerScreens, bState.shower)}</span></div>
+      <div class="line"><span>Bath</span><span>${getSelectionName(baths, bState.bath)}</span></div>
+      <div class="line"><span>Toilet</span><span>${getSelectionName(toilets, bState.toilet)}</span></div>
+      <div class="line"><span>Basin</span><span>${getSelectionName(basins, bState.basin)}</span></div>
+      <div class="line"><span>Tapware</span><span>${getSelectionName(tapware, bState.tap)}</span></div>
+      <div class="line"><span>Lighting</span><span>${getSelectionName(lighting, bState.lighting)}</span></div>
+      <div class="line"><span>Accessories</span><span>${accNames}</span></div>
+      <div class="line"><span>Est. Build Time</span><span>${t.pkg.estBuildDays} days</span></div>
+      <div class="line"><span>Est. Install Time</span><span>${t.pkg.estInstallDays} days</span></div>
+      <div class="line"><span>Upgrade Costs</span><span>+$${t.addOn.toLocaleString()}</span></div>
+      <div class="line"><span>GST Included</span><span>~$${gst.toLocaleString()}</span></div>
+      <div class="line"><span>Indicative Savings*</span><span>~$${savings.toLocaleString()}</span></div>
+      <div class="total-row"><strong>Total Investment</strong><span>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span></div>
+      <div class="muted">*Estimated range only. Fixed written quote after free consultation.</div>
+      ${bState.step===BATHROOM_REVIEW_STEP ? `<button type="button" id="bathroomQuoteBtn" class="bath-cta" style="margin-top:14px;">Request This Quote</button>` : ''}
+    `;
+  }
+}
+
+function currentBathroomSelectionDetails(){
+  switch(bState.step){
+    case 1: return bathroomPackages.find(p=>p.id===bState.pkg) || bathroomPackages[0];
+    case 2: return bathroomLayouts.find(l=>l.id===bState.layout) || bathroomLayouts[0];
+    case 3: return vanities.find(v=>v.id===bState.vanity) || vanities[0];
+    case 4: return vanityColors.find(c=>c.id===bState.vanityColor) || vanityColors[0];
+    case 5: return wallTiles.find(t=>t.id===bState.wallTile) || wallTiles[0];
+    case 6: return floorTiles.find(t=>t.id===bState.floorTile) || floorTiles[0];
+    case 7: return showerScreens.find(s=>s.id===bState.shower) || showerScreens[0];
+    case 8: return baths.find(b=>b.id===bState.bath) || baths[0];
+    case 9: return toilets.find(t=>t.id===bState.toilet) || toilets[0];
+    case 10: return basins.find(b=>b.id===bState.basin) || basins[0];
+    case 11: return tapware.find(t=>t.id===bState.tap) || tapware[0];
+    case 12: return mirrors.find(m=>m.id===bState.mirror) || mirrors[0];
+    case 13: return lighting.find(l=>l.id===bState.lighting) || lighting[0];
+    case 14: return accessories.find(a=>bState.accessories[a.id]) || accessories[0];
+    case 15: return bathroomPackages.find(p=>p.id===bState.pkg) || bathroomPackages[0];
+    default: return bathroomPackages[0];
+  }
 }
 
 function bSwatchCards(list, activeId, dataAttr){
