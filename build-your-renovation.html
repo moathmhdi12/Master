@@ -105,11 +105,13 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .disclaimer{font-size:10.5px;color:#a9a49a;margin-top:24px;line-height:1.6;max-width:1220px;padding:0 20px;}
 .quote-modal{position:fixed;inset:0;background:rgba(21,23,26,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;}
 .quote-modal.show{display:flex;}
-.quote-modal-card{width:min(100%,460px);background:var(--cream);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);}
-.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);}
+.quote-modal-card{width:min(100%,560px);background:var(--cream);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);position:relative;}
+.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
 .quote-modal-card p{margin:0 0 16px;font-size:12.5px;color:#6b6555;line-height:1.6;}
 .quote-modal-card label{display:block;font-size:11px;font-weight:700;color:#7a7460;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;}
-.quote-modal-card input{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--gray);}
+.quote-modal-card input,.quote-modal-card textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--gray);}
+.quote-modal-card textarea{min-height:170px;resize:vertical;background:#fffdf7;}
+.quote-modal-close{position:absolute;right:16px;top:16px;border:1.5px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--navy);font-size:16px;}
 .quote-status{min-height:18px;margin-top:14px;font-size:12px;color:var(--sage);}
 .quote-status.error{color:#9b2c2c;}
 .quote-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
@@ -187,14 +189,6 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 .kitchen-price-breakdown .line{display:flex;justify-content:space-between;border-bottom:1px solid #e9dfca;padding:6px 0;font-size:12px;color:#524a3f;}
 .kitchen-price-breakdown .line strong{font-size:13px;color:var(--navy);}
 .kitchen-request-btn{width:100%;margin-top:10px;}
-.kitchen-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:400;}
-.kitchen-modal.open{display:flex;}
-.kitchen-modal-card{width:min(720px,100%);background:#fff;border-radius:14px;padding:18px;position:relative;box-shadow:0 14px 40px rgba(0,0,0,.18);}
-.kitchen-modal-card h3{margin:0 0 6px;color:var(--navy);font-family:'Fraunces',Georgia,serif;font-size:24px;}
-.kitchen-modal-card p{margin:0 0 10px;color:#6f6758;font-size:13px;}
-.kitchen-modal-card textarea{width:100%;min-height:220px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:12px;font-family:'Work Sans','Segoe UI',Arial,sans-serif;color:#2f2a24;background:#fffdf7;}
-.kitchen-modal-close{position:absolute;right:10px;top:10px;border:1.5px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--navy);font-size:16px;}
-.kitchen-modal-actions{display:flex;justify-content:flex-end;margin-top:12px;}
 
 @media (max-width:1199px){
   .kitchen-wizard{grid-template-columns:1fr;}
@@ -209,6 +203,8 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   .kitchen-cards,.kitchen-cards.cols-3,.kitchen-step-grid,.kitchen-toggle-grid,.kitchen-review-grid{grid-template-columns:1fr;}
   .kitchen-nav{flex-direction:column;}
   .kitchen-nav-btn{width:100%;}
+  #kitchenStepsList{display:grid;overflow:visible;}
+  .kitchen-step-item{min-width:0;}
 }
 </style>
 </head>
@@ -247,17 +243,6 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
       </section>
     </div>
 
-    <div class="kitchen-modal" id="kitchenRequestModal" aria-hidden="true" role="dialog" aria-labelledby="kitchenModalTitle">
-      <div class="kitchen-modal-card">
-        <button type="button" class="kitchen-modal-close" id="kitchenModalClose" aria-label="Close design request modal">✕</button>
-        <h3 id="kitchenModalTitle">Request This Design</h3>
-        <p>Please include this summary when you contact MIC NSW for your free consultation.</p>
-        <textarea id="kitchenSummaryText" readonly></textarea>
-        <div class="kitchen-modal-actions">
-          <a href="index.html#contact" class="kitchen-nav-btn primary">Go to Contact Form</a>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- ============ BATHROOM ============ -->
@@ -285,8 +270,9 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
 <div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle" aria-hidden="true">
   <div class="quote-modal-card">
-    <h3 id="quoteModalTitle">Request This Quote</h3>
-    <p>Enter your contact details and MIC NSW will receive your selected package and live estimate.</p>
+    <button type="button" class="quote-modal-close" id="quoteCloseBtn" aria-label="Close quote request modal">✕</button>
+    <h3 id="quoteModalTitle">Request This Design</h3>
+    <p>Enter your details and MIC NSW will receive your selected package summary and live estimate through Web3Forms.</p>
     <form id="quoteRequestForm">
       <label for="quoteName">Full Name</label>
       <input id="quoteName" name="from_name" type="text" autocomplete="name" required>
@@ -296,6 +282,9 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
 
       <label for="quotePhone">Phone Number</label>
       <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" maxlength="20" title="Phone number with 8-20 digits, spaces, or +()- characters" required>
+
+      <label for="quoteSummaryText">Design Summary</label>
+      <textarea id="quoteSummaryText" readonly></textarea>
 
       <p class="quote-status" id="quoteFormStatus" role="status" aria-live="polite"></p>
 
@@ -600,6 +589,10 @@ function renderKitchenPreviewSvg(){
 function kitchenDesignSummaryText(){
   const totals = calcKitchenTotals();
   const upgrades = kitchenUpgradeOptions.filter(opt=>kState.upgrades[opt.id]).map(opt=>opt.title);
+  const microwaveBrand = microwaves.find(a=>a.id===kState.microwave)?.brand || 'Not selected';
+  const ovenBrand = ovens.find(a=>a.id===kState.oven)?.brand || 'Not selected';
+  const cooktopBrand = cooktops.find(a=>a.id===kState.cooktop)?.brand || 'Not selected';
+  const rangehoodBrand = rangehoods.find(a=>a.id===kState.rangehood)?.brand || 'Not selected';
   return [
     `PACKAGE: ${totals.pkg.name} ($${totals.pkg.low.toLocaleString()}–$${totals.pkg.high.toLocaleString()})`,
     `LAYOUT: ${layoutById().name}`,
@@ -608,7 +601,7 @@ function kitchenDesignSummaryText(){
     `COLOR: ${colorById().name}`,
     `BENCHTOP: ${benchtopById().brand} ${benchtopById().name} — ${money(totals.benchtopMod)}`,
     `SPLASHBACK: ${splashById().name} (${kState.splashPattern}) — ${money(totals.splashbackMod)}`,
-    `APPLIANCES: ${microwaves.find(a=>a.id===kState.microwave).brand} / ${ovens.find(a=>a.id===kState.oven).brand} / ${cooktops.find(a=>a.id===kState.cooktop).brand} / ${rangehoods.find(a=>a.id===kState.rangehood).brand} — ${money(totals.applianceMod)}`,
+    `APPLIANCES: ${microwaveBrand} / ${ovenBrand} / ${cooktopBrand} / ${rangehoodBrand} — ${money(totals.applianceMod)}`,
     `UPGRADES: ${upgrades.length ? upgrades.join(', ') : 'None'} — ${money(totals.upgradesMod)}`,
     `TOTAL INVESTMENT: $${totals.total.toLocaleString()}+`
   ].join('\n');
@@ -782,16 +775,6 @@ function initKitchenWizard(){
   const stepContent = document.getElementById('kitchenStepContent');
   const backBtn = document.getElementById('kitchenBackBtn');
   const nextBtn = document.getElementById('kitchenNextBtn');
-  const modal = document.getElementById('kitchenRequestModal');
-  const modalClose = document.getElementById('kitchenModalClose');
-  const summaryText = document.getElementById('kitchenSummaryText');
-  let modalTrigger = null;
-
-  function closeKitchenModal(){
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    if(modalTrigger) modalTrigger.focus();
-  }
 
   stepsList.addEventListener('click', (event)=>{
     const item = event.target.closest('[data-step-go]');
@@ -872,28 +855,10 @@ function initKitchenWizard(){
 
     const requestBtn = event.target.closest('#kitchenRequestBtn');
     if(requestBtn && areKitchenStepsComplete()){
-      modalTrigger = requestBtn;
-      summaryText.value = kitchenDesignSummaryText();
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      modalClose.focus();
       markKitchenStep(8);
+      openQuoteModal('Kitchen Renovation', buildKitchenQuoteMessage(), requestBtn);
       renderKitchenSidebar();
     }
-  });
-
-  modalClose.addEventListener('click', closeKitchenModal);
-  modal.addEventListener('click', (event)=>{
-    if(event.target===modal) closeKitchenModal();
-  });
-  modal.addEventListener('keydown', (event)=>{
-    if(event.key==='Escape'){ closeKitchenModal(); return; }
-    if(event.key!=='Tab') return;
-    const focusable = [...modal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(node=>!node.disabled);
-    if(!focusable.length) return;
-    const first = focusable[0], last = focusable[focusable.length-1];
-    if(event.shiftKey && document.activeElement===first){ event.preventDefault(); last.focus(); }
-    else if(!event.shiftKey && document.activeElement===last){ event.preventDefault(); first.focus(); }
   });
 
   renderKitchenWizard();
@@ -920,7 +885,7 @@ function getBathroomPreviewSVG(view){
   const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
   const tap = tapware.find(t=>t.id===bState.tap).hex;
   if(view==='3d'){
-    const shade=(hex,amt)=>{const c=hex.replace('#','');const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
+    const shade=(hex,amt)=>{const c=String(hex || '').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
     const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};
     let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
     parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
@@ -1290,7 +1255,8 @@ function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
   `;
 }
 function shade(hex, amt){
-  const c = hex.replace('#','');
+  const c = String(hex || '').replace('#','');
+  if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';
   const num = parseInt(c,16);
   let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
   r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
@@ -1367,49 +1333,31 @@ function getSelectionName(options, id){
 
 function buildKitchenQuoteMessage(){
   const totals = calcKitchenTotals();
-  const pkg = totals.pkg;
-  const upgrades = kitchenUpgradeOptions.filter(opt=>kState.upgrades[opt.id]).map(opt=>opt.title);
   return [
     'Kitchen renovation quote request from the MIC NSW design studio.',
     `Estimated total: $${totals.total.toLocaleString()}+`,
-    `Package: ${pkg ? pkg.name : 'Not selected'}`,
-    `Layout: ${getSelectionName(kitchenLayouts, kState.layout)}`,
-    `Door style: ${getSelectionName(doorStyles, kState.door)}`,
-    `Cabinet colour: ${getSelectionName(cabinetColors, kState.color)}`,
-    `Benchtop: ${getSelectionName(benchtops, kState.benchtop)}`,
-    `Microwave: ${getSelectionName(microwaves, kState.microwave)}`,
-    `Oven: ${getSelectionName(ovens, kState.oven)}`,
-    `Cooktop: ${getSelectionName(cooktops, kState.cooktop)}`,
-    `Rangehood: ${getSelectionName(rangehoods, kState.rangehood)}`,
-    `Base cabinets: ${kState.baseCount}`,
-    `Wall cabinets: ${kState.wallCount}`,
-    `Upgrades: ${upgrades.length ? upgrades.join(', ') : 'None'}`
+    '',
+    kitchenDesignSummaryText()
   ].join('\n');
 }
 
 function buildBathroomQuoteMessage(){
   const t = calcBathroomTotals();
-  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
   return [
     'Bathroom renovation quote request from the MIC NSW design studio.',
     t ? `Estimated price range: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}` : 'No package selected.',
-    `Package: ${pkg ? pkg.name : 'Not selected'} (${pkg ? pkg.theme : 'No theme'})`,
-    `Vanity style: ${getSelectionName(vanityStyles, bState.vanityStyle)}`,
-    `Vanity colour: ${getSelectionName(vanityColors, bState.vanityColor)}`,
-    `Floor tile: ${getSelectionName(floorTiles, bState.floorTile)}`,
-    `Wall tile: ${getSelectionName(wallTiles, bState.wallTile)}`,
-    `Tapware: ${getSelectionName(tapware, bState.tap)}`,
-    `Shower screen: ${getSelectionName(showerScreens, bState.screen)}`,
-    `LED mirror: ${bState.ledMirror ? 'Yes' : 'No'}`,
-    `Electrical & plumbing upgrade: ${bState.elecPlumb ? 'Yes' : 'No'}`
+    '',
+    getBathroomSummaryText()
   ].join('\n');
 }
 
 const quoteModal = document.getElementById('quoteModal');
 const quoteModalTitle = document.getElementById('quoteModalTitle');
+const quoteCloseBtn = document.getElementById('quoteCloseBtn');
 const quoteRequestForm = document.getElementById('quoteRequestForm');
 const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
 const quoteCancelBtn = document.getElementById('quoteCancelBtn');
+const quoteSummaryText = document.getElementById('quoteSummaryText');
 const quoteFormStatus = document.getElementById('quoteFormStatus');
 let pendingQuoteRequest = null;
 
@@ -1421,6 +1369,7 @@ function setQuoteStatus(message, isError=false){
 function closeQuoteModal(){
   quoteModal.classList.remove('show');
   quoteModal.setAttribute('aria-hidden', 'true');
+  quoteSubmitBtn.disabled = false;
   setQuoteStatus('');
   const triggerBtn = pendingQuoteRequest && pendingQuoteRequest.button;
   pendingQuoteRequest = null;
@@ -1433,6 +1382,7 @@ function openQuoteModal(serviceName, message, button){
   pendingQuoteRequest = { serviceName, message, button, originalLabel: button.textContent };
   quoteModalTitle.textContent = `Request Your ${serviceName} Quote`;
   quoteRequestForm.reset();
+  quoteSummaryText.value = message;
   setQuoteStatus('');
   quoteModal.classList.add('show');
   quoteModal.setAttribute('aria-hidden', 'false');
@@ -1511,9 +1461,20 @@ document.querySelectorAll('.tab').forEach(tab=>{
   });
 });
 
+quoteCloseBtn.addEventListener('click', closeQuoteModal);
 quoteCancelBtn.addEventListener('click', closeQuoteModal);
 quoteModal.addEventListener('click', e=>{
   if(e.target === quoteModal) closeQuoteModal();
+});
+quoteModal.addEventListener('keydown', event=>{
+  if(event.key==='Escape'){ closeQuoteModal(); return; }
+  if(event.key!=='Tab') return;
+  const focusable = [...quoteModal.querySelectorAll('button,input,textarea,[tabindex]:not([tabindex="-1"])')].filter(node=>!node.disabled);
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length-1];
+  if(event.shiftKey && document.activeElement===first){ event.preventDefault(); last.focus(); }
+  else if(!event.shiftKey && document.activeElement===last){ event.preventDefault(); first.focus(); }
 });
 quoteRequestForm.addEventListener('submit', e=>{
   e.preventDefault();
