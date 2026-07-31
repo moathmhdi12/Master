@@ -1345,109 +1345,226 @@ function currentBathroomSelectionDetails(){
   }
 }
 
-function bSwatchCards(list, activeId, dataAttr){
-  return `<div class="kitchen-cards cols-3">${list.map(item=>`
-    <article class="kitchen-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}">
-      ${item.hex?`<div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>`:''}
-      <h4 style="font-size:14px;">${item.name||item.brand}</h4>
-      ${'mod' in item ? `<span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>`:'' }
-    </article>`).join('')}</div>`;
+function badgeHTML(item){
+  if(!item.badge) return '';
+  return `<div class="badges"><span class="badge-${item.badge}">${item.badge}</span></div>`;
+}
+
+function productMedia(item){
+  if(item.svg) return item.svg;
+  if(item.hex){
+    const pattern = item.texture ? tilePattern(item.texture, item.hex) : '';
+    return `<div style="width:100%;height:100%;background:${item.hex};display:flex;align-items:center;justify-content:center;">${pattern ? `<div style="width:100%;height:100%;opacity:.35;">${pattern}</div>` : ''}</div>`;
+  }
+  return '';
+}
+
+function tilePattern(texture, hex){
+  if(texture==='marble') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M10 90 Q30 50 55 80 T95 30" fill="none" stroke="#fff" stroke-width="1.5" opacity=".4"/></svg>`;
+  if(texture==='concrete') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><circle cx="20" cy="30" r="12" fill="#000" opacity=".06"/><circle cx="70" cy="70" r="16" fill="#000" opacity=".05"/></svg>`;
+  if(texture==='terrazzo') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><circle cx="25" cy="25" r="4" fill="#555" opacity=".25"/><circle cx="65" cy="55" r="3" fill="#333" opacity=".2"/><circle cx="45" cy="80" r="5" fill="#777" opacity=".2"/><circle cx="80" cy="20" r="2" fill="#444" opacity=".25"/></svg>`;
+  if(texture==='travertine') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M0 40 H100 M0 70 H100" stroke="#a89f8e" stroke-width="1" opacity=".25"/></svg>`;
+  if(texture==='timber') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M0 20 H100 M0 50 H100 M0 80 H100" stroke="#8a6a26" stroke-width=".6" opacity=".25"/></svg>`;
+  if(texture==='stone') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M20 20 L50 50 L30 80 M60 10 L80 40" stroke="#666" stroke-width=".7" opacity=".15"/></svg>`;
+  if(texture==='gloss') return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%"><rect width="100" height="100" fill="${hex}"/><path d="M0 0 L100 100" stroke="#fff" stroke-width="1.5" opacity=".25"/></svg>`;
+  return '';
+}
+
+function bathCard(item, activeId, dataAttr, extra=''){
+  const price = 'mod' in item ? `<span class="price">${item.mod?'+$'+item.mod.toLocaleString():'included'}</span>` : '';
+  const brand = item.brand ? `<div class="brand">${item.brand}</div>` : '';
+  const collection = item.collection ? `<div class="collection">${item.collection}</div>` : '';
+  const specs = [];
+  if(item.material) specs.push(item.material);
+  if(item.finish) specs.push(item.finish);
+  if(item.size) specs.push(item.size);
+  if(item.dims) specs.push(item.dims);
+  if(item.glass) specs.push(item.glass);
+  if(item.capacity) specs.push(item.capacity);
+  if(item.warranty) specs.push(item.warranty);
+  const specHTML = specs.length ? `<div class="specs">${specs.map(s=>`<span>${s}</span>`).join('')}</div>` : '';
+  return `<article class="bath-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}" tabindex="0" role="radio" aria-checked="${activeId===item.id?'true':'false'}">
+    <div class="media">${badgeHTML(item)}${productMedia(item)}</div>
+    ${brand}${collection}
+    <h4>${item.name}</h4>
+    ${specHTML}
+    ${item.desc ? `<p class="desc">${item.desc}</p>` : ''}
+    <div class="foot">${price}${extra}</div>
+  </article>`;
+}
+
+function bathCards(list, activeId, dataAttr, classes=''){
+  return `<div class="bath-cards ${classes}">${list.map(item=>bathCard(item, activeId, dataAttr)).join('')}</div>`;
+}
+
+function bathFilterBar(){
+  return `<div class="bath-toolbar">
+    <input type="search" class="bath-search" id="bathroomSearch" placeholder="Search this step..." value="${escapeHtml(bState.search)}" aria-label="Search products">
+    ${bathroomFilters.map(f=>`<button type="button" class="bath-filter" data-filter="${f}">${f}</button>`).join('')}
+  </div>`;
+}
+
+function escapeHtml(str){ return String(str || '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function filterList(list, step){
+  const term = (bState.search || '').toLowerCase();
+  if(!term) return list;
+  return list.filter(item=>{
+    const text = [item.name, item.brand, item.collection, item.material, item.finish, item.desc].join(' ').toLowerCase();
+    return text.includes(term);
+  });
 }
 
 function renderBathroomStepContent(){
   const container = document.getElementById('bathroomStepContent');
   const step = bathroomSteps.find(s=>s.id===bState.step);
-  let content = `<div class="kitchen-step-head">
+  let content = `<div class="bath-step-head" id="bathStepTitle">
     <div><h3>Step ${step.id}: ${step.title}</h3><p>${step.desc}</p></div>
     ${bState.completed[step.id]?'<span class="kitchen-completed-badge">Completed</span>':''}
   </div>`;
 
+  content += `<div class="bath-progress" id="bathroomProgress" aria-label="Design progress"></div>`;
+
   if(bState.step===1){
-    content += `<div class="kitchen-cards">${bathroomPackages.map(pkg=>`
-      <article class="kitchen-card ${bState.pkg===pkg.id?'selected':''}" data-bpkg="${pkg.id}">
-        ${pkg.badge?`<div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">${pkg.badge}</div>`:''}
-        <div style="font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">${pkg.theme}</div>
-        <h4>${pkg.name}</h4>
-        <div class="kitchen-range">$${pkg.low.toLocaleString()} – $${pkg.high.toLocaleString()}</div>
-        <ul style="margin:8px 0 10px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;">${pkg.items.map(i=>`<li>${i}</li>`).join('')}</ul>
-        <div class="kitchen-suppliers">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
-      </article>`).join('')}</div>`;
+    content += bathCards(bathroomPackages, bState.pkg, 'data-bpkg', 'cols-3');
   }
 
   if(bState.step===2){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Vanity Style</p>
-    ${bSwatchCards(vanityStyles, bState.vanityStyle, 'data-bvanity')}
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Cabinet Colour</p>
-    ${bSwatchCards(vanityColors, bState.vanityColor, 'data-bvcolor')}`;
+    content += bathFilterBar();
+    content += `<div class="bath-cards bath-layout-card">${filterList(bathroomLayouts).map(layout=>`
+      <article class="bath-card ${bState.layout===layout.id?'selected':''}" data-blayout="${layout.id}" tabindex="0" role="radio" aria-checked="${bState.layout===layout.id?'true':'false'}">
+        <div class="media">${layout.svg}</div>
+        <h4>${layout.name}</h4>
+        <div class="meta">
+          <div><strong>Dimensions</strong><br>${layout.dims}</div>
+          <div><strong>Recommended</strong><br>${layout.rec}</div>
+          <div><strong>Apartments</strong><br>${layout.apartment?'Yes':'No'}</div>
+          <div><strong>Family Home</strong><br>${layout.family?'Yes':'No'}</div>
+        </div>
+      </article>`).join('')}</div>`;
   }
 
   if(bState.step===3){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Floor Tile</p>
-    ${bSwatchCards(floorTiles, bState.floorTile, 'data-bfloor')}
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Wall Tile</p>
-    ${bSwatchCards(wallTiles, bState.wallTile, 'data-bwall')}`;
+    content += bathFilterBar();
+    content += bathCards(filterList(vanities), bState.vanity, 'data-bvanity');
   }
 
   if(bState.step===4){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Tapware Finish</p>
-    <div class="kitchen-cards cols-3">${tapware.map(item=>`
-      <article class="kitchen-card ${bState.tap===item.id?'selected':''}" data-btap="${item.id}">
-        <div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">${item.brand}</div>
-        <h4 style="font-size:14px;">${item.name}</h4>
-        <span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>
-      </article>`).join('')}</div>
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Shower Screen</p>
-    ${bSwatchCards(showerScreens, bState.screen, 'data-bscreen')}`;
+    content += `<p class="bath-subheading">Cabinet &amp; Stone Colour</p>
+    <div class="bath-color-btns">${vanityColors.map(c=>`
+      <button type="button" class="bath-color-btn ${bState.vanityColor===c.id?'selected':''}" data-bvcolor="${c.id}" data-name="${c.name}" style="background:${c.hex};" aria-label="Select ${c.name}" aria-pressed="${bState.vanityColor===c.id?'true':'false'}"></button>
+    `).join('')}</div>`;
   }
 
   if(bState.step===5){
-    content += `<div class="kitchen-toggle-grid">
-      <article class="kitchen-toggle ${bState.ledMirror?'on':''}" data-btoggle="ledMirror">
-        <div><h4>LED Backlit Mirror</h4><p>Touch-sensor demister mirror.</p><span class="kitchen-mod">+$550</span></div>
-        <div class="check">${bState.ledMirror?'✓':''}</div>
-      </article>
-      <article class="kitchen-toggle ${bState.elecPlumb?'on':''}" data-btoggle="elecPlumb">
-        <div><h4>Electrical &amp; Plumbing Upgrade</h4><p>New points, exhaust fan, water relocation.</p><span class="kitchen-mod">+$1,500</span></div>
-        <div class="check">${bState.elecPlumb?'✓':''}</div>
-      </article>
-    </div>`;
+    content += bathFilterBar();
+    content += `<p class="bath-subheading">Wall Tiles</p>`;
+    content += bathCards(filterList(wallTiles), bState.wallTile, 'data-bwall', 'cols-3');
   }
 
   if(bState.step===6){
+    content += bathFilterBar();
+    content += `<p class="bath-subheading">Floor Tiles</p>`;
+    content += bathCards(filterList(floorTiles), bState.floorTile, 'data-bfloor', 'cols-3');
+  }
+
+  if(bState.step===7){
+    content += bathFilterBar();
+    content += bathCards(filterList(showerScreens), bState.shower, 'data-bshower');
+  }
+
+  if(bState.step===8){
+    content += bathFilterBar();
+    content += bathCards(filterList(baths), bState.bath, 'data-bbath');
+  }
+
+  if(bState.step===9){
+    content += bathFilterBar();
+    content += bathCards(filterList(toilets), bState.toilet, 'data-btoilet');
+  }
+
+  if(bState.step===10){
+    content += bathFilterBar();
+    content += bathCards(filterList(basins), bState.basin, 'data-bbasin');
+  }
+
+  if(bState.step===11){
+    content += bathFilterBar();
+    content += bathCards(filterList(tapware), bState.tap, 'data-btap', 'cols-3');
+  }
+
+  if(bState.step===12){
+    content += bathFilterBar();
+    content += bathCards(filterList(mirrors), bState.mirror, 'data-bmirror');
+  }
+
+  if(bState.step===13){
+    content += bathFilterBar();
+    content += bathCards(filterList(lighting), bState.lighting, 'data-blighting');
+  }
+
+  if(bState.step===14){
+    content += bathFilterBar();
+    content += `<p class="bath-subheading">Optional Accessories</p>
+    <div class="bath-toggle-grid">${accessories.map(item=>`
+      <article class="bath-toggle ${bState.accessories[item.id]?'on':''}" data-bacc="${item.id}" tabindex="0" role="checkbox" aria-checked="${bState.accessories[item.id]?'true':'false'}">
+        <div><h4>${item.name}</h4><p>${item.desc}</p><span class="kitchen-mod">${item.mod?'+$'+item.mod.toLocaleString():'included'}</span></div>
+        <div class="check">${bState.accessories[item.id]?'✓':''}</div>
+      </article>`).join('')}</div>`;
+  }
+
+  if(bState.step===15){
     const t = calcBathroomTotals();
-    content += `<div class="kitchen-review-grid">
-      <div>
-        <div class="kitchen-preview">
-          <div class="view-toggle" style="margin-bottom:10px;">
-            <div class="kitchen-nav-btn ${bState.view==='2d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="2d">2D Elevation</div>
-            <div class="kitchen-nav-btn ${bState.view==='3d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="3d">3D Isometric</div>
-          </div>
-          <div style="overflow:hidden;">${getBathroomPreviewSVG(bState.view)}</div>
-          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
-        </div>
+    content += `<div class="bath-review-grid">
+      <div class="bath-preview" style="padding:12px;">
+        ${getBathroomPreviewSVG(bState.view)}
+        <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
       </div>
-      <div>
-        <div class="kitchen-summary" style="margin-bottom:14px;"><pre>${getBathroomSummaryText()}</pre></div>
-        ${t?`<div class="kitchen-price-breakdown">
-          <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
-          <div class="line"><span>Vanity Style</span><span>${t.vMod?'+$'+t.vMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>Tapware</span><span>${t.tMod?'+$'+t.tMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>Shower Screen</span><span>${t.sMod?'+$'+t.sMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>LED Mirror</span><span>${t.ledMod?'+$'+t.ledMod.toLocaleString():'not included'}</span></div>
-          <div class="line"><span>Elec &amp; Plumbing</span><span>${t.elecMod?'+$'+t.elecMod.toLocaleString():'not included'}</span></div>
-          <div class="line"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
-        </div>
-        <button type="button" id="bathroomQuoteBtn" class="kitchen-nav-btn primary" style="width:100%;margin-top:10px;">Request This Quote</button>
-        <div style="font-size:11px;color:#7f7667;margin-top:6px;">(Fixed quote after free consultation)</div>`
-        :'<p style="color:#a14f39;">Please complete steps 1–5 first.</p>'}
+      <div class="bath-review-list">
+        ${bathroomSteps.slice(0,14).map(s=>`<div><span>${s.title.replace('Choose ','')}</span><span>${currentBathroomValueForStep(s.id)}</span></div>`).join('')}
       </div>
-    </div>`;
+    </div>
+    ${t?`<div class="bath-summary" style="margin-top:14px;">
+      <h4>Price Breakdown</h4>
+      <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
+      <div class="line"><span>Vanity</span><span>${t.vanityMod?'+$'+t.vanityMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Tapware</span><span>${t.tapMod?'+$'+t.tapMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Shower</span><span>${t.showerMod?'+$'+t.showerMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Bath</span><span>${t.bathMod?'+$'+t.bathMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Toilet</span><span>${t.toiletMod?'+$'+t.toiletMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Basin</span><span>${t.basinMod?'+$'+t.basinMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Mirror</span><span>${t.mirrorMod?'+$'+t.mirrorMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Lighting</span><span>${t.lightingMod?'+$'+t.lightingMod.toLocaleString():'included'}</span></div>
+      <div class="line"><span>Accessories</span><span>${t.accessoryMod?'+$'+t.accessoryMod.toLocaleString():'none'}</span></div>
+      <div class="total-row"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
+    </div>`
+    :'<p style="color:#a14f39;">Please select a package first.</p>'}`;
   }
 
   container.innerHTML = content;
+  renderBathroomProgress();
   updateBathroomNav();
-  renderBathroomRunningTotal();
+  renderBathroomSticky();
+}
+
+function currentBathroomValueForStep(stepId){
+  switch(stepId){
+    case 1: return bState.pkg ? (bathroomPackages.find(p=>p.id===bState.pkg)||bathroomPackages[0]).name : 'Not selected';
+    case 2: return bState.layout ? (bathroomLayouts.find(l=>l.id===bState.layout)||bathroomLayouts[0]).name : 'Not selected';
+    case 3: return (vanities.find(v=>v.id===bState.vanity)||vanities[0]).name;
+    case 4: return (vanityColors.find(c=>c.id===bState.vanityColor)||vanityColors[0]).name;
+    case 5: return (wallTiles.find(t=>t.id===bState.wallTile)||wallTiles[0]).name;
+    case 6: return (floorTiles.find(t=>t.id===bState.floorTile)||floorTiles[0]).name;
+    case 7: return (showerScreens.find(s=>s.id===bState.shower)||showerScreens[0]).name;
+    case 8: return (baths.find(b=>b.id===bState.bath)||baths[0]).name;
+    case 9: return (toilets.find(t=>t.id===bState.toilet)||toilets[0]).name;
+    case 10: return (basins.find(b=>b.id===bState.basin)||basins[0]).name;
+    case 11: return (tapware.find(t=>t.id===bState.tap)||tapware[0]).name;
+    case 12: return (mirrors.find(m=>m.id===bState.mirror)||mirrors[0]).name;
+    case 13: return (lighting.find(l=>l.id===bState.lighting)||lighting[0]).name;
+    case 14: return accessories.filter(a=>bState.accessories[a.id]).map(a=>a.name).join(', ') || 'None';
+    default: return '';
+  }
 }
 
 function updateBathroomNav(){
