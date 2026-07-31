@@ -714,19 +714,40 @@ let kState = {
   upgrades:{led:false,utility:false,handles:false,softClose:false,pantry:false},
   completed:{}
 };
-let bState = {step:1, pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
-  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d', completed:{}};
+let bState = {
+  step:1, pkg:null, layout:null,
+  vanity:'floating', vanityColor:'white',
+  floorTile:'large-porcelain', wallTile:'large-porcelain',
+  shower:'semi-frameless',
+  bath:'builtin',
+  toilet:'closecoupled',
+  basin:'above-counter',
+  tap:'chrome',
+  mirror:'standard',
+  lighting:'led-mirror',
+  accessories:{},
+  view:'2d', completed:{}, search:''
+};
 
 const BATHROOM_FIRST_STEP = 1;
-const BATHROOM_TOTAL_STEPS = 6;
-const BATHROOM_REVIEW_STEP = 6;
+const BATHROOM_TOTAL_STEPS = 15;
+const BATHROOM_REVIEW_STEP = 15;
 const bathroomSteps = [
-  {id:1, title:'Package', desc:'Essential, Premium or Luxury'},
-  {id:2, title:'Vanity', desc:'Style & colour'},
-  {id:3, title:'Tiling', desc:'Floor & wall tiles'},
-  {id:4, title:'Fixtures', desc:'Tapware & shower screen'},
-  {id:5, title:'Extras', desc:'Optional upgrades'},
-  {id:6, title:'Review', desc:'Summary & request quote'}
+  {id:1, title:'Choose Bathroom Package', desc:'Essential, Premium or Luxury'},
+  {id:2, title:'Choose Bathroom Layout', desc:'Floor plan that fits your space'},
+  {id:3, title:'Choose Vanity', desc:'Style, size and storage'},
+  {id:4, title:'Choose Vanity Colour', desc:'Cabinet and stone finish'},
+  {id:5, title:'Choose Wall Tiles', desc:'Wall surface and texture'},
+  {id:6, title:'Choose Floor Tiles', desc:'Floor surface and slip rating'},
+  {id:7, title:'Choose Shower', desc:'Screen style and glass'},
+  {id:8, title:'Choose Bath', desc:'Freestanding, built-in or stone'},
+  {id:9, title:'Choose Toilet', desc:'Wall hung, BTW or smart'},
+  {id:10, title:'Choose Basin', desc:'Above counter, undermount or integrated'},
+  {id:11, title:'Choose Tapware', desc:'Premium finishes'},
+  {id:12, title:'Choose Mirror', desc:'Standard, LED or smart'},
+  {id:13, title:'Choose Lighting', desc:'Ambient, task and accent'},
+  {id:14, title:'Choose Accessories', desc:'Optional finishing touches'},
+  {id:15, title:'Review & Request Quote', desc:'Summary, pricing and quote'}
 ];
 
 /* ============================================================
@@ -1118,47 +1139,74 @@ function initKitchenWizard(){
 function calcBathroomTotals(){
   const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
   if(!pkg) return null;
-  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
-  const tMod = tapware.find(t=>t.id===bState.tap).mod;
-  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
-  const ledMod = bState.ledMirror?550:0;
-  const elecMod = bState.elecPlumb?1500:0;
-  const addOn = vMod+tMod+sMod+ledMod+elecMod;
-  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vMod, tMod, sMod, ledMod, elecMod};
+  const vanityMod = (vanities.find(v=>v.id===bState.vanity)||vanities[0]).mod;
+  const tapMod = (tapware.find(t=>t.id===bState.tap)||tapware[0]).mod;
+  const showerMod = (showerScreens.find(s=>s.id===bState.shower)||showerScreens[0]).mod;
+  const bathMod = (baths.find(b=>b.id===bState.bath)||baths[0]).mod;
+  const toiletMod = (toilets.find(t=>t.id===bState.toilet)||toilets[0]).mod;
+  const basinMod = (basins.find(b=>b.id===bState.basin)||basins[0]).mod;
+  const mirrorMod = (mirrors.find(m=>m.id===bState.mirror)||mirrors[0]).mod;
+  const lightingMod = (lighting.find(l=>l.id===bState.lighting)||lighting[0]).mod;
+  const accessoryMod = Object.keys(bState.accessories).reduce((sum, key)=>{
+    const acc = accessories.find(a=>a.id===key);
+    return sum + (acc && bState.accessories[key] ? acc.mod : 0);
+  },0);
+  const addOn = vanityMod + tapMod + showerMod + bathMod + toiletMod + basinMod + mirrorMod + lightingMod + accessoryMod;
+  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vanityMod, tapMod, showerMod, bathMod, toiletMod, basinMod, mirrorMod, lightingMod, accessoryMod, addOn};
 }
 
 function getBathroomPreviewSVG(view){
-  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
-  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
-  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
-  const tap = tapware.find(t=>t.id===bState.tap).hex;
+  if(!bState.pkg) return '';
+  const vColor = (vanityColors.find(c=>c.id===bState.vanityColor)||vanityColors[0]).hex;
+  const wTileHex = (wallTiles.find(t=>t.id===bState.wallTile)||wallTiles[0]).hex;
+  const fTileHex = (floorTiles.find(t=>t.id===bState.floorTile)||floorTiles[0]).hex;
+  const tapHex = (tapware.find(t=>t.id===bState.tap)||tapware[0]).hex;
+  const shower = showerScreens.find(s=>s.id===bState.shower)||showerScreens[0];
+  const bath = baths.find(b=>b.id===bState.bath)||baths[0];
+  const mirror = mirrors.find(m=>m.id===bState.mirror)||mirrors[0];
+  const vanity = vanities.find(v=>v.id===bState.vanity)||vanities[0];
+  const isFramed = shower.type==='Framed';
+
   if(view==='3d'){
     const shade=(hex,amt)=>{const c=String(hex || '').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
-    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};
-    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
-    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
+    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};};
+    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTileHex,10)}"/>`;
+    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTileHex,-10)}"/>`;
     parts+=isoBox(60,260,140,55,34,vColor,shade(vColor,25),shade(vColor,-30));
     parts+=`<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
-    if(bState.ledMirror) parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
-    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
+    if(mirror.type==='LED'||mirror.type==='Smart'||mirror.type==='Bluetooth') parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
+    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tapHex}"/><circle cx="121" cy="226" r="5" fill="${tapHex}"/>`;
     parts+=isoBox(300,260,90,190,60,'#dbeef2','#eef9fb','#c3dee3');
-    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;">${parts}</svg>`;
+    if(bath.type!=='Built-in') parts+=`<ellipse cx="230" cy="270" rx="34" ry="18" fill="#f4f4f4" stroke="#00000022"/>`;
+    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;" aria-label="3D bathroom preview">${parts}</svg>`;
   }
-  const isFreestanding=bState.vanityStyle==='freestanding';
-  const isFramed=bState.screen==='framed';
-  const mirrorGlow=bState.ledMirror?`<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>`:'';
-  return `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;">
-    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
-    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
-    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
-    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
-    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
+
+  const isFreestanding = vanity.type==='Freestanding';
+  const mirrorGlow = (mirror.type==='LED'||mirror.type==='Smart'||mirror.type==='Bluetooth') ? `<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>` : '';
+  const screenStroke = isFramed ? '#2b2c2e' : '#9fb8bd';
+  const screenWeight = isFramed ? 6 : 2;
+
+  let svg = `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;" aria-label="2D bathroom preview">
+    <rect x="0" y="0" width="420" height="190" fill="${wTileHex}"/>
+    <rect x="0" y="190" width="420" height="70" fill="${fTileHex}"/>
+    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${screenStroke}" stroke-width="${screenWeight}"/>
+    <rect x="270" y="30" width="6" height="230" fill="${screenStroke}"/>`;
+
+  if(bath.type!=='Built-in'){
+    svg += `<ellipse cx="210" cy="225" rx="28" ry="16" fill="#f4f4f4" stroke="#00000022"/>`;
+  }
+
+  svg += `<rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
     ${isFreestanding?`<rect x="20" y="150" width="150" height="4" fill="#00000022"/>`:`<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
     <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
-    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
+    <rect x="90" y="118" width="6" height="24" fill="${tapHex}"/><circle cx="93" cy="116" r="5" fill="${tapHex}"/>
     <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
     ${mirrorGlow}
-  </svg>`;
+    <rect x="300" y="200" width="26" height="34" rx="3" fill="#fff" stroke="#00000022"/>
+    <rect x="300" y="190" width="8" height="10" fill="${tapHex}"/>`;
+
+  svg += `</svg>`;
+  return svg;
 }
 
 function getBathroomSummaryText(){
