@@ -3,291 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Design Your Kitchen or Bathroom | MIC NSW — Sydney</title>
-<meta name="description" content="Build your kitchen or bathroom renovation package online — choose your layout, cabinetry, benchtop, appliances and finishes, with live 2D/3D preview and instant pricing.">
+<title>Renovation Studio | MIC NSW — Premium Kitchen & Bathroom Planner</title>
+<meta name="description" content="Design your kitchen or bathroom renovation with MIC NSW's premium online planner. Room-first workflow, 2D/3D visualisation, product selection, live pricing, and instant quote request.">
 <link rel="canonical" href="https://mic-nsw.com.au/build-your-renovation.html">
 <link rel="icon" href="https://mic-nsw.com.au/front/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#15171A; --navy-2:#233933;
-  --gold:#A9812F; --gold-dark:#8a6a26;
-  --off:#EFEAE1; --gray:#3A3F44; --line:#E1D9C8;
-  --sage:#2F4A42; --cream:#FAF8F3;
+  --ink:#15171A;
+  --navy:#1C2B33;
+  --sand:#EFEAE1;
+  --cream:#FAF8F3;
+  --gold:#A9812F;
+  --gold-dark:#8a6a26;
+  --sage:#2F4A42;
+  --sage-dark:#233933;
+  --timber:#B79A5D;
+  --line:#E1D9C8;
+  --gray:#3A3F44;
+  --muted:#6b6555;
+  --success:#2E7D4A;
+  --danger:#9b2c2c;
+  --chip:#f3efe6;
+  --shadow:0 14px 34px rgba(21,23,26,.10);
+  --shadow-xl:0 28px 70px rgba(21,23,26,.18);
+  --radius:18px;
+  --radius-sm:10px;
+  --transition:.25s cubic-bezier(.22,.61,.36,1);
 }
 *{box-sizing:border-box;}
-body{margin:0;font-family:'Work Sans','Segoe UI',Arial,sans-serif;background:var(--off);color:var(--gray);}
-.topbar{background:var(--navy);color:#fff;padding:18px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.topbar h1{font-family:'Fraunces',Georgia,serif;font-size:21px;margin:0;font-weight:600;}
-.topbar .tag{font-size:11.5px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;}
-.topbar .back-link{color:#ece5d6;font-size:13px;font-weight:600;border:1.5px solid rgba(255,255,255,.3);padding:8px 16px;border-radius:100px;}
-.topbar .back-link:hover{border-color:var(--gold);color:var(--gold);}
-.wrap{max-width:1220px;margin:0 auto;padding:30px 20px 100px;}
+html,body{height:100%;}
+body{margin:0;font-family:'Work Sans','Segoe UI',Arial,sans-serif;background:var(--sand);color:var(--gray);overflow-x:hidden;}
+button{font-family:inherit;}
 
-.tabs{display:flex;gap:10px;margin-bottom:26px;}
-.tab{flex:1;text-align:center;padding:14px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;justify-content:center;}
-.tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+/* Topbar */
+.topbar{background:var(--ink);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:300;}
+.topbar .brand{display:flex;align-items:center;gap:14px;}
+.topbar .brand img{height:38px;filter:brightness(0) invert(1);}
+.topbar .brand-text h1{font-family:'Fraunces',Georgia,serif;font-size:20px;margin:0;font-weight:600;line-height:1.1;}
+.topbar .brand-text .tag{font-size:10.5px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;}
+.topbar-actions{display:flex;align-items:center;gap:10px;}
+.topbar .btn-sm{padding:9px 18px;border-radius:999px;font-size:12px;font-weight:700;border:1.5px solid transparent;cursor:pointer;transition:var(--transition);}
+.topbar .btn-ghost{border-color:rgba(255,255,255,.35);color:#ece5d6;background:transparent;}
+.topbar .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.topbar .btn-gold{background:var(--gold);color:#fff;border-color:var(--gold);}
+.topbar .btn-gold:hover{background:var(--gold-dark);}
 
-h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:21px;margin:34px 0 4px;font-weight:600;}
-.section-desc{color:#8a8478;font-size:13px;margin-bottom:18px;}
+/* App layout */
+.app-shell{display:grid;grid-template-columns:260px minmax(0,1fr) 320px;grid-template-rows:1fr;min-height:calc(100vh - 68px);}
+.panel{background:var(--cream);border-right:1px solid var(--line);display:flex;flex-direction:column;}
+.panel-right{border-right:none;border-left:1px solid var(--line);}
+.panel-header{padding:18px 20px 10px;border-bottom:1px solid var(--line);}
+.panel-header h2{font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin:0;}
+.panel-header p{font-size:11.5px;color:var(--muted);margin:4px 0 0;}
+.panel-scroll{flex:1;overflow-y:auto;padding:14px 18px 26px;}
 
-/* Package cards */
-.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.pkg-card{background:var(--cream);border:2px solid var(--line);border-radius:16px;padding:22px;cursor:pointer;position:relative;transition:.2s;}
-.pkg-card:hover{border-color:var(--gold);transform:translateY(-2px);}
-.pkg-card.selected{border-color:var(--gold);box-shadow:0 6px 18px rgba(169,129,47,.22);}
-.pkg-card .badge{position:absolute;top:-10px;right:16px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:12px;}
-.pkg-card .theme{font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
-.pkg-card h3{margin:4px 0 4px;color:var(--navy);font-size:17px;font-family:'Fraunces',serif;}
-.pkg-card .price{font-size:19px;font-weight:700;color:var(--gold-dark);margin:6px 0 10px;}
-.pkg-card .price span{font-size:11.5px;color:#999;font-weight:400;}
-.pkg-card ul{margin:0 0 12px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;}
-.supp-label{font-size:10.5px;color:#9a9384;text-transform:uppercase;letter-spacing:.5px;margin:8px 0 4px;}
-.supp-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
-.chip{background:var(--off);border:1px solid var(--line);font-size:10.5px;padding:3px 8px;border-radius:10px;color:#6b6555;}
-.select-btn{width:100%;padding:9px;border-radius:100px;border:1.5px solid var(--navy);background:var(--cream);color:var(--navy);font-weight:600;font-size:13px;cursor:pointer;}
-.pkg-card.selected .select-btn{background:var(--navy);color:#fff;}
+/* Tabs */
+.renovation-tabs{display:flex;gap:8px;padding:18px 20px 0;}
+.renovation-tab{flex:1;text-align:center;padding:12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:700;font-size:13px;background:#fff;transition:var(--transition);}
+.renovation-tab:hover{border-color:var(--gold);}
+.renovation-tab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-/* Configurator */
-.config{display:none;margin-top:44px;gap:26px;grid-template-columns:1fr 400px;}
-.config.show{display:grid;}
-.options-col{display:flex;flex-direction:column;gap:22px;}
-.opt-group{background:var(--cream);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;}
-.opt-group h4{margin:0 0 12px;font-size:13px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center;}
-.opt-group h4 small{color:#b0aa9a;font-weight:400;text-transform:none;letter-spacing:0;}
-.sub-label{font-size:11.5px;font-weight:700;color:#7a7460;margin:12px 0 8px;text-transform:uppercase;letter-spacing:.4px;}
-.sub-label:first-child{margin-top:0;}
+/* Progress */
+.progress-block{margin-bottom:18px;}
+.progress-bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dark));width:0%;transition:width .4s ease;}
+.progress-text{font-size:11px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between;}
 
-.swatch-row{display:flex;flex-wrap:wrap;gap:9px;}
-.swatch{border:2px solid transparent;border-radius:8px;padding:6px;cursor:pointer;text-align:center;width:98px;background:#fafaf8;transition:.15s;}
-.swatch:hover{border-color:#ddd6c4;}
-.swatch.active{border-color:var(--gold);background:#fff8ea;}
-.swatch .chip-color{width:100%;height:34px;border-radius:5px;margin-bottom:6px;border:1px solid rgba(0,0,0,.08);}
-.swatch .name{font-size:10.5px;color:var(--gray);line-height:1.3;}
-.swatch .brand{font-size:9px;color:var(--gold-dark);font-weight:700;text-transform:uppercase;}
-.swatch .mod{font-size:9.5px;color:#999;margin-top:2px;}
+/* Step list */
+.step-list{display:flex;flex-direction:column;gap:8px;}
+.step-item{display:flex;gap:12px;padding:11px;border:1.5px solid transparent;border-radius:12px;cursor:pointer;transition:var(--transition);position:relative;}
+.step-item:hover{background:#fff;border-color:#ddd6c4;transform:translateX(2px);}
+.step-item.active{background:#fff7e7;border-color:var(--gold);box-shadow:var(--shadow);}
+.step-item.locked{opacity:.45;cursor:not-allowed;pointer-events:none;}
+.step-item.completed{background:#f0f7f1;border-color:#c8ddcb;}
+.step-index{width:28px;height:28px;flex:0 0 28px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ink);background:#fff;transition:var(--transition);}
+.step-item.active .step-index{border-color:var(--gold);background:var(--gold);color:#fff;}
+.step-item.completed .step-index{border-color:var(--success);background:var(--success);color:#fff;}
+.step-meta strong{display:block;color:var(--ink);font-size:13px;line-height:1.25;}
+.step-meta span{display:block;font-size:11px;color:#7c7569;line-height:1.35;margin-top:2px;}
 
-.shape-row{display:flex;flex-wrap:wrap;gap:9px;}
-.shape-btn{border:2px solid var(--line);border-radius:8px;padding:8px 6px 6px;cursor:pointer;text-align:center;width:88px;background:#fafaf8;}
-.shape-btn.active{border-color:var(--gold);background:#fff8ea;}
-.shape-btn svg{width:56px;height:40px;}
-.shape-btn .name{font-size:10px;margin-top:3px;}
+/* Center workspace */
+.workspace{position:relative;display:flex;flex-direction:column;background:var(--sand);min-height:0;}
+.workspace-header{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--line);background:rgba(250,248,243,.95);backdrop-filter:blur(6px);position:sticky;top:0;z-index:50;}
+.workspace-title h3{font-family:'Fraunces',serif;color:var(--ink);font-size:20px;margin:0;}
+.workspace-title p{font-size:12px;color:var(--muted);margin:3px 0 0;}
+.workspace-tools{display:flex;gap:8px;align-items:center;}
+.tool-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);}
+.tool-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+.tool-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-.stepper{display:flex;align-items:center;gap:12px;}
-.stepper button{width:32px;height:32px;border-radius:6px;border:1.5px solid var(--line);background:#fafaf8;font-size:16px;cursor:pointer;color:var(--navy);}
-.stepper button:hover{border-color:var(--gold);}
-.stepper .val{font-size:16px;font-weight:700;color:var(--navy);width:24px;text-align:center;}
+/* Canvas */
+.canvas-area{flex:1;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 50% 30%,#f6f3ec,#e8e2d6);}
+#designCanvas{width:100%;height:100%;max-width:1100px;max-height:760px;border-radius:14px;box-shadow:var(--shadow-xl);background:#fff;border:1px solid var(--line);}
+.canvas-placeholder{position:absolute;display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--muted);}
+.canvas-placeholder .icon{font-size:48px;opacity:.35;}
+.canvas-note{font-size:12px;text-align:center;max-width:280px;}
 
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;}
-.toggle-row .lbl{font-size:13px;color:var(--gray);}
-.toggle-row .lbl small{display:block;color:#999;font-size:11px;}
-.switch{width:44px;height:24px;border-radius:14px;background:#ddd8c8;position:relative;cursor:pointer;transition:.2s;flex-shrink:0;}
-.switch.on{background:var(--gold);}
-.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;}
-.switch.on::after{left:23px;}
+/* Step content */
+.step-stage{padding:22px 26px 30px;max-width:1100px;margin:0 auto;width:100%;}
+.stage-head{margin-bottom:22px;}
+.stage-head h4{font-family:'Fraunces',serif;color:var(--ink);font-size:26px;margin:0;}
+.stage-head p{font-size:14px;color:var(--muted);margin:6px 0 0;max-width:700px;line-height:1.5;}
 
-/* Preview column */
-.preview-col{position:sticky;top:20px;align-self:start;}
-.preview-box{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px;}
-.view-toggle{display:flex;gap:6px;margin-bottom:12px;}
-.view-btn{flex:1;text-align:center;padding:8px;font-size:11.5px;font-weight:700;border:1.5px solid var(--line);border-radius:6px;cursor:pointer;color:#888;}
-.view-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
-#kitchenSvgWrap,#bathroomSvgWrap{background:#f2efe8;border-radius:8px;padding:10px;min-height:220px;}
-.floorplan-note{font-size:10.5px;color:#999;margin-top:8px;line-height:1.5;}
+/* Room editor */
+.room-editor{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start;}
+.room-fields{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:18px;}
+.room-fields h5{margin:0 0 14px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink);}
+.field-group{margin-bottom:14px;}
+.field-group label{display:block;font-size:11.5px;font-weight:700;color:#7a7460;margin-bottom:5px;}
+.field-group input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;color:var(--ink);}
+.room-tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px;}
+.room-tool{padding:10px;border:1.5px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:var(--ink);transition:var(--transition);text-align:center;}
+.room-tool:hover{border-color:var(--gold);background:#fff7e7;}
+.room-tool.active{border-color:var(--gold);background:var(--gold);color:#fff;}
 
-.price-box{background:var(--navy);color:#fff;border-radius:12px;padding:20px;}
-.price-box h4{margin:0 0 4px;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);}
-.price-total{font-size:26px;font-weight:700;margin:6px 0 12px;}
-.price-line{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.12);color:#dcd9d2;}
-.price-line span:last-child{color:#fff;font-weight:600;}
-.cta-final{margin-top:16px;width:100%;padding:12px;border-radius:6px;background:var(--gold);color:var(--navy);border:none;font-weight:700;font-size:13px;cursor:pointer;}
-.disclaimer{font-size:10.5px;color:#a9a49a;margin-top:24px;line-height:1.6;max-width:1220px;padding:0 20px;}
+/* Product cards */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.product-card{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;transition:var(--transition);position:relative;}
+.product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-xl);border-color:var(--gold);}
+.product-card.selected{border-color:var(--gold);box-shadow:0 0 0 2px rgba(169,129,47,.25),var(--shadow);}
+.product-card.selected::after{content:"Selected";position:absolute;top:12px;right:12px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;}
+.product-image{height:150px;background:var(--chip);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.product-image .material-swatch{width:100%;height:100%;transition:transform .4s ease;}
+.product-card:hover .material-swatch{transform:scale(1.08);}
+.product-badge{position:absolute;top:10px;left:10px;background:var(--ink);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px;}
+.product-badge.stock{background:var(--success);}
+.product-badge.limited{background:var(--danger);}
+.product-body{padding:14px;}
+.product-brand{font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;letter-spacing:.6px;}
+.product-name{font-family:'Fraunces',serif;color:var(--ink);font-size:15px;margin:3px 0 2px;line-height:1.2;}
+.product-model{font-size:11px;color:#8a8478;margin-bottom:8px;}
+.product-specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.product-specs span{font-size:9.5px;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 8px;color:#5b5346;}
+.product-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;}
+.product-price{font-size:16px;font-weight:700;color:var(--ink);}
+.product-price small{font-size:10px;color:#999;font-weight:500;}
+
+/* Filters */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+.search-box{position:relative;flex:1;min-width:220px;}
+.search-box input{width:100%;padding:11px 14px 11px 38px;border:1.5px solid var(--line);border-radius:999px;font-size:13px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 14px center;}
+.filter-select{padding:10px 14px;border:1.5px solid var(--line);border-radius:999px;font-size:12px;background:#fff;color:var(--ink);min-width:120px;}
+.filter-chip{padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);}
+.filter-chip:hover,.filter-chip.active{border-color:var(--gold);background:#fff7e7;}
+.filter-chip.active{color:var(--gold-dark);}
+
+/* Recommendations */
+.recommendations{margin-top:28px;}
+.recommendations h5{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink);margin:0 0 12px;display:flex;align-items:center;gap:8px;}
+.recommendations h5::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);}
+.recommendation-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+.rec-card{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;transition:var(--transition);}
+.rec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:var(--shadow);}
+.rec-card .rec-img{height:80px;border-radius:8px;background:var(--chip);margin-bottom:10px;}
+.rec-card strong{font-size:13px;color:var(--ink);}
+.rec-card span{font-size:11px;color:var(--muted);display:block;}
+
+/* Right summary */
+.summary-card{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.summary-card h5{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--gold-dark);margin:0 0 10px;}
+.summary-line{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px solid var(--line);color:#5b5346;}
+.summary-line:last-child{border-bottom:none;}
+.summary-line strong{color:var(--ink);}
+.summary-line .val{font-weight:600;color:var(--ink);}
+.price-block{background:var(--ink);color:#fff;border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;}
+.price-block::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(169,129,47,.25),transparent 60%);pointer-events:none;}
+.price-block h5{position:relative;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:0 0 6px;}
+.price-amount{position:relative;font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:#fff;margin-bottom:8px;}
+.price-meta{position:relative;font-size:11px;color:#c9c2b3;line-height:1.5;}
+.request-btn{width:100%;margin-top:14px;padding:14px;border-radius:999px;border:none;background:var(--gold);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;}
+.request-btn:hover{background:var(--gold-dark);transform:translateY(-2px);box-shadow:var(--shadow);}
+.request-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* Product detail panel */
+.detail-panel{position:fixed;inset:0;background:rgba(21,23,26,.65);display:none;align-items:flex-end;justify-content:flex-end;z-index:400;padding:20px;}
+.detail-panel.show{display:flex;}
+.detail-card{width:min(100%,560px);max-height:calc(100vh - 40px);background:var(--cream);border-radius:var(--radius);box-shadow:var(--shadow-xl);overflow:hidden;display:flex;flex-direction:column;animation:slideUp .35s ease;}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.detail-header{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;}
+.detail-header h3{font-family:'Fraunces',serif;color:var(--ink);font-size:22px;margin:0;}
+.detail-close{width:34px;height:34px;border:1.5px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;color:var(--ink);font-size:16px;}
+.detail-scroll{flex:1;overflow-y:auto;padding:20px;}
+.detail-gallery{height:220px;background:var(--chip);border-radius:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.detail-section{margin-bottom:18px;}
+.detail-section h6{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--gold-dark);margin:0 0 8px;}
+.detail-section p, .detail-section li{font-size:13px;color:#5b5346;line-height:1.6;}
+.detail-section ul{margin:0;padding-left:18px;}
+.detail-actions{padding:14px 20px 20px;border-top:1px solid var(--line);display:flex;gap:10px;}
+.detail-actions button{flex:1;padding:12px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid transparent;transition:var(--transition);}
+.detail-add{background:var(--gold);color:#fff;border-color:var(--gold);}
+.detail-add:hover{background:var(--gold-dark);}
+.detail-cancel{background:#fff;color:var(--ink);border-color:var(--line);}
+
+/* Modal */
 .quote-modal{position:fixed;inset:0;background:rgba(21,23,26,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;}
 .quote-modal.show{display:flex;}
-.quote-modal-card{width:min(100%,560px);background:var(--cream);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);position:relative;}
-.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:24px;}
+.quote-modal-card{width:min(100%,560px);background:var(--cream);border-radius:var(--radius);padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.24);position:relative;animation:scaleIn .3s ease;}
+@keyframes scaleIn{from{transform:scale(.96);opacity:0;}to{transform:scale(1);opacity:1;}}
+.quote-modal-card h3{margin:0 0 8px;font-family:'Fraunces',Georgia,serif;color:var(--ink);font-size:24px;}
 .quote-modal-card p{margin:0 0 16px;font-size:12.5px;color:#6b6555;line-height:1.6;}
 .quote-modal-card label{display:block;font-size:11px;font-weight:700;color:#7a7460;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;}
 .quote-modal-card input,.quote-modal-card textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--gray);}
 .quote-modal-card textarea{min-height:170px;resize:vertical;background:#fffdf7;}
-.quote-modal-close{position:absolute;right:16px;top:16px;border:1.5px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--navy);font-size:16px;}
+.quote-modal-close{position:absolute;right:16px;top:16px;border:1.5px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--ink);font-size:16px;}
 .quote-status{min-height:18px;margin-top:14px;font-size:12px;color:var(--sage);}
-.quote-status.error{color:#9b2c2c;}
+.quote-status.error{color:var(--danger);}
 .quote-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
 .quote-modal-actions button{border:none;border-radius:999px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;}
-.quote-cancel{background:#e8e0d0;color:var(--navy);}
-.quote-submit{background:var(--navy);color:#fff;}
+.quote-cancel{background:#e8e0d0;color:var(--ink);}
+.quote-submit{background:var(--ink);color:#fff;}
 .quote-submit:disabled{opacity:.7;cursor:wait;}
 
+/* Animations */
+.fade-in{animation:fadeIn .35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.scale-pop{animation:scalePop .3s ease;}
+@keyframes scalePop{0%{transform:scale(.92);}60%{transform:scale(1.02);}100%{transform:scale(1);}}
 
-/* Kitchen step wizard */
-.kitchen-wizard{display:grid;grid-template-columns:280px minmax(0,1fr);gap:26px;align-items:start;}
-.kitchen-sidebar{position:sticky;top:20px;background:var(--cream);border:1.5px solid var(--line);border-radius:16px;padding:20px;box-shadow:2px 4px 8px rgba(0,0,0,.08);}
-.kitchen-sidebar h2{margin:0 0 14px;color:var(--navy);font-family:'Fraunces',Georgia,serif;font-size:24px;line-height:1.2;}
-.kitchen-step-item{display:flex;gap:12px;padding:11px;border:1.5px solid transparent;border-radius:12px;cursor:pointer;transition:all .2s ease;}
-.kitchen-step-item:hover{border-color:var(--gold);box-shadow:2px 4px 8px rgba(0,0,0,.08);}
-.kitchen-step-item.active{background:#fff7e7;border-color:var(--gold);}
-.kitchen-step-item.completed{background:#f7f6f1;}
-.kitchen-step-index{width:28px;height:28px;flex:0 0 28px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--navy);}
-.kitchen-step-item.active .kitchen-step-index,.kitchen-step-item.completed .kitchen-step-index{border-color:var(--gold);background:var(--gold);color:#fff;}
-.kitchen-step-meta strong{display:block;color:var(--navy);font-size:14px;margin-bottom:1px;}
-.kitchen-step-meta span{display:block;font-size:12px;color:#7c7569;line-height:1.35;}
-.kitchen-main{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:20px;box-shadow:2px 4px 8px rgba(0,0,0,.08);}
-.kitchen-step-content{animation:kitchenFade .2s ease;}
-@keyframes kitchenFade{from{opacity:.15;transform:translateY(3px);}to{opacity:1;transform:translateY(0);}}
-.kitchen-step-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px;}
-.kitchen-step-head h3{margin:0;color:var(--navy);font-family:'Fraunces',Georgia,serif;font-size:24px;}
-.kitchen-step-head p{margin:7px 0 0;color:#807867;font-size:14px;line-height:1.45;max-width:740px;}
-.kitchen-completed-badge{border:1.5px solid #7da281;color:#2f4a42;background:#edf7ee;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.4px;padding:5px 10px;text-transform:uppercase;white-space:nowrap;}
-.kitchen-cards{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr));}
-.kitchen-cards.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));}
-.kitchen-card{border:1.5px solid var(--line);background:var(--cream);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s ease;}
-.kitchen-card:hover{border-color:var(--gold);box-shadow:2px 4px 8px rgba(0,0,0,.1);}
-.kitchen-card.selected{border-color:var(--gold);box-shadow:0 0 0 1px rgba(169,129,47,.5) inset;background:linear-gradient(145deg,#fffaf1,#f7edd8);}
-.kitchen-card h4{margin:0 0 4px;font-size:16px;color:var(--navy);}
-.kitchen-card p{margin:0;color:#6b655a;font-size:13px;line-height:1.4;}
-.kitchen-mod{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--gold-dark);}
-.kitchen-range{font-size:13px;font-weight:700;color:#715a23;margin-bottom:8px;}
-.kitchen-suppliers{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;}
-.kitchen-suppliers span{font-size:10px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;background:#f8f4eb;color:#6c6351;}
-.kitchen-layout-icon svg{width:90px;height:56px;display:block;margin:0 auto 8px;}
-.kitchen-step-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
-.kitchen-box{border:1.5px solid var(--line);background:#fbf9f3;border-radius:12px;padding:14px;}
-.kitchen-box h5{margin:0 0 10px;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:.45px;}
-.kitchen-stepper{display:flex;align-items:center;gap:10px;}
-.kitchen-stepper button{width:44px;height:44px;border-radius:9px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-size:24px;cursor:pointer;line-height:1;transition:all .2s ease;}
-.kitchen-stepper button:hover{border-color:var(--gold);}
-.kitchen-stepper span{font-size:22px;font-weight:700;color:var(--navy);width:44px;text-align:center;}
-.kitchen-color-row{display:flex;gap:10px;flex-wrap:wrap;}
-.kitchen-color{width:52px;height:52px;border-radius:10px;border:2px solid transparent;cursor:pointer;position:relative;}
-.kitchen-color.selected{border-color:var(--gold);box-shadow:0 0 0 2px rgba(169,129,47,.25);}
-.kitchen-color::after{content:attr(data-name);position:absolute;left:50%;transform:translateX(-50%);bottom:-22px;font-size:10px;color:#675f50;white-space:nowrap;}
-.kitchen-color-wrap{padding-bottom:24px;}
-.kitchen-appliance-group{margin-bottom:14px;}
-.kitchen-appliance-group h5{margin:0 0 8px;color:#756f62;font-size:12px;text-transform:uppercase;letter-spacing:.45px;}
-.kitchen-toggle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-.kitchen-toggle{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1.5px solid var(--line);background:var(--cream);border-radius:12px;padding:12px;cursor:pointer;transition:all .2s ease;}
-.kitchen-toggle:hover{border-color:var(--gold);box-shadow:2px 4px 8px rgba(0,0,0,.08);}
-.kitchen-toggle.on{border-color:var(--gold);background:#fff8ea;}
-.kitchen-toggle h4{margin:0 0 4px;color:var(--navy);font-size:14px;}
-.kitchen-toggle p{margin:0;color:#6d6558;font-size:12px;}
-.kitchen-toggle .check{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;background:#d3c7ae;}
-.kitchen-toggle.on .check{border-color:var(--gold);background:var(--gold);}
-.kitchen-running-total{margin-top:16px;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:600;}
-.kitchen-running-total .kitchen-total-amount{font-size:20px;display:inline-block;margin-left:8px;animation:kitchenPricePop .24s ease;}
-@keyframes kitchenPricePop{0%{transform:scale(.95);}55%{transform:scale(1.05);}100%{transform:scale(1);}}
-.kitchen-nav{margin-top:18px;display:flex;justify-content:space-between;gap:10px;}
-.kitchen-nav-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s ease;}
-.kitchen-nav-btn:hover:not(:disabled){border-color:var(--gold);}
-.kitchen-nav-btn.primary{background:linear-gradient(120deg,var(--gold),var(--gold-dark));border-color:var(--gold-dark);color:#fff;}
-.kitchen-nav-btn:disabled{opacity:.45;cursor:not-allowed;}
-.kitchen-review-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;}
-.kitchen-preview{background:#f2efe8;border:1.5px solid var(--line);border-radius:12px;padding:10px;}
-.kitchen-summary,.kitchen-price-breakdown{border:1.5px solid var(--line);background:#fbf9f3;border-radius:12px;padding:12px;}
-.kitchen-summary pre{margin:0;font-family:'Work Sans','Segoe UI',Arial,sans-serif;font-size:12px;line-height:1.5;color:#4b463d;white-space:pre-wrap;}
-.kitchen-price-breakdown .line{display:flex;justify-content:space-between;border-bottom:1px solid #e9dfca;padding:6px 0;font-size:12px;color:#524a3f;}
-.kitchen-price-breakdown .line strong{font-size:13px;color:var(--navy);}
-.kitchen-request-btn{width:100%;margin-top:10px;}
-
+/* Responsive */
 @media (max-width:1199px){
-  .kitchen-wizard{grid-template-columns:1fr;}
-  .kitchen-sidebar{position:static;padding:14px;}
-  .kitchen-sidebar h2{margin-bottom:10px;}
-  #kitchenStepsList{display:flex;gap:10px;overflow:auto;padding-bottom:2px;}
-  .kitchen-step-item{min-width:210px;}
+  .app-shell{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;}
+  .panel-left{order:2;border-right:none;border-bottom:1px solid var(--line);max-height:260px;}
+  .panel-right{order:3;border-left:none;border-top:1px solid var(--line);}
+  .workspace{order:1;}
+  .step-list{flex-direction:row;overflow-x:auto;gap:8px;padding-bottom:4px;}
+  .step-item{min-width:200px;}
 }
 @media (max-width:767px){
-  .kitchen-main{padding:14px;}
-  .kitchen-step-head h3{font-size:22px;}
-  .kitchen-cards,.kitchen-cards.cols-3,.kitchen-step-grid,.kitchen-toggle-grid,.kitchen-review-grid{grid-template-columns:1fr;}
-  .kitchen-nav{flex-direction:column;}
-  .kitchen-nav-btn{width:100%;}
-  #kitchenStepsList{display:grid;overflow:visible;}
-  .kitchen-step-item{min-width:0;}
+  .topbar .brand-text h1{font-size:16px;}
+  .topbar .tag{font-size:9px;}
+  .topbar .btn-sm{display:none;}
+  .workspace-header{flex-direction:column;align-items:flex-start;gap:10px;}
+  .room-editor{grid-template-columns:1fr;}
+  .product-grid{grid-template-columns:1fr 1fr;}
+  .filter-bar{flex-direction:column;align-items:stretch;}
+  .search-box{min-width:auto;}
+  .summary-card, .price-block{border-radius:14px;}
 }
+
+/* Footer */
+.page-footer{background:var(--ink);color:#c9c2b3;padding:40px 20px 26px;margin-top:0;}
+.page-footer-inner{max-width:1220px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center;}
+.page-footer img{height:34px;filter:brightness(0) invert(1);}
+.page-footer p{font-size:12px;color:#a89f8e;max-width:340px;}
+.page-footer a{color:#ece5d6;font-size:13px;}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <a href="index.html" class="back-link">← Back to MIC NSW</a>
-  <div style="text-align:center;">
-    <h1>Kitchen &amp; Bathroom Design Studio</h1>
-    <div class="tag">Packages · 2D/3D Live Preview · Sydney Suppliers</div>
-  </div>
-  <a href="index.html#contact" class="back-link" style="border-color:var(--gold);color:var(--gold);">Get a Quote</a>
-</div>
-
-<div class="wrap">
-  <div class="tabs">
-    <div class="tab active" data-tab="kitchen">Kitchen Renovation</div>
-    <div class="tab" data-tab="bathroom">Bathroom Renovation</div>
-  </div>
-
-  <!-- ============ KITCHEN ============ -->
-  <div id="kitchen-tab">
-    <div class="kitchen-wizard" id="kitchenWizard">
-      <aside class="kitchen-sidebar" aria-label="Kitchen design steps">
-        <h2>Design Your Kitchen</h2>
-        <div id="kitchenStepsList"></div>
-      </aside>
-
-      <section class="kitchen-main">
-        <div id="kitchenStepContent" class="kitchen-step-content" aria-live="polite"></div>
-        <div id="kitchenRunningTotal" class="kitchen-running-total" style="display:none;"></div>
-        <div class="kitchen-nav">
-          <button id="kitchenBackBtn" class="kitchen-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
-          <button id="kitchenNextBtn" class="kitchen-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
-        </div>
-      </section>
-    </div>
-
-  </div>
-
-  <!-- ============ BATHROOM ============ -->
-  <div id="bathroom-tab" style="display:none;">
-    <div class="kitchen-wizard" id="bathroomWizard">
-      <aside class="kitchen-sidebar" aria-label="Bathroom design steps">
-        <h2>Design Your Bathroom</h2>
-        <div id="bathroomStepsList"></div>
-      </aside>
-      <section class="kitchen-main">
-        <div id="bathroomStepContent" class="kitchen-step-content" aria-live="polite"></div>
-        <div id="bathroomRunningTotal" class="kitchen-running-total" style="display:none;"></div>
-        <div class="kitchen-nav">
-          <button id="bathroomBackBtn" class="kitchen-nav-btn" type="button" aria-label="Go to previous step">← Back</button>
-          <button id="bathroomNextBtn" class="kitchen-nav-btn primary" type="button" aria-label="Go to next step">Next →</button>
-        </div>
-      </section>
+<header class="topbar">
+  <div class="brand">
+    <img src="https://mic-nsw.com.au/front/images/logo2.png" alt="MIC NSW">
+    <div class="brand-text">
+      <h1>Renovation Studio</h1>
+      <div class="tag">Premium Kitchen & Bathroom Planner</div>
     </div>
   </div>
+  <div class="topbar-actions">
+    <a href="index.html" class="btn-sm btn-ghost">← Back to MIC NSW</a>
+    <a href="index.html#contact" class="btn-sm btn-gold">Get a Quote</a>
+  </div>
+</header>
+
+<div class="renovation-tabs" id="renovationTabs">
+  <div class="renovation-tab active" data-tab="kitchen">Kitchen Renovation</div>
+  <div class="renovation-tab" data-tab="bathroom">Bathroom Renovation</div>
 </div>
 
-<div class="disclaimer">
-  * All prices are indicative ranges for standard-size Sydney metro rooms, based on typical retail/trade pricing from the suppliers named. They exclude structural work, asbestos removal, council approvals and site-access surcharges. A fixed written quote follows your free site consultation. Brand names (Kaboodle, Kinsman, Freedom Kitchens, IKEA, Laminex, Caesarstone, Essastone, Smartstone, Dekton, Beaumont Tiles, National Tiles, Signorino, Reece, Caroma, Methven, Phoenix, Nero, Sussex Taps, Chef, Westinghouse, Bosch, Fisher &amp; Paykel, ILVE, Smeg, Miele, Blum, Hettich, Clipsal) are examples of Australian-available suppliers MIC NSW can source and install — availability and current pricing confirmed at consultation.
+<div class="app-shell" id="appShell">
+  <!-- LEFT SIDEBAR -->
+  <aside class="panel panel-left" aria-label="Project steps">
+    <div class="panel-header">
+      <h2 id="leftPanelTitle">Project Progress</h2>
+      <p id="leftPanelDesc">Design your dream renovation step by step.</p>
+      <div class="progress-block">
+        <div class="progress-bar"><div class="progress-fill" id="stepProgressFill"></div></div>
+        <div class="progress-text"><span id="stepProgressLabel">Step 1 of 15</span><span id="stepProgressPct">7%</span></div>
+      </div>
+    </div>
+    <div class="panel-scroll">
+      <nav class="step-list" id="stepList" aria-label="Workflow steps"></nav>
+      <div class="summary-card" style="margin-top:18px;">
+        <h5>Project Info</h5>
+        <div class="summary-line"><span>Builder</span><span class="val">MIC NSW</span></div>
+        <div class="summary-line"><span>Licence</span><span class="val">393630C</span></div>
+        <div class="summary-line"><span>Location</span><span class="val">Sydney, NSW</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CENTER WORKSPACE -->
+  <main class="workspace">
+    <div class="workspace-header">
+      <div class="workspace-title">
+        <h3 id="workspaceTitle">Design Canvas</h3>
+        <p id="workspaceSubtitle">Create your room, then build your renovation.</p>
+      </div>
+      <div class="workspace-tools" id="canvasTools" style="display:none;">
+        <button class="tool-btn active" data-view="2d" title="2D Plan" aria-label="2D plan view">▤</button>
+        <button class="tool-btn" data-view="3d" title="3D View" aria-label="3D view">▣</button>
+        <button class="tool-btn" data-view="split" title="Split View" aria-label="Split 2D/3D view">◫</button>
+        <button class="tool-btn" data-action="zoom-in" title="Zoom In" aria-label="Zoom in">+</button>
+        <button class="tool-btn" data-action="zoom-out" title="Zoom Out" aria-label="Zoom out">−</button>
+        <button class="tool-btn" data-action="reset" title="Reset View" aria-label="Reset view">⌂</button>
+        <button class="tool-btn" data-action="fullscreen" title="Fullscreen" aria-label="Fullscreen">⛶</button>
+      </div>
+    </div>
+
+    <div class="canvas-area" id="canvasArea">
+      <canvas id="designCanvas" width="1100" height="760" aria-label="Room design canvas"></canvas>
+      <div class="canvas-placeholder" id="canvasPlaceholder">
+        <div class="icon">🛠️</div>
+        <div class="canvas-note">Start by creating your room dimensions in Step 3.</div>
+      </div>
+    </div>
+
+    <div class="step-stage" id="stepStage">
+      <div class="stage-head">
+        <h4 id="stageTitle">Welcome</h4>
+        <p id="stageDesc">Select a workflow to begin planning your renovation.</p>
+      </div>
+      <div id="stageBody"></div>
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="panel panel-right" aria-label="Project summary">
+    <div class="panel-header">
+      <h2>Project Summary</h2>
+      <p>Live estimate & selected products.</p>
+    </div>
+    <div class="panel-scroll" id="summaryScroll">
+      <div class="summary-card">
+        <h5>Selection Overview</h5>
+        <div class="summary-line"><span>Project</span><span class="val" id="summaryType">Kitchen</span></div>
+        <div class="summary-line"><span>Package</span><span class="val" id="summaryPackage">—</span></div>
+        <div class="summary-line"><span>Layout</span><span class="val" id="summaryLayout">—</span></div>
+        <div class="summary-line"><span>Room Size</span><span class="val" id="summaryRoomSize">—</span></div>
+      </div>
+      <div class="summary-card">
+        <h5>Selected Products</h5>
+        <div id="summaryProducts"><p style="font-size:12px;color:#999;margin:0;">No products selected yet.</p></div>
+      </div>
+      <div class="price-block">
+        <h5>Estimated Investment</h5>
+        <div class="price-amount" id="summaryPrice">$0+</div>
+        <div class="price-meta" id="summaryPriceMeta">Includes products & installation estimate. Fixed quote after consultation.</div>
+      </div>
+      <div class="summary-card">
+        <h5>Timeline</h5>
+        <div class="summary-line"><span>Lead Time</span><span class="val" id="summaryLeadTime">—</span></div>
+        <div class="summary-line"><span>Install Time</span><span class="val" id="summaryInstallTime">—</span></div>
+        <div class="summary-line"><span>Est. Completion</span><span class="val" id="summaryCompletion">—</span></div>
+      </div>
+      <button class="request-btn" id="requestQuoteBtn" disabled>Request Quote</button>
+    </div>
+  </aside>
 </div>
 
+<!-- Product detail panel -->
+<div class="detail-panel" id="detailPanel" role="dialog" aria-modal="true" aria-labelledby="detailTitle" aria-hidden="true">
+  <div class="detail-card" id="detailCard">
+    <div class="detail-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;letter-spacing:.6px;" id="detailBrand">Brand</div>
+        <h3 id="detailTitle">Product Name</h3>
+      </div>
+      <button class="detail-close" id="detailClose" aria-label="Close product details">✕</button>
+    </div>
+    <div class="detail-scroll">
+      <div class="detail-gallery" id="detailGallery">🖼️</div>
+      <div class="detail-section">
+        <h6>Description</h6>
+        <p id="detailDesc">Product description goes here.</p>
+      </div>
+      <div class="detail-section">
+        <h6>Specifications</h6>
+        <ul id="detailSpecs"></ul>
+      </div>
+      <div class="detail-section">
+        <h6>Features</h6>
+        <ul id="detailFeatures"></ul>
+      </div>
+      <div class="detail-section">
+        <h6>Installation & Care</h6>
+        <p id="detailCare">Care instructions go here.</p>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <button class="detail-cancel" id="detailCancel">Close</button>
+      <button class="detail-add" id="detailAdd">Select for Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- Quote modal -->
 <div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle" aria-hidden="true">
   <div class="quote-modal-card">
     <button type="button" class="quote-modal-close" id="quoteCloseBtn" aria-label="Close quote request modal">✕</button>
-    <h3 id="quoteModalTitle">Request This Design</h3>
-    <p>Enter your details and MIC NSW will receive your selected package summary and live estimate through Web3Forms.</p>
+    <h3 id="quoteModalTitle">Request Your Renovation Quote</h3>
+    <p>Enter your details and MIC NSW will receive your selected project summary and estimate.</p>
     <form id="quoteRequestForm">
       <label for="quoteName">Full Name</label>
       <input id="quoteName" name="from_name" type="text" autocomplete="name" required>
-
       <label for="quoteEmail">Email Address</label>
       <input id="quoteEmail" name="email" type="email" autocomplete="email" required>
-
       <label for="quotePhone">Phone Number</label>
       <input id="quotePhone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" maxlength="20" title="Phone number with 8-20 digits, spaces, or +()- characters" required>
-
       <label for="quoteSummaryText">Design Summary</label>
       <textarea id="quoteSummaryText" readonly></textarea>
-
       <p class="quote-status" id="quoteFormStatus" role="status" aria-live="polite"></p>
-
       <div class="quote-modal-actions">
         <button type="button" class="quote-cancel" id="quoteCancelBtn">Cancel</button>
         <button type="submit" class="quote-submit" id="quoteSubmitBtn">Send Quote Request</button>
@@ -296,1216 +423,763 @@ h2.section-title{font-family:'Fraunces',Georgia,serif;color:var(--navy);font-siz
   </div>
 </div>
 
+<footer class="page-footer">
+  <div class="page-footer-inner">
+    <div>
+      <img src="https://mic-nsw.com.au/front/images/logo2.png" alt="MIC NSW">
+      <p>MIC NSW PTY LTD — ABN: 51 665 533 282 — Contractor Licence: 393630C</p>
+    </div>
+    <div>
+      <a href="index.html">← Back to Homepage</a> &nbsp;|&nbsp;
+      <a href="index.html#contact" style="color:var(--gold);">Contact Us</a> &nbsp;|&nbsp;
+      <a href="https://wa.me/+61470640083?text=Hello">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
 <script>
 /* ============================================================
-   DATA
-============================================================ */
+   MIC NSW RENOVATION STUDIO — Single-file premium planner
+   ============================================================ */
 const WEB3FORMS_ACCESS_KEY = 'fc340379-cc05-4c4b-a7f0-47d2e0cfab53';
 const MIC_CONTACT_EMAIL = 'info@mic-nsw.com.au';
 const QUOTE_REQUEST_TIMEOUT_MS = 10000;
-const kitchenStepDefinitions = [
-  {step:1, title:'Package Selection', short:'Choose your package', description:'Select the renovation package that matches your desired level of finish, benchtop quality and supplier direction.'},
-  {step:2, title:'Kitchen Layout', short:'Choose your layout', description:'Pick the floorplan that best suits your room footprint and how you want to move through the space.'},
-  {step:3, title:'Cabinetry Configuration', short:'Cabinets, doors & colour', description:'Set cabinet quantities, choose your door profile and lock in a cabinet finish that suits the package.'},
-  {step:4, title:'Benchtop Selection', short:'Choose your benchtop', description:'Compare benchtop surfaces, brands and upgrades to refine the overall look and durability.'},
-  {step:5, title:'Splashback Tiles', short:'Tiles & pattern', description:'Select the splashback style and pattern direction to complement your cabinetry and benchtop.'},
-  {step:6, title:'Appliances', short:'Set your appliance suite', description:'Choose the appliance brands and performance tier for each key cooking zone.'},
-  {step:7, title:'Upgrades & Extras', short:'Optional enhancements', description:'Add practical extras and premium upgrades to elevate usability, storage and final detailing.'},
-  {step:8, title:'Review & Summary', short:'Preview and request', description:'Review the visual concept, check the itemised pricing summary and request this exact kitchen design.'}
-];
-/* Normalised alias used throughout the kitchen wizard */
-const kitchenSteps = kitchenStepDefinitions.map(s=>({id:s.step, title:s.title, desc:s.short}));
 
-const KITCHEN_FIRST_STEP = 1;
-const KITCHEN_TOTAL_STEPS = kitchenSteps.length;
-const KITCHEN_REVIEW_STEP = KITCHEN_TOTAL_STEPS;
-const KITCHEN_CONFIG_LAST_STEP = KITCHEN_REVIEW_STEP - 1;
-const BASE_CABINET_MIN = 2;
-const BASE_CABINET_MAX = 8;
-const BASE_CABINET_DEFAULT = 5;
-const BASE_CABINET_MOD = 450;
-const WALL_CABINET_MIN = 2;
-const WALL_CABINET_MAX = 6;
-const WALL_CABINET_DEFAULT = 3;
-const WALL_CABINET_MOD = 380;
+const roomTypes = {kitchen:'Kitchen Renovation', bathroom:'Bathroom Renovation'};
 
-const kitchenPackages = [
-  {id:'essential', name:'Essentials', low:18000, high:28000, detail:'Laminate benchtop, standard cabinetry', suppliers:['Kaboodle','Laminex','Chef']},
-  {id:'premium', name:'Premium', low:35000, high:55000, detail:'Engineered stone, soft-close cabinetry', suppliers:['Kinsman','Caesarstone','Bosch']},
-  {id:'luxury', name:'Luxury', low:65000, high:110000, detail:'Premium stone, custom handles', suppliers:['Freedom Kitchens','Dekton','Miele']}
+const kitchenSteps = [
+  {id:1, title:'Choose Package', desc:'Select your renovation tier'},
+  {id:2, title:'Choose Layout', desc:'Pick a floorplan'},
+  {id:3, title:'Room Dimensions', desc:'Set width, length & height'},
+  {id:4, title:'Cabinets', desc:'Base & wall cabinet count'},
+  {id:5, title:'Doors', desc:'Door profile style'},
+  {id:6, title:'Colours', desc:'Cabinet finish colour'},
+  {id:7, title:'Handles', desc:'Handle finish & style'},
+  {id:8, title:'Benchtops', desc:'Stone or laminate surface'},
+  {id:9, title:'Splashback', desc:'Tile or glass splashback'},
+  {id:10, title:'Sink', desc:'Undermount or inset sink'},
+  {id:11, title:'Mixer', desc:'Tapware finish'},
+  {id:12, title:'Appliances', desc:'Oven, cooktop, rangehood'},
+  {id:13, title:'Lighting', desc:'Ambient & task lighting'},
+  {id:14, title:'Accessories', desc:'Storage & finishing touches'},
+  {id:15, title:'Review', desc:'Summary & quote request'}
 ];
 
-const kitchenLayouts = [
-  {id:'ushape', name:'U-Shape', desc:'3 walls, versatile'},
-  {id:'lshape', name:'L-Shape', desc:'2 walls, efficient'},
-  {id:'galley', name:'Galley', desc:'Parallel counters, narrow'},
-  {id:'island', name:'Island', desc:'Central prep area'}
+const bathroomSteps = [
+  {id:1, title:'Choose Package', desc:'Select your renovation tier'},
+  {id:2, title:'Choose Layout', desc:'Pick a floorplan'},
+  {id:3, title:'Room Dimensions', desc:'Set width, length & height'},
+  {id:4, title:'Vanity', desc:'Vanity unit style'},
+  {id:5, title:'Vanity Colour', desc:'Finish colour'},
+  {id:6, title:'Mirror', desc:'Mirror style & LED'},
+  {id:7, title:'Basin', desc:'Basin shape & material'},
+  {id:8, title:'Tapware', desc:'Tap finish & style'},
+  {id:9, title:'Shower', desc:'Shower screen & fittings'},
+  {id:10, title:'Bath', desc:'Freestanding or inset'},
+  {id:11, title:'Toilet', desc:'Toilet suite style'},
+  {id:12, title:'Wall Tiles', desc:'Wall tile selection'},
+  {id:13, title:'Floor Tiles', desc:'Floor tile selection'},
+  {id:14, title:'Lighting', desc:'Ambient & task lighting'},
+  {id:15, title:'Accessories', desc:'Rails, hooks & details'},
+  {id:16, title:'Review', desc:'Summary & quote request'}
 ];
 
-const doorStyles = [
-  {id:'flat', name:'Flat / Slab', mod:0},
-  {id:'shaker', name:'Shaker', mod:600},
-  {id:'raised', name:'Raised Panel', mod:1200},
-  {id:'handleless', name:'Handleless', mod:1500}
-];
+const products = {
+  kitchen:[
+    {id:'p-kt-1', type:'cabinet', step:6, brand:'MIC Joinery', name:'Alpine White', model:'MW-110', material:'2Pac MDF', finish:'Matte', colour:'white', tier:'budget', tags:['Australian Made','Best Seller'], price:0, stock:'In Stock', warranty:'7 years', desc:'Crisp white matte cabinetry with soft-touch finish.', specs:['18mm carcass','Soft-close hinges',' Adjustable shelves'], features:['Easy clean','UV stable','Australian made'], care:'Wipe with damp microfibre cloth; avoid abrasive cleaners.'},
+    {id:'p-kt-2', type:'cabinet', step:6, brand:'MIC Joinery', name:'Charcoal Satin', model:'MW-220', material:'2Pac MDF', finish:'Satin', colour:'charcoal', tier:'premium', tags:['New Arrival'], price:450, stock:'In Stock', warranty:'10 years', desc:'Deep charcoal satin cabinets for a modern kitchen.', specs:['18mm carcass','Blum hinges','Dovetail drawers'], features:['Fingerproof','Scratch resistant','Custom sizing'], care:'Warm soapy water; dry with soft cloth.'},
+    {id:'p-kt-3', type:'cabinet', step:6, brand:'Studio Cabinetry', name:'Natural Oak', model:'SO-45', material:'Timber Veneer', finish:'Natural', colour:'oak', tier:'luxury', tags:['Premium','Australian Made'], price:1200, stock:'Limited', warranty:'10 years', desc:'Real timber veneer with natural grain variation.', specs:['22mm solid edge','Blum LegraBox','Oiled finish'], features:['Sustainable timber','Repairable surface','Luxury feel'], care:'Re-oil annually; clean with pH-neutral timber cleaner.'},
+    {id:'p-kt-4', type:'handle', step:7, brand:'Häfele', name:'Brushed Brass Bar', model:'HB-88', material:'Brass', finish:'Brushed', colour:'brass', tier:'premium', tags:['Best Seller'], price:280, stock:'In Stock', warranty:'Lifetime', desc:'320mm brushed brass bar handle.', specs:['Solid brass','320mm centres','M4 fixing'], features:['Corrosion resistant','Fingerproof lacquer','Premium weight'], care:'Polish with brass cloth annually.'},
+    {id:'p-kt-5', type:'handle', step:7, brand:'Häfele', name:'Matte Black Knob', model:'HB-90', material:'Zinc', finish:'Matte', colour:'black', tier:'budget', tags:['New Arrival'], price:90, stock:'In Stock', warranty:'5 years', desc:'Round matte black cabinet knob.', specs:['32mm diameter','Zinc alloy','Powder coat'], features:['Modern profile','Easy grip','Durable coating'], care:'Wipe clean with damp cloth.'},
+    {id:'p-kt-6', type:'benchtop', step:8, brand:'Laminex', name:'Bianco Marble', model:'LB-200', material:'Laminate', finish:'Gloss', colour:'white', tier:'budget', tags:['Best Seller','Australian Made'], price:0, stock:'In Stock', warranty:'10 years', desc:'Affordable gloss laminate in classic white marble.', specs:['38mm square edge','Stain resistant','HMR substrate'], features:['Budget friendly','Easy install','Hygienic surface'], care:'Avoid heat; use chopping boards.'},
+    {id:'p-kt-7', type:'benchtop', step:8, brand:'Caesarstone', name:'Calacatta Nuvo', model:'CS-5131', material:'Engineered Stone', finish:'Polished', colour:'white', tier:'premium', tags:['Premium'], price:2200, stock:'In Stock', warranty:'Lifetime', desc:'Premium engineered stone with soft grey veining.', specs:['20mm thickness','93% natural quartz','Non-porous'], features:['Heat resistant','Stain proof','Low maintenance'], care:'Warm water and mild detergent.'},
+    {id:'p-kt-8', type:'benchtop', step:8, brand:'Dekton', name:'Sirocco', model:'DK-330', material:'Sintered Stone', finish:'Matte', colour:'grey', tier:'luxury', tags:['New Arrival','Premium'], price:4200, stock:'Limited', warranty:'25 years', desc:'Ultra-compact surface in warm concrete grey.', specs:['12mm thickness','UV stable','Scratch proof'], features:['Outdoor rated','Thermal shock resistant','Seamless look'], care:'General household cleaner.'},
+    {id:'p-kt-9', type:'splashback', step:9, brand:'Beaumont Tiles', name:'Subway Gloss White', model:'BT-SW', material:'Ceramic', finish:'Gloss', colour:'white', tier:'budget', tags:['Best Seller'], price:0, stock:'In Stock', warranty:'10 years', desc:'Classic 100x200mm gloss white subway tile.', specs:['100x200mm','Glazed ceramic','Brick pattern'], features:['Reflective','Easy clean','Timeless'], care:'Mild detergent and soft sponge.'},
+    {id:'p-kt-10', type:'splashback', step:9, brand:'Signorino', name:'Calacatta Marble Mosaic', model:'SG-CM', material:'Marble', finish:'Polished', colour:'white', tier:'luxury', tags:['Premium'], price:1600, stock:'Limited', warranty:'5 years', desc:'Polished marble herringbone mosaic splashback.', specs:['Herringbone pattern','Mesh mounted','Sealer required'], features:['Natural stone','Unique veining','Designer look'], care:'Seal annually; pH-neutral cleaner only.'},
+    {id:'p-kt-11', type:'sink', step:10, brand:'Oliveri', name:'Double Bowl Undermount', model:'OL-DB', material:'Stainless Steel', finish:'Brushed', colour:'steel', tier:'premium', tags:['Australian Made'], price:450, stock:'In Stock', warranty:'25 years', desc:'Australian-made double bowl undermount sink.', specs:['760x450mm','18/10 stainless','Sound deadening'], features:['Generous bowls','Undermount seamless','Durable'], care:'Rinse after use; avoid steel wool.'},
+    {id:'p-kt-12', type:'mixer', step:11, brand:'Sussex Taps', name:'Brushed Brass Pull-Out', model:'SV-BB', material:'Brass', finish:'Brushed', colour:'brass', tier:'luxury', tags:['Premium'], price:650, stock:'Limited', warranty:'15 years', desc:'Brushed brass pull-out kitchen mixer.', specs:['360° swivel','WELS 5 star','Ceramic cartridge'], features:['Pull-out spray','Matching finish','Water efficient'], care:'Wipe dry after use to maintain finish.'},
+    {id:'p-kt-13', type:'appliance', step:12, brand:'Bosch', name:'Serie 6 Appliance Package', model:'BOS-P6', material:'Mixed', finish:'Stainless Steel', colour:'steel', tier:'premium', tags:['Best Seller'], price:1800, stock:'In Stock', warranty:'2 years', desc:'Oven, cooktop and rangehood package.', specs:['60cm pyrolytic oven','4-zone induction','Canopy rangehood'], features:['Self-cleaning','Touch control','Quiet operation'], care:'Follow manufacturer guide.'},
+    {id:'p-kt-14', type:'lighting', step:13, brand:'Clipsal', name:'LED Under-Cabinet Kit', model:'CL-LED', material:'Aluminium', finish:'White', colour:'white', tier:'premium', tags:['Australian Made'], price:1200, stock:'In Stock', warranty:'3 years', desc:'Dimmable LED strip lighting for under wall cabinets.', specs:['3000K warm white','Dimmable','24V transformer'], features:['Energy efficient','Touch switch','Even glow'], care:'Dust with dry cloth.'},
+    {id:'p-kt-15', type:'accessory', step:14, brand:'Kesseböhmer', name:'Corner Pull-Out Set', model:'KS-CR', material:'Steel', finish:'Chrome', colour:'steel', tier:'premium', tags:['Premium'], price:950, stock:'In Stock', warranty:'10 years', desc:'Magic corner pull-out storage system.', specs:['Left or right hand','Soft-close','80cm cabinet'], features:['Maximises corner space','Smooth glide','Premium hardware'], care:'Wipe runners occasionally.'}
+  ],
+  bathroom:[
+    {id:'p-bt-1', type:'vanity', step:4, brand:'MIC Joinery', name:'Wall-Hung Vanity 900', model:'MW-VH9', material:'2Pac MDF', finish:'Matte', colour:'white', tier:'premium', tags:['Australian Made','Best Seller'], price:0, stock:'In Stock', warranty:'7 years', desc:'900mm wall-hung vanity with ceramic top.', specs:['900mm wide','2 drawers','Ceramic top'], features:['Space saving','Easy clean','Soft-close'], care:'Wipe with damp cloth.'},
+    {id:'p-bt-2', type:'vanity', step:4, brand:'MIC Joinery', name:'Timber Freestanding 1200', model:'MW-TF12', material:'Timber Veneer', finish:'Natural', colour:'oak', tier:'luxury', tags:['Premium'], price:1400, stock:'Limited', warranty:'10 years', desc:'1200mm freestanding timber vanity.', specs:['1200mm wide','4 drawers','Stone top'], features:['Statement piece','Natural warmth','Generous storage'], care:'Oil finish annually.'},
+    {id:'p-bt-3', type:'vanitycolour', step:5, brand:'Dulux', name:'Sage Green', model:'DX-SG', material:'Paint', finish:'Matte', colour:'sage', tier:'premium', tags:['New Arrival'], price:180, stock:'In Stock', warranty:'5 years', desc:'Matte sage green cabinet colour.', specs:['Low VOC','Colour matched','2Pac finish'], features:['Soft finish','Trend colour','Durable'], care:'Mild soapy water.'},
+    {id:'p-bt-4', type:'mirror', step:6, brand:'Thermogroup', name:'LED Backlit Mirror 900', model:'TG-LED9', material:'Glass', finish:'Polished', colour:'white', tier:'premium', tags:['Best Seller','Australian Made'], price:550, stock:'In Stock', warranty:'3 years', desc:'900mm round LED backlit mirror with demister.', specs:['900mm diameter','Demister pad','Touch sensor'], features:['Fog free','Even lighting','Energy efficient'], care:'Glass cleaner and soft cloth.'},
+    {id:'p-bt-5', type:'basin', step:7, brand:'Caroma', name:'Luna Above-Counter Basin', model:'CR-LU', material:'Ceramic', finish:'Gloss', colour:'white', tier:'premium', tags:['Australian Made'], price:320, stock:'In Stock', warranty:'20 years', desc:'Round above-counter ceramic basin.', specs:['400mm diameter','Vitreous china','No overflow'], features:['Sculptural form','Easy clean','Durable glaze'], care:'Non-abrasive cleaner.'},
+    {id:'p-bt-6', type:'tapware', step:8, brand:'Phoenix', name:'Brushed Nickel Basin Mixer', model:'PX-BN', material:'Brass', finish:'Brushed', colour:'nickel', tier:'premium', tags:['Best Seller'], price:300, stock:'In Stock', warranty:'15 years', desc:'Modern brushed nickel basin mixer.', specs:['WELS 5 star','Ceramic disc','Solid brass'], features:['Water efficient','Premium feel','Matching range'], care:'Wipe dry after use.'},
+    {id:'p-bt-7', type:'tapware', step:8, brand:'Nero', name:'Matte Black Tapware Set', model:'NR-MB', material:'Brass', finish:'Matte', colour:'black', tier:'premium', tags:['New Arrival'], price:250, stock:'In Stock', warranty:'15 years', desc:'Basin, bath and shower matte black set.', specs:['WELS 4 star','Powder coat','Solid brass'], features:['Bold contrast','Complete set','Durable finish'], care:'Avoid abrasive cleaners.'},
+    {id:'p-bt-8', type:'shower', step:9, brand:'Methven', name:'Frameless Shower Screen', model:'MT-FS', material:'Glass', finish:'Clear', colour:'clear', tier:'premium', tags:['Australian Made'], price:900, stock:'In Stock', warranty:'10 years', desc:'10mm frameless shower screen.', specs:['10mm toughened glass','Chrome hinges','2000mm high'], features:['Minimalist','Easy access','Easy clean'], care:'Squeegee after use.'},
+    {id:'p-bt-9', type:'bath', step:10, brand:'Decina', name:'Freestanding Oval Bath', model:'DC-OV', material:'Acrylic', finish:'Gloss', colour:'white', tier:'luxury', tags:['Premium'], price:2200, stock:'Limited', warranty:'10 years', desc:'1700mm freestanding acrylic bath.', specs:['1700x800mm','Dual skin acrylic','Overflow included'], features:['Statement piece','Deep soak','Insulated base'], care:'Non-abrasive bath cleaner.'},
+    {id:'p-bt-10', type:'toilet', step:11, brand:'Caroma', name:'Rimless Wall-Faced Suite', model:'CR-RF', material:'Ceramic', finish:'Gloss', colour:'white', tier:'premium', tags:['Australian Made','Best Seller'], price:450, stock:'In Stock', warranty:'20 years', desc:'Rimless wall-faced toilet suite.', specs:['WELS 4 star','Soft-close seat','Rimless bowl'], features:['Hygienic flush','Easy clean','Water efficient'], care:'Toilet cleaner and soft brush.'},
+    {id:'p-bt-11', type:'walltiles', step:12, brand:'Beaumont Tiles', name:'Marble-Look Large Format', model:'BT-MLF', material:'Porcelain', finish:'Matt', colour:'white', tier:'premium', tags:['Best Seller'], price:600, stock:'In Stock', warranty:'10 years', desc:'600x1200mm marble-look porcelain wall tile.', specs:['600x1200mm','Rectified','Matt finish'], features:['Seamless look','Easy clean','Stone aesthetic'], care:'Mild detergent.'},
+    {id:'p-bt-12', type:'floortiles', step:13, brand:'National Tiles', name:'Stone-Look Porcelain', model:'NT-SLP', material:'Porcelain', finish:'Matt', colour:'grey', tier:'premium', tags:['Australian Made'], price:700, stock:'In Stock', warranty:'10 years', desc:'300x600mm stone-look slip-rated floor tile.', specs:['R11 slip rating','Rectified','Matt finish'], features:['Slip resistant','Durable','Warm tone'], care:'Sweep and mop with pH-neutral cleaner.'},
+    {id:'p-bt-13', type:'lighting', step:14, brand:'Clipsal', name:'Bathroom LED Downlight Kit', model:'CL-BDL', material:'Aluminium', finish:'White', colour:'white', tier:'budget', tags:['Australian Made'], price:0, stock:'In Stock', warranty:'3 years', desc:'Dimmable LED downlight kit for bathroom.', specs:['IP44 rated','3000K','Dimmable'], features:['Moisture resistant','Long life','Energy efficient'], care:'Dust with dry cloth.'},
+    {id:'p-bt-14', type:'accessory', step:15, brand:'Phoenix', name:'Brushed Nickel Towel Rail', model:'PX-TR', material:'Stainless Steel', finish:'Brushed', colour:'nickel', tier:'premium', tags:['Best Seller'], price:180, stock:'In Stock', warranty:'10 years', desc:'600mm brushed nickel heated towel rail.', specs:['600mm wide','Electric heated','Wall mounted'], features:['Warm towels','Quick dry','Matching tapware'], care:'Wipe dry after cleaning.'}
+  ]
+};
 
-const cabinetColors = [
-  {id:'white', name:'Alpine White', hex:'#F4F2ED'},
-  {id:'black', name:'Matte Black', hex:'#26282A'},
-  {id:'sage', name:'Sage Green', hex:'#8A9A80'},
-  {id:'navy', name:'Deep Navy', hex:'#1C2B33'},
-  {id:'oak', name:'Natural Oak', hex:'#C9A876'},
-  {id:'charcoal', name:'Charcoal', hex:'#4A4E52'}
-];
+const layouts = {
+  kitchen:[
+    {id:'ushape', name:'U-Shape', desc:'3 walls, versatile workflow'},
+    {id:'lshape', name:'L-Shape', desc:'2 walls, efficient corner'},
+    {id:'galley', name:'Galley', desc:'Parallel counters'},
+    {id:'island', name:'Island', desc:'Central prep island'},
+    {id:'peninsula', name:'Peninsula', desc:'Connected breakfast bar'}
+  ],
+  bathroom:[
+    {id:'standard', name:'Standard', desc:'Vanity, shower, toilet'},
+    {id:'compact', name:'Compact', desc:'Space efficient layout'},
+    {id:'separate', name:'Separate Bath & Shower', desc:'Full luxury layout'},
+    {id:'ensuite', name:'Ensuite', desc:'Double vanity option'}
+  ]
+};
 
-const benchtops = [
-  {id:'laminex', brand:'Laminex', name:'Bianco Marble', hex:'#EDEAE3', mod:0},
-  {id:'essastone', brand:'Essastone', name:'Georgian Bluestone', hex:'#9BA0A3', mod:1200},
-  {id:'caesarstone', brand:'Caesarstone', name:'Calacatta Nuvo', hex:'#EDE7DD', mod:1800},
-  {id:'smartstone', brand:'Smartstone', name:'Symphony Grey', hex:'#B8B2A7', mod:2200},
-  {id:'dekton', brand:'Dekton', name:'Sirocco', hex:'#8C8378', mod:3200}
-];
+const packages = {
+  kitchen:[
+    {id:'essential', name:'Essentials', low:18000, high:28000, detail:'Laminate benchtop, standard cabinetry', leadTime:'4–6 weeks', installTime:'2–3 weeks', tags:['Budget','Australian Made'], suppliers:['Laminex','Chef']},
+    {id:'premium', name:'Premium', low:35000, high:55000, detail:'Engineered stone, soft-close cabinetry', leadTime:'6–8 weeks', installTime:'3–4 weeks', tags:['Premium','Best Seller'], suppliers:['Caesarstone','Bosch']},
+    {id:'luxury', name:'Luxury', low:65000, high:110000, detail:'Premium stone, custom joinery', leadTime:'8–12 weeks', installTime:'4–6 weeks', tags:['Luxury','New Arrival'], suppliers:['Dekton','Miele']}
+  ],
+  bathroom:[
+    {id:'essential', name:'Sydney Essentials', low:18000, high:26000, detail:'Ceramic tiles, standard vanity', leadTime:'4–6 weeks', installTime:'2–3 weeks', tags:['Budget'], suppliers:['Caroma','Beaumont Tiles']},
+    {id:'premium', name:'Sydney Premium', low:28000, high:45000, detail:'Large-format porcelain, floating vanity', leadTime:'6–8 weeks', installTime:'3–4 weeks', tags:['Premium','Best Seller'], suppliers:['Phoenix','National Tiles']},
+    {id:'luxury', name:'Sydney Signature', low:50000, high:80000, detail:'Natural stone-look, freestanding bath', leadTime:'8–12 weeks', installTime:'4–6 weeks', tags:['Luxury'], suppliers:['Signorino','Nero']}
+  ]
+};
 
-const splashbacks = [
-  {id:'ceramic', name:'Ceramic (Classic)', mod:400, hex:'#F4F1EA', patterns:['Warm White','Ivory Gloss','Cloud Grey']},
-  {id:'subway', name:'Subway (Timeless)', mod:0, hex:'#F7F6F2', patterns:['Gloss White Brick','Sage Herringbone','Matte Greige']},
-  {id:'mosaic', name:'Mosaic (Decorative)', mod:800, hex:'#DCD3C2', patterns:['Stone Blend','Ocean Glass','Pearl Hex']},
-  {id:'large', name:'Large Format (Luxury)', mod:1200, hex:'#EAE6DC', patterns:['Calacatta Vein','Concrete Silk','Travertine Tone']}
-];
+const finishTextures = {
+  matte:'repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.03) 3px)',
+  gloss:'linear-gradient(135deg,rgba(255,255,255,.55) 0%,transparent 45%,rgba(255,255,255,.35) 100%)',
+  satin:'repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(0,0,0,.02) 4px)',
+  brushed:'repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0,rgba(255,255,255,.18) 1px,transparent 2px,transparent 4px)',
+  polished:'radial-gradient(circle at 30% 20%,rgba(255,255,255,.7),transparent 40%)',
+  natural:'repeating-linear-gradient(45deg,rgba(120,80,40,.06) 0,rgba(120,80,40,.06) 2px,transparent 3px,transparent 6px)'
+};
 
-const microwaves = [
-  {id:'chef', brand:'Chef', mod:0},
-  {id:'bosch', brand:'Bosch', mod:350},
-  {id:'miele', brand:'Miele', mod:900}
-];
-const ovens = [
-  {id:'westinghouse', brand:'Westinghouse', mod:0},
-  {id:'fp', brand:'Fisher & Paykel', mod:600},
-  {id:'ilve', brand:'ILVE', mod:1800},
-  {id:'miele', brand:'Miele', mod:2600}
-];
-const cooktops = [
-  {id:'chef', brand:'Chef', mod:0},
-  {id:'bosch', brand:'Bosch', mod:500},
-  {id:'miele', brand:'Miele', mod:1400}
-];
-const rangehoods = [
-  {id:'chef', brand:'Chef', mod:0},
-  {id:'fp', brand:'Fisher & Paykel', mod:450},
-  {id:'miele', brand:'Miele', mod:750}
-];
+/* STATE */
+let activeType = 'kitchen';
+let canvasMode = '2d';
+let zoom = 1;
+let pan = {x:0, y:0};
+let roomTool = null;
 
-const kitchenUpgradeOptions = [
-  {id:'led', title:'LED Under-Cabinet Lighting', desc:'Ambient task lighting under wall cabinetry.', mod:1200},
-  {id:'utility', title:'Electrical & Plumbing Upgrade', desc:'Additional circuits and service repositioning.', mod:2400},
-  {id:'handles', title:'Premium Handles Set', desc:'Architectural brass or matte-black hardware package.', mod:800},
-  {id:'softClose', title:'Soft-Close Drawers', desc:'Premium drawer runners and dampers.', mod:600},
-  {id:'pantry', title:'Pantry Organization System', desc:'Pull-out storage and modular pantry accessories.', mod:1400}
-];
-
-/* Bathroom data */
-const bathroomPackages = [
-  {id:'essential', theme:'Sydney Essentials', name:'Essential Bathroom', badge:null, low:18000, high:26000,
-   items:['Full strip-out & re-waterproofing','Ceramic wall & floor tiles','Standard vanity','Caroma tapware, semi-frameless screen'],
-   suppliers:['Bunnings / Caroma','Beaumont Tiles','Methven Tapware']},
-  {id:'premium', theme:'Sydney Premium', name:'Premium Bathroom', badge:'MOST POPULAR', low:28000, high:45000,
-   items:['Full strip-out & re-waterproofing','Large-format porcelain tiles','Floating vanity','Phoenix tapware, frameless screen'],
-   suppliers:['Reece','National Tiles','Phoenix Tapware']},
-  {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000,
-   items:['Full strip-out, re-waterproof & re-plumb','Natural stone-look porcelain','Freestanding bath','Brushed brass/black tapware, LED mirror'],
-   suppliers:['Custom Joinery','Signorino / Artedomus','Nero / Sussex Taps']}
-];
-
-const vanityStyles = [
-  {id:'wallhung', name:'Wall-Hung', mod:0},{id:'freestanding', name:'Freestanding', mod:900},{id:'timber', name:'Timber Vanity', mod:1400}
-];
-const vanityColors = [
-  {id:'white', name:'Matte White', hex:'#F4F2ED'},{id:'oak', name:'Natural Oak', hex:'#C9A876'},
-  {id:'black', name:'Matte Black', hex:'#26282A'},{id:'sage', name:'Sage Green', hex:'#8A9A80'}
-];
-const floorTiles = [
-  {id:'subway', name:'Matte Porcelain — Grey', hex:'#D8D2C4'},{id:'stone', name:'Stone-Look Porcelain', hex:'#C8C2B4'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'charcoal', name:'Charcoal Matte', hex:'#3A3D40'}
-];
-const wallTiles = [
-  {id:'subway', name:'Subway Tile — White', hex:'#F7F6F2'},{id:'marble', name:'Marble-Look Large Format', hex:'#EAE6DC'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'black', name:'Matte Black Large Format', hex:'#2B2C2E'}
-];
-const tapware = [
-  {id:'chrome', brand:'Caroma', name:'Chrome', hex:'#C7CBCE', mod:0},{id:'black', brand:'Nero', name:'Matte Black', hex:'#26282A', mod:250},
-  {id:'brass', brand:'Sussex', name:'Brushed Brass', hex:'#C9A24B', mod:350},{id:'nickel', brand:'Phoenix', name:'Brushed Nickel', hex:'#A9ACAE', mod:300}
-];
-const showerScreens = [
-  {id:'framed', name:'Framed', mod:0},{id:'semi', name:'Semi-Frameless', mod:400},{id:'frameless', name:'Frameless', mod:900}
-];
-
-/* ============================================================
-   STATE
-============================================================ */
 let kState = {
   step:1,
+  completed:{},
   pkg:'essential',
   layout:'ushape',
-  baseCount:5,
-  wallCount:3,
-  door:'flat',
-  color:'white',
-  benchtop:'laminex',
-  splash:'subway',
-  splashPattern:'Gloss White Brick',
-  splashPatterns:{
-    ceramic:'Warm White',
-    subway:'Gloss White Brick',
-    mosaic:'Stone Blend',
-    large:'Calacatta Vein'
-  },
-  microwave:'chef',
-  oven:'westinghouse',
-  cooktop:'chef',
-  rangehood:'chef',
-  upgrades:{led:false,utility:false,handles:false,softClose:false,pantry:false},
-  completed:{}
+  room:{width:3600, length:4800, height:2700},
+  products:{},
+  baseCount:5, wallCount:3
 };
-let bState = {step:1, pkg:null, vanityStyle:'wallhung', vanityColor:'white', floorTile:'subway', wallTile:'subway',
-  tap:'chrome', screen:'semi', ledMirror:false, elecPlumb:false, view:'2d', completed:{}};
+let bState = {
+  step:1,
+  completed:{},
+  pkg:'essential',
+  layout:'standard',
+  room:{width:2400, length:3200, height:2550},
+  products:{}
+};
 
-const BATHROOM_FIRST_STEP = 1;
-const BATHROOM_TOTAL_STEPS = 6;
-const BATHROOM_REVIEW_STEP = 6;
-const bathroomSteps = [
-  {id:1, title:'Package', desc:'Essential, Premium or Luxury'},
-  {id:2, title:'Vanity', desc:'Style & colour'},
-  {id:3, title:'Tiling', desc:'Floor & wall tiles'},
-  {id:4, title:'Fixtures', desc:'Tapware & shower screen'},
-  {id:5, title:'Extras', desc:'Optional upgrades'},
-  {id:6, title:'Review', desc:'Summary & request quote'}
-];
+const state = () => activeType==='kitchen'?kState:bState;
+const steps = () => activeType==='kitchen'?kitchenSteps:bathroomSteps;
 
-/* ============================================================
-   HELPERS
-============================================================ */
+/* HELPERS */
 function money(value){
-  if(value===0) return '$0';
+  if(value===0) return 'included';
   return (value>0?'+$':'-$') + Math.abs(value).toLocaleString();
 }
-function clampValue(value, min, max){ return Math.max(min, Math.min(max, value)); }
-
-function packageById(){ return kitchenPackages.find(p=>p.id===kState.pkg) || kitchenPackages[0]; }
-function benchtopById(){ return benchtops.find(b=>b.id===kState.benchtop) || benchtops[0]; }
-function splashById(){ return splashbacks.find(s=>s.id===kState.splash) || splashbacks[0]; }
-function doorById(){ return doorStyles.find(d=>d.id===kState.door) || doorStyles[0]; }
-function colorById(){ return cabinetColors.find(c=>c.id===kState.color) || cabinetColors[0]; }
-function layoutById(){ return kitchenLayouts.find(l=>l.id===kState.layout) || kitchenLayouts[0]; }
-
-function calcKitchenTotals(){
-  const pkg = packageById();
-  const cabinetAdjustment = ((kState.baseCount-BASE_CABINET_DEFAULT)*BASE_CABINET_MOD) + ((kState.wallCount-WALL_CABINET_DEFAULT)*WALL_CABINET_MOD);
-  const benchtopMod = benchtopById().mod;
-  const splashbackMod = splashById().mod;
-  const applianceMod = applianceModFor(microwaves, kState.microwave)
-    + applianceModFor(ovens, kState.oven)
-    + applianceModFor(cooktops, kState.cooktop)
-    + applianceModFor(rangehoods, kState.rangehood);
-  const upgradesMod = kitchenUpgradeOptions.reduce((sum, opt)=>sum + (kState.upgrades[opt.id] ? opt.mod : 0), 0);
-  const total = pkg.low + cabinetAdjustment + benchtopMod + splashbackMod + applianceMod + upgradesMod;
-  return {pkg, cabinetAdjustment, benchtopMod, splashbackMod, applianceMod, upgradesMod, total};
+function fmtDim(mm){ return (mm/1000).toFixed(1) + 'm'; }
+function todayPlus(weeks){
+  const d = new Date();
+  d.setDate(d.getDate() + weeks*7 + 7);
+  return d.toLocaleDateString('en-AU',{month:'short', year:'numeric'});
+}
+function parseWeeks(range){
+  const m = range.match(/(\d+)[–-](\d+)/);
+  return m ? Math.round((parseInt(m[1])+parseInt(m[2]))/2) : 6;
 }
 
-function markKitchenStep(step){ kState.completed[step] = true; }
-function isKitchenStepComplete(step){ return !!kState.completed[step]; }
-function applianceModFor(list, id){ return list.find(item=>item.id===id)?.mod ?? 0; }
-function areKitchenStepsComplete(){
-  for(let i=KITCHEN_FIRST_STEP;i<=KITCHEN_CONFIG_LAST_STEP;i++) if(!isKitchenStepComplete(i)) return false;
-  return true;
+function setSelection(stepId, product){
+  state().products[stepId] = product;
+  state().completed[stepId] = true;
+  renderAll();
+}
+function getSelection(stepId){ return state().products[stepId]; }
+function isStepComplete(stepId){ return !!state().completed[stepId]; }
+function maxUnlockedStep(){
+  const s = steps();
+  let max = 1;
+  for(let i=1;i<s.length;i++){
+    if(isStepComplete(s[i-1].id)) max = s[i].id;
+  }
+  return max;
 }
 
-function layoutIcon(id){
-  const s = 'stroke="#1C2B33" stroke-width="4" fill="#E9E4D6"';
-  if(id==='ushape') return `<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H30 V45 H70 V10 H90 V60 H10 Z" ${s}/></svg>`;
-  if(id==='lshape') return `<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H90 V30 H40 V60 H10 Z" ${s}/></svg>`;
-  if(id==='galley') return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="10" y="46" width="80" height="14" ${s}/></svg>`;
-  return `<svg viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${s}/><rect x="35" y="42" width="30" height="18" ${s}/></svg>`;
+function calcTotals(){
+  const st = state();
+  const pkg = packages[activeType].find(p=>p.id===st.pkg);
+  let productsCost = 0;
+  Object.values(st.products).forEach(p=>productsCost += p.price);
+  const base = pkg ? pkg.low : 0;
+  const cabinetAdjustment = activeType==='kitchen' ? ((kState.baseCount-5)*450 + (kState.wallCount-3)*380) : 0;
+  const total = base + productsCost + cabinetAdjustment;
+  const leadWeeks = pkg ? parseWeeks(pkg.leadTime) + parseWeeks(pkg.installTime) : 12;
+  return {pkg, base, productsCost, cabinetAdjustment, total, leadWeeks};
 }
 
-function renderKitchenSidebar(){
-  const list = document.getElementById('kitchenStepsList');
-  list.innerHTML = kitchenSteps.map(step=>{
-    const complete = isKitchenStepComplete(step.id);
-    return `<div class="kitchen-step-item ${kState.step===step.id?'active':''} ${complete?'completed':''}" data-step-go="${step.id}" role="button" tabindex="0" aria-label="Go to ${step.title}">
-      <div class="kitchen-step-index">${complete ? '✓' : step.id}</div>
-      <div class="kitchen-step-meta"><strong>${step.title}</strong><span>${step.desc}</span></div>
+/* RENDERING */
+function renderTabs(){
+  document.querySelectorAll('.renovation-tab').forEach(tab=>{
+    tab.classList.toggle('active', tab.dataset.tab===activeType);
+  });
+}
+
+function renderProgress(){
+  const s = steps();
+  const currentIndex = s.findIndex(x=>x.id===state().step);
+  const pct = Math.round((currentIndex+1)/s.length*100);
+  document.getElementById('stepProgressFill').style.width = pct + '%';
+  document.getElementById('stepProgressLabel').textContent = `Step ${state().step} of ${s.length}`;
+  document.getElementById('stepProgressPct').textContent = pct + '%';
+  document.getElementById('leftPanelTitle').textContent = activeType==='kitchen'?'Kitchen Progress':'Bathroom Progress';
+}
+
+function renderStepList(){
+  const list = document.getElementById('stepList');
+  const maxUnlock = maxUnlockedStep();
+  list.innerHTML = steps().map(step=>{
+    const complete = isStepComplete(step.id);
+    const active = state().step===step.id;
+    const locked = step.id > maxUnlock && !active;
+    return `<div class="step-item ${active?'active':''} ${complete?'completed':''} ${locked?'locked':''}" data-step="${step.id}" role="button" tabindex="${locked?'-1':'0'}" aria-label="Go to ${step.title}">
+      <div class="step-index">${complete?'✓':step.id}</div>
+      <div class="step-meta"><strong>${step.title}</strong><span>${step.desc}</span></div>
     </div>`;
   }).join('');
 }
 
-function renderKitchenRunningTotal(){
-  const box = document.getElementById('kitchenRunningTotal');
-  if(kState.step===1){ box.style.display = 'none'; return; }
-  const totals = calcKitchenTotals();
-  box.style.display = 'block';
-  box.innerHTML = `Running Total <span class="kitchen-total-amount">$${totals.total.toLocaleString()}+</span>`;
+function renderStage(){
+  const step = steps().find(s=>s.id===state().step);
+  document.getElementById('workspaceTitle').textContent = step.title;
+  document.getElementById('workspaceSubtitle').textContent = step.desc;
+  document.getElementById('stageTitle').textContent = `Step ${step.id}: ${step.title}`;
+  document.getElementById('stageDesc').textContent = step.desc;
+  const body = document.getElementById('stageBody');
+  body.className = 'fade-in';
+
+  if(step.id===1){ renderPackageStep(body); }
+  else if(step.id===2){ renderLayoutStep(body); }
+  else if(step.id===3){ renderRoomStep(body); }
+  else if(step.id===15 || (activeType==='bathroom' && step.id===16)){ renderReviewStep(body); }
+  else { renderProductStep(body, step.id); }
 }
 
-function renderStepHead(step){
-  return `<div class="kitchen-step-head">
-    <div><h3>Step ${step.id}: ${step.title}</h3><p>${step.desc}</p></div>
-    ${isKitchenStepComplete(step.id)?'<span class="kitchen-completed-badge">Completed</span>':''}
-  </div>`;
-}
-
-function renderKitchenPreviewSvg(){
-  const cabinet = colorById().hex;
-  const bench = benchtopById().hex;
-  const splash = splashById().hex;
-  const baseSpan = Math.max(18, 260 / kState.baseCount);
-  const wallSpan = Math.max(22, 260 / kState.wallCount);
-  let layoutShape = '';
-  if(kState.layout==='ushape') layoutShape = '<path d="M25 35 H95 V95 H75 V55 H45 V95 H25 Z" fill="#d7cfbf" stroke="#8a7d63"/>';
-  else if(kState.layout==='lshape') layoutShape = '<path d="M25 35 H95 V55 H45 V95 H25 Z" fill="#d7cfbf" stroke="#8a7d63"/>';
-  else if(kState.layout==='galley') layoutShape = '<rect x="25" y="35" width="70" height="14" fill="#d7cfbf" stroke="#8a7d63"/><rect x="25" y="81" width="70" height="14" fill="#d7cfbf" stroke="#8a7d63"/>';
-  else layoutShape = '<rect x="25" y="35" width="70" height="14" fill="#d7cfbf" stroke="#8a7d63"/><rect x="50" y="72" width="22" height="14" fill="#d7cfbf" stroke="#8a7d63"/>';
-
-  let baseDoors = '';
-  for(let i=0;i<kState.baseCount;i++){
-    baseDoors += `<rect x="${10 + i*baseSpan}" y="115" width="${baseSpan-2}" height="44" fill="${cabinet}" stroke="#0000001e"/>`;
-  }
-  let wallDoors = '';
-  for(let i=0;i<kState.wallCount;i++){
-    wallDoors += `<rect x="${10 + i*wallSpan}" y="36" width="${wallSpan-2}" height="34" fill="${cabinet}" stroke="#0000001e"/>`;
-  }
-
-  return `<svg viewBox="0 0 300 190" width="100%" height="auto" aria-label="Kitchen design preview">
-    <rect width="300" height="190" fill="#f2efe8"/>
-    <rect x="8" y="74" width="284" height="38" fill="${splash}" stroke="#0000001e"/>
-    ${wallDoors}
-    <rect x="8" y="111" width="284" height="8" fill="${bench}" stroke="#0000001f"/>
-    ${baseDoors}
-    <rect x="210" y="111" width="40" height="8" fill="#1f2226"/>
-    <rect x="228" y="90" width="26" height="12" fill="#3a3f44"/>
-    <g transform="translate(178,12)">${layoutShape}</g>
-  </svg>`;
-}
-
-function kitchenDesignSummaryText(){
-  const totals = calcKitchenTotals();
-  const upgrades = kitchenUpgradeOptions.filter(opt=>kState.upgrades[opt.id]).map(opt=>opt.title);
-  const microwaveBrand = microwaves.find(a=>a.id===kState.microwave)?.brand || 'Not selected';
-  const ovenBrand = ovens.find(a=>a.id===kState.oven)?.brand || 'Not selected';
-  const cooktopBrand = cooktops.find(a=>a.id===kState.cooktop)?.brand || 'Not selected';
-  const rangehoodBrand = rangehoods.find(a=>a.id===kState.rangehood)?.brand || 'Not selected';
-  return [
-    `PACKAGE: ${totals.pkg.name} ($${totals.pkg.low.toLocaleString()}–$${totals.pkg.high.toLocaleString()})`,
-    `LAYOUT: ${layoutById().name}`,
-    `CABINETS: ${kState.baseCount} base + ${kState.wallCount} wall`,
-    `DOOR STYLE: ${doorById().name}`,
-    `COLOR: ${colorById().name}`,
-    `BENCHTOP: ${benchtopById().brand} ${benchtopById().name} — ${money(totals.benchtopMod)}`,
-    `SPLASHBACK: ${splashById().name} (${kState.splashPattern}) — ${money(totals.splashbackMod)}`,
-    `APPLIANCES: ${microwaveBrand} / ${ovenBrand} / ${cooktopBrand} / ${rangehoodBrand} — ${money(totals.applianceMod)}`,
-    `UPGRADES: ${upgrades.length ? upgrades.join(', ') : 'None'} — ${money(totals.upgradesMod)}`,
-    `TOTAL INVESTMENT: $${totals.total.toLocaleString()}+`
-  ].join('\n');
-}
-
-function renderKitchenStepContent(){
-  const container = document.getElementById('kitchenStepContent');
-  const step = kitchenSteps.find(s=>s.id===kState.step);
-  let content = renderStepHead(step);
-
-  if(kState.step===1){
-    content += `<div class="kitchen-cards cols-3">${kitchenPackages.map(pkg=>`
-      <article class="kitchen-card ${kState.pkg===pkg.id?'selected':''}" data-pkg="${pkg.id}">
-        <h4>${pkg.name}</h4>
-        <div class="kitchen-range">$${pkg.low.toLocaleString()}–$${pkg.high.toLocaleString()}</div>
-        <p>${pkg.detail}</p>
-        <div class="kitchen-suppliers">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
-      </article>`).join('')}</div>`;
-  }
-
-  if(kState.step===2){
-    content += `<div class="kitchen-cards">${kitchenLayouts.map(layout=>`
-      <article class="kitchen-card ${kState.layout===layout.id?'selected':''}" data-layout="${layout.id}">
-        <div class="kitchen-layout-icon">${layoutIcon(layout.id)}</div>
-        <h4>${layout.name}</h4>
-        <p>${layout.desc}</p>
-      </article>`).join('')}</div>`;
-  }
-
-  if(kState.step===3){
-    content += `<div class="kitchen-step-grid">
-      <div class="kitchen-box">
-        <h5>Base Cabinets</h5>
-        <div class="kitchen-stepper"><button type="button" data-stepper="base" data-dir="-1" aria-label="Decrease base cabinets">−</button><span aria-live="polite" aria-label="Base cabinet count">${kState.baseCount}</span><button type="button" data-stepper="base" data-dir="1" aria-label="Increase base cabinets">+</button></div>
-        <div class="kitchen-mod">${money((kState.baseCount-BASE_CABINET_DEFAULT)*BASE_CABINET_MOD)} adjustment</div>
+function renderPackageStep(body){
+  body.innerHTML = `<div class="product-grid">${packages[activeType].map(pkg=>`
+    <article class="product-card ${state().pkg===pkg.id?'selected':''}" data-pkg="${pkg.id}">
+      <div class="product-image" style="background:linear-gradient(135deg,#f3efe6,#e8e2d6);"><div style="font-size:42px;opacity:.5;">🏠</div></div>
+      <div class="product-body">
+        <div class="product-brand">${pkg.tags.join(' · ')}</div>
+        <div class="product-name">${pkg.name}</div>
+        <div class="product-model">${pkg.detail}</div>
+        <div class="product-specs">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
+        <div class="product-foot"><span class="product-price">$${pkg.low.toLocaleString()}–$${pkg.high.toLocaleString()}</span><small>est.</small></div>
       </div>
-      <div class="kitchen-box">
-        <h5>Wall Cabinets</h5>
-        <div class="kitchen-stepper"><button type="button" data-stepper="wall" data-dir="-1" aria-label="Decrease wall cabinets">−</button><span aria-live="polite" aria-label="Wall cabinet count">${kState.wallCount}</span><button type="button" data-stepper="wall" data-dir="1" aria-label="Increase wall cabinets">+</button></div>
-        <div class="kitchen-mod">${money((kState.wallCount-WALL_CABINET_DEFAULT)*WALL_CABINET_MOD)} adjustment</div>
-      </div>
-      <div class="kitchen-box">
-        <h5>Door Style</h5>
-        <div class="kitchen-cards">${doorStyles.map(door=>`
-          <article class="kitchen-card ${kState.door===door.id?'selected':''}" data-door="${door.id}">
-            <h4>${door.name}</h4>
-            <span class="kitchen-mod">${money(door.mod)}</span>
-          </article>`).join('')}</div>
-      </div>
-      <div class="kitchen-box kitchen-color-wrap">
-        <h5>Cabinet Colour</h5>
-        <div class="kitchen-color-row">${cabinetColors.map(color=>`<button type="button" aria-label="Select ${color.name}" aria-pressed="${kState.color===color.id?'true':'false'}" class="kitchen-color ${kState.color===color.id?'selected':''}" data-color="${color.id}" data-name="${color.name}" style="background:${color.hex};"></button>`).join('')}</div>
-      </div>
-    </div>`;
-  }
-
-  if(kState.step===4){
-    content += `<div class="kitchen-cards">${benchtops.map(item=>`
-      <article class="kitchen-card ${kState.benchtop===item.id?'selected':''}" data-benchtop="${item.id}">
-        <h4>${item.brand}</h4>
-        <p>${item.name}</p>
-        <div class="kitchen-mod">${money(item.mod)}</div>
-        <div style="margin-top:10px;width:100%;height:22px;border-radius:7px;border:1px solid #ddd;background:${item.hex};"></div>
-      </article>`).join('')}</div>`;
-  }
-
-  if(kState.step===5){
-    const selectedSplash = splashById() || splashbacks[0];
-    content += `<div class="kitchen-cards">${splashbacks.map(tile=>`
-      <article class="kitchen-card ${kState.splash===tile.id?'selected':''}" data-splash="${tile.id}">
-        <h4>${tile.name}</h4>
-        <span class="kitchen-mod">${money(tile.mod)}</span>
-        <div style="margin-top:10px;width:100%;height:22px;border-radius:7px;border:1px solid #ddd;background:${tile.hex};"></div>
-      </article>`).join('')}</div>
-      <div class="kitchen-box" style="margin-top:14px;">
-        <h5>Pattern Options</h5>
-        <div class="kitchen-cards">${selectedSplash.patterns.map(pattern=>`
-          <article class="kitchen-card ${kState.splashPattern===pattern?'selected':''}" data-pattern="${pattern}">
-            <h4>${pattern}</h4>
-            <p>${selectedSplash.name}</p>
-          </article>`).join('')}</div>
-      </div>`;
-  }
-
-  if(kState.step===6){
-    const applianceSections = [
-      {key:'microwave', title:'Microwave', list:microwaves},
-      {key:'oven', title:'Oven', list:ovens},
-      {key:'cooktop', title:'Cooktop', list:cooktops},
-      {key:'rangehood', title:'Rangehood', list:rangehoods}
-    ];
-    content += applianceSections.map(section=>`<div class="kitchen-appliance-group">
-      <h5>${section.title}</h5>
-      <div class="kitchen-cards">${section.list.map(item=>`
-        <article class="kitchen-card ${kState[section.key]===item.id?'selected':''}" data-appliance="${section.key}" data-id="${item.id}">
-          <h4>${item.brand}</h4>
-          <span class="kitchen-mod">${money(item.mod)}</span>
-        </article>`).join('')}</div>
-    </div>`).join('');
-  }
-
-  if(kState.step===7){
-    content += `<div class="kitchen-toggle-grid">${kitchenUpgradeOptions.map(option=>`
-      <article class="kitchen-toggle ${kState.upgrades[option.id]?'on':''}" data-upgrade="${option.id}">
-        <div><h4>${option.title}</h4><p>${option.desc}</p><span class="kitchen-mod">${money(option.mod)}</span></div>
-        <div class="check">${kState.upgrades[option.id]?'✓':''}</div>
-      </article>`).join('')}</div>`;
-  }
-
-  if(kState.step===8){
-    const totals = calcKitchenTotals();
-    const upgrades = kitchenUpgradeOptions.filter(opt=>kState.upgrades[opt.id]);
-    const canRequest = areKitchenStepsComplete();
-    content += `<div class="kitchen-review-grid">
-      <div class="kitchen-preview">${renderKitchenPreviewSvg()}</div>
-      <div class="kitchen-summary"><pre>${kitchenDesignSummaryText()}</pre></div>
-    </div>
-    <div class="kitchen-price-breakdown" style="margin-top:14px;">
-      <div class="line"><span>Base Package</span><span>$${totals.pkg.low.toLocaleString()}–$${totals.pkg.high.toLocaleString()}</span></div>
-      <div class="line"><span>Cabinet Adjustment</span><span>${money(totals.cabinetAdjustment)}</span></div>
-      <div class="line"><span>Benchtop Upgrade</span><span>${money(totals.benchtopMod)}</span></div>
-      <div class="line"><span>Splashback</span><span>${money(totals.splashbackMod)}</span></div>
-      <div class="line"><span>Appliances</span><span>${money(totals.applianceMod)}</span></div>
-      <div class="line"><span>Extras & Upgrades</span><span>${money(totals.upgradesMod)}</span></div>
-      <div class="line"><strong>TOTAL INVESTMENT</strong><strong>$${totals.total.toLocaleString()}+</strong></div>
-      <div style="font-size:11px;color:#7f7667;margin-top:8px;">(Fixed quote after free consultation)</div>
-      <button type="button" id="kitchenRequestBtn" class="kitchen-nav-btn primary kitchen-request-btn" ${canRequest?'':'disabled'}>Request This Design</button>
-      ${!canRequest?'<div style="margin-top:6px;font-size:11px;color:#a14f39;">Complete Steps 1–7 to enable requests.</div>':''}
-      <div style="margin-top:8px;font-size:11px;color:#7f7667;">Selected upgrades: ${upgrades.length?upgrades.map(u=>u.title).join(', '):'None'}.</div>
-    </div>`;
-  }
-
-  container.innerHTML = content;
-  updateKitchenNav();
-  renderKitchenRunningTotal();
-}
-
-function updateKitchenNav(){
-  const backBtn = document.getElementById('kitchenBackBtn');
-  const nextBtn = document.getElementById('kitchenNextBtn');
-  backBtn.disabled = kState.step===KITCHEN_FIRST_STEP;
-  backBtn.setAttribute('aria-disabled', backBtn.disabled ? 'true' : 'false');
-  if(kState.step===KITCHEN_REVIEW_STEP){
-    nextBtn.textContent = 'Design Complete';
-    nextBtn.disabled = true;
-  }else if(kState.step===KITCHEN_CONFIG_LAST_STEP){
-    nextBtn.textContent = 'Review Design';
-    nextBtn.disabled = false;
-  }else{
-    nextBtn.textContent = 'Next →';
-    nextBtn.disabled = false;
-  }
-  nextBtn.setAttribute('aria-disabled', nextBtn.disabled ? 'true' : 'false');
-}
-
-function renderKitchenWizard(){
-  renderKitchenSidebar();
-  renderKitchenStepContent();
-}
-
-function changeKitchenStep(delta){
-  if(delta>0){ markKitchenStep(kState.step); }
-  const next = Math.min(KITCHEN_TOTAL_STEPS, Math.max(KITCHEN_FIRST_STEP, kState.step + delta));
-  if(next===KITCHEN_REVIEW_STEP) markKitchenStep(KITCHEN_CONFIG_LAST_STEP);
-  kState.step = next;
-  renderKitchenWizard();
-}
-
-function initKitchenWizard(){
-  const stepsList = document.getElementById('kitchenStepsList');
-  const stepContent = document.getElementById('kitchenStepContent');
-  const backBtn = document.getElementById('kitchenBackBtn');
-  const nextBtn = document.getElementById('kitchenNextBtn');
-
-  stepsList.addEventListener('click', (event)=>{
-    const item = event.target.closest('[data-step-go]');
-    if(!item) return;
-    kState.step = Number(item.dataset.stepGo);
-    renderKitchenWizard();
-  });
-
-  stepsList.addEventListener('keydown', (event)=>{
-    if(event.key!=='Enter' && event.key!==' ') return;
-    const item = event.target.closest('[data-step-go]');
-    if(!item) return;
-    event.preventDefault();
-    kState.step = Number(item.dataset.stepGo);
-    renderKitchenWizard();
-  });
-
-  backBtn.addEventListener('click', ()=>changeKitchenStep(-1));
-  nextBtn.addEventListener('click', ()=>changeKitchenStep(1));
-
-  stepContent.addEventListener('click', (event)=>{
-    const pkg = event.target.closest('[data-pkg]');
-    if(pkg){ kState.pkg = pkg.dataset.pkg; markKitchenStep(1); renderKitchenWizard(); return; }
-
-    const layout = event.target.closest('[data-layout]');
-    if(layout){ kState.layout = layout.dataset.layout; markKitchenStep(2); renderKitchenWizard(); return; }
-
-    const stepper = event.target.closest('[data-stepper]');
-    if(stepper){
-      const key = stepper.dataset.stepper;
-      const dir = Number(stepper.dataset.dir);
-      if(key==='base') kState.baseCount = clampValue(kState.baseCount + dir, BASE_CABINET_MIN, BASE_CABINET_MAX);
-      if(key==='wall') kState.wallCount = clampValue(kState.wallCount + dir, WALL_CABINET_MIN, WALL_CABINET_MAX);
-      markKitchenStep(3);
-      renderKitchenWizard();
-      return;
-    }
-
-    const door = event.target.closest('[data-door]');
-    if(door){ kState.door = door.dataset.door; markKitchenStep(3); renderKitchenWizard(); return; }
-
-    const color = event.target.closest('[data-color]');
-    if(color){ kState.color = color.dataset.color; markKitchenStep(3); renderKitchenWizard(); return; }
-
-    const top = event.target.closest('[data-benchtop]');
-    if(top){ kState.benchtop = top.dataset.benchtop; markKitchenStep(4); renderKitchenWizard(); return; }
-
-    const splash = event.target.closest('[data-splash]');
-    if(splash){
-      kState.splash = splash.dataset.splash;
-      const defaultPattern = splashbacks.find(s=>s.id===kState.splash)?.patterns[0] ?? '';
-      kState.splashPattern = kState.splashPatterns[kState.splash] || defaultPattern;
-      markKitchenStep(5);
-      renderKitchenWizard();
-      return;
-    }
-
-    const pattern = event.target.closest('[data-pattern]');
-    if(pattern){
-      kState.splashPattern = pattern.dataset.pattern;
-      kState.splashPatterns[kState.splash] = pattern.dataset.pattern;
-      markKitchenStep(5);
-      renderKitchenWizard();
-      return;
-    }
-
-    const appliance = event.target.closest('[data-appliance]');
-    if(appliance){ kState[appliance.dataset.appliance] = appliance.dataset.id; markKitchenStep(6); renderKitchenWizard(); return; }
-
-    const upgrade = event.target.closest('[data-upgrade]');
-    if(upgrade){
-      const key = upgrade.dataset.upgrade;
-      kState.upgrades[key] = !kState.upgrades[key];
-      markKitchenStep(7);
-      renderKitchenWizard();
-      return;
-    }
-
-    const requestBtn = event.target.closest('#kitchenRequestBtn');
-    if(requestBtn && areKitchenStepsComplete()){
-      markKitchenStep(8);
-      openQuoteModal('Kitchen Renovation', buildKitchenQuoteMessage(), requestBtn);
-      renderKitchenSidebar();
-    }
-  });
-
-  renderKitchenWizard();
-}
-
-/* ============================================================
-   BATHROOM WIZARD
-============================================================ */
-function calcBathroomTotals(){
-  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
-  if(!pkg) return null;
-  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
-  const tMod = tapware.find(t=>t.id===bState.tap).mod;
-  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
-  const ledMod = bState.ledMirror?550:0;
-  const elecMod = bState.elecPlumb?1500:0;
-  const addOn = vMod+tMod+sMod+ledMod+elecMod;
-  return {pkg, low:pkg.low+addOn, high:pkg.high+addOn, vMod, tMod, sMod, ledMod, elecMod};
-}
-
-function getBathroomPreviewSVG(view){
-  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
-  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
-  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
-  const tap = tapware.find(t=>t.id===bState.tap).hex;
-  if(view==='3d'){
-    const shade=(hex,amt)=>{const c=String(hex || '').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';const n=parseInt(c,16);let r=(n>>16)+amt,g=((n>>8)&0xff)+amt,b=(n&0xff)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);};
-    const isoBox=(x,y,w,h,d,fc,tc,sc)=>{const dx=d*0.55,dy=d*0.32;return `<polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${fc}" stroke="#00000022"/><polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${tc}" stroke="#00000022"/><polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sc}" stroke="#00000022"/>`;};
-    let parts=`<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
-    parts+=`<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
-    parts+=isoBox(60,260,140,55,34,vColor,shade(vColor,25),shade(vColor,-30));
-    parts+=`<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
-    if(bState.ledMirror) parts+=`<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
-    parts+=`<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
-    parts+=isoBox(300,260,90,190,60,'#dbeef2','#eef9fb','#c3dee3');
-    return `<svg viewBox="0 0 460 300" width="100%" height="auto" style="max-width:100%;display:block;">${parts}</svg>`;
-  }
-  const isFreestanding=bState.vanityStyle==='freestanding';
-  const isFramed=bState.screen==='framed';
-  const mirrorGlow=bState.ledMirror?`<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>`:'';
-  return `<svg viewBox="0 0 420 260" width="100%" height="auto" style="max-width:100%;display:block;">
-    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
-    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
-    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
-    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
-    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
-    ${isFreestanding?`<rect x="20" y="150" width="150" height="4" fill="#00000022"/>`:`<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
-    <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
-    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
-    <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
-    ${mirrorGlow}
-  </svg>`;
-}
-
-function getBathroomSummaryText(){
-  const t = calcBathroomTotals();
-  if(!t) return 'No package selected.';
-  return [
-    `PACKAGE: ${t.pkg.name} ($${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()})`,
-    `VANITY: ${getSelectionName(vanityStyles, bState.vanityStyle)} / ${getSelectionName(vanityColors, bState.vanityColor)}`,
-    `FLOOR TILE: ${getSelectionName(floorTiles, bState.floorTile)}`,
-    `WALL TILE: ${getSelectionName(wallTiles, bState.wallTile)}`,
-    `TAPWARE: ${getSelectionName(tapware, bState.tap)} — ${t.tMod?'+$'+t.tMod.toLocaleString():'included'}`,
-    `SHOWER SCREEN: ${getSelectionName(showerScreens, bState.screen)} — ${t.sMod?'+$'+t.sMod.toLocaleString():'included'}`,
-    `LED MIRROR: ${bState.ledMirror?'Yes (+$550)':'No'}`,
-    `ELECTRICAL & PLUMBING UPGRADE: ${bState.elecPlumb?'Yes (+$1,500)':'No'}`,
-    `PRICE RANGE: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}`
-  ].join('\n');
-}
-
-function renderBathroomSidebar(){
-  const list = document.getElementById('bathroomStepsList');
-  list.innerHTML = bathroomSteps.map(step=>{
-    const complete = !!bState.completed[step.id];
-    return `<div class="kitchen-step-item ${bState.step===step.id?'active':''} ${complete?'completed':''}" data-bstep="${step.id}" role="button" tabindex="0" aria-label="Go to ${step.title}">
-      <div class="kitchen-step-index">${complete?'✓':step.id}</div>
-      <div class="kitchen-step-meta"><strong>${step.title}</strong><span>${step.desc}</span></div>
-    </div>`;
-  }).join('');
-}
-
-function renderBathroomRunningTotal(){
-  const box = document.getElementById('bathroomRunningTotal');
-  if(bState.step===1 || !bState.pkg){ box.style.display='none'; return; }
-  const t = calcBathroomTotals();
-  if(!t){ box.style.display='none'; return; }
-  box.style.display = 'block';
-  box.innerHTML = `Price Range <span class="kitchen-total-amount">$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</span>`;
-}
-
-function bSwatchCards(list, activeId, dataAttr){
-  return `<div class="kitchen-cards cols-3">${list.map(item=>`
-    <article class="kitchen-card ${activeId===item.id?'selected':''}" ${dataAttr}="${item.id}">
-      ${item.hex?`<div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>`:''}
-      <h4 style="font-size:14px;">${item.name||item.brand}</h4>
-      ${'mod' in item ? `<span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>`:'' }
     </article>`).join('')}</div>`;
 }
 
-function renderBathroomStepContent(){
-  const container = document.getElementById('bathroomStepContent');
-  const step = bathroomSteps.find(s=>s.id===bState.step);
-  let content = `<div class="kitchen-step-head">
-    <div><h3>Step ${step.id}: ${step.title}</h3><p>${step.desc}</p></div>
-    ${bState.completed[step.id]?'<span class="kitchen-completed-badge">Completed</span>':''}
-  </div>`;
-
-  if(bState.step===1){
-    content += `<div class="kitchen-cards">${bathroomPackages.map(pkg=>`
-      <article class="kitchen-card ${bState.pkg===pkg.id?'selected':''}" data-bpkg="${pkg.id}">
-        ${pkg.badge?`<div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">${pkg.badge}</div>`:''}
-        <div style="font-size:11px;color:var(--sage);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">${pkg.theme}</div>
-        <h4>${pkg.name}</h4>
-        <div class="kitchen-range">$${pkg.low.toLocaleString()} – $${pkg.high.toLocaleString()}</div>
-        <ul style="margin:8px 0 10px;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555;">${pkg.items.map(i=>`<li>${i}</li>`).join('')}</ul>
-        <div class="kitchen-suppliers">${pkg.suppliers.map(s=>`<span>${s}</span>`).join('')}</div>
-      </article>`).join('')}</div>`;
-  }
-
-  if(bState.step===2){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Vanity Style</p>
-    ${bSwatchCards(vanityStyles, bState.vanityStyle, 'data-bvanity')}
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Cabinet Colour</p>
-    ${bSwatchCards(vanityColors, bState.vanityColor, 'data-bvcolor')}`;
-  }
-
-  if(bState.step===3){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Floor Tile</p>
-    ${bSwatchCards(floorTiles, bState.floorTile, 'data-bfloor')}
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Wall Tile</p>
-    ${bSwatchCards(wallTiles, bState.wallTile, 'data-bwall')}`;
-  }
-
-  if(bState.step===4){
-    content += `<p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin-bottom:8px;">Tapware Finish</p>
-    <div class="kitchen-cards cols-3">${tapware.map(item=>`
-      <article class="kitchen-card ${bState.tap===item.id?'selected':''}" data-btap="${item.id}">
-        <div style="width:100%;height:22px;border-radius:6px;border:1px solid #ddd;background:${item.hex};margin-bottom:8px;"></div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">${item.brand}</div>
-        <h4 style="font-size:14px;">${item.name}</h4>
-        <span class="kitchen-mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</span>
-      </article>`).join('')}</div>
-    <p style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#7a7460;margin:16px 0 8px;">Shower Screen</p>
-    ${bSwatchCards(showerScreens, bState.screen, 'data-bscreen')}`;
-  }
-
-  if(bState.step===5){
-    content += `<div class="kitchen-toggle-grid">
-      <article class="kitchen-toggle ${bState.ledMirror?'on':''}" data-btoggle="ledMirror">
-        <div><h4>LED Backlit Mirror</h4><p>Touch-sensor demister mirror.</p><span class="kitchen-mod">+$550</span></div>
-        <div class="check">${bState.ledMirror?'✓':''}</div>
-      </article>
-      <article class="kitchen-toggle ${bState.elecPlumb?'on':''}" data-btoggle="elecPlumb">
-        <div><h4>Electrical &amp; Plumbing Upgrade</h4><p>New points, exhaust fan, water relocation.</p><span class="kitchen-mod">+$1,500</span></div>
-        <div class="check">${bState.elecPlumb?'✓':''}</div>
-      </article>
-    </div>`;
-  }
-
-  if(bState.step===6){
-    const t = calcBathroomTotals();
-    content += `<div class="kitchen-review-grid">
-      <div>
-        <div class="kitchen-preview">
-          <div class="view-toggle" style="margin-bottom:10px;">
-            <div class="kitchen-nav-btn ${bState.view==='2d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="2d">2D Elevation</div>
-            <div class="kitchen-nav-btn ${bState.view==='3d'?'primary':''}" style="font-size:12px;padding:8px 14px;" data-bview="3d">3D Isometric</div>
-          </div>
-          <div style="overflow:hidden;">${getBathroomPreviewSVG(bState.view)}</div>
-          <div class="floorplan-note">Illustrative preview. Exact layout finalised during your free in-home measure.</div>
-        </div>
+function renderLayoutStep(body){
+  body.innerHTML = `<div class="product-grid">${layouts[activeType].map(layout=>`
+    <article class="product-card ${state().layout===layout.id?'selected':''}" data-layout="${layout.id}">
+      <div class="product-image" style="background:#f3efe6;display:flex;align-items:center;justify-content:center;">${layoutIcon(layout.id, activeType)}</div>
+      <div class="product-body">
+        <div class="product-name">${layout.name}</div>
+        <div class="product-model">${layout.desc}</div>
       </div>
-      <div>
-        <div class="kitchen-summary" style="margin-bottom:14px;"><pre>${getBathroomSummaryText()}</pre></div>
-        ${t?`<div class="kitchen-price-breakdown">
-          <div class="line"><span>Base Package</span><span>$${t.pkg.low.toLocaleString()}–$${t.pkg.high.toLocaleString()}</span></div>
-          <div class="line"><span>Vanity Style</span><span>${t.vMod?'+$'+t.vMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>Tapware</span><span>${t.tMod?'+$'+t.tMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>Shower Screen</span><span>${t.sMod?'+$'+t.sMod.toLocaleString():'included'}</span></div>
-          <div class="line"><span>LED Mirror</span><span>${t.ledMod?'+$'+t.ledMod.toLocaleString():'not included'}</span></div>
-          <div class="line"><span>Elec &amp; Plumbing</span><span>${t.elecMod?'+$'+t.elecMod.toLocaleString():'not included'}</span></div>
-          <div class="line"><strong>PRICE RANGE</strong><strong>$${t.low.toLocaleString()} – $${t.high.toLocaleString()}</strong></div>
-        </div>
-        <button type="button" id="bathroomQuoteBtn" class="kitchen-nav-btn primary" style="width:100%;margin-top:10px;">Request This Quote</button>
-        <div style="font-size:11px;color:#7f7667;margin-top:6px;">(Fixed quote after free consultation)</div>`
-        :'<p style="color:#a14f39;">Please complete steps 1–5 first.</p>'}
+    </article>`).join('')}</div>`;
+}
+
+function layoutIcon(id, type){
+  const c='stroke="#1C2B33" stroke-width="4" fill="#E9E4D6"';
+  if(type==='kitchen'){
+    if(id==='ushape') return `<svg width="90" height="56" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H30 V45 H70 V10 H90 V60 H10 Z" ${c}/></svg>`;
+    if(id==='lshape') return `<svg width="90" height="56" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 10 H90 V30 H40 V60 H10 Z" ${c}/></svg>`;
+    if(id==='galley') return `<svg width="90" height="56" viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${c}/><rect x="10" y="46" width="80" height="14" ${c}/></svg>`;
+    if(id==='island') return `<svg width="90" height="56" viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${c}/><rect x="35" y="42" width="30" height="18" ${c}/></svg>`;
+    return `<svg width="90" height="56" viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="80" height="14" ${c}/><rect x="70" y="35" width="20" height="25" ${c}/></svg>`;
+  }
+  return `<svg width="90" height="56" viewBox="0 0 100 70" aria-hidden="true"><rect x="10" y="10" width="25" height="50" ${c}/><rect x="45" y="10" width="20" height="40" ${c}/><rect x="75" y="10" width="15" height="25" ${c}/></svg>`;
+}
+
+function renderRoomStep(body){
+  const r = state().room;
+  body.innerHTML = `<div class="room-editor">
+    <div class="room-fields">
+      <h5>Room Dimensions</h5>
+      <div class="field-group"><label>Width (mm)</label><input type="number" id="roomWidth" value="${r.width}" min="1500" max="10000" step="50"></div>
+      <div class="field-group"><label>Length (mm)</label><input type="number" id="roomLength" value="${r.length}" min="1500" max="10000" step="50"></div>
+      <div class="field-group"><label>Ceiling Height (mm)</label><input type="number" id="roomHeight" value="${r.height}" min="2200" max="4000" step="50"></div>
+      <h5 style="margin-top:18px;">Interactive Editing</h5>
+      <div class="room-tools">
+        <button class="room-tool ${roomTool==='door'?'active':''}" data-tool="door">🚪 Door</button>
+        <button class="room-tool ${roomTool==='window'?'active':''}" data-tool="window">🪟 Window</button>
+        <button class="room-tool ${roomTool==='column'?'active':''}" data-tool="column">▣ Column</button>
+        <button class="room-tool ${roomTool==='bulkhead'?'active':''}" data-tool="bulkhead">▭ Bulkhead</button>
+        <button class="room-tool ${roomTool==='plumbing'?'active':''}" data-tool="plumbing">💧 Plumbing</button>
+        <button class="room-tool ${roomTool==='electrical'?'active':''}" data-tool="electrical">⚡ Power</button>
       </div>
-    </div>`;
-  }
-
-  container.innerHTML = content;
-  updateBathroomNav();
-  renderBathroomRunningTotal();
-}
-
-function updateBathroomNav(){
-  const backBtn = document.getElementById('bathroomBackBtn');
-  const nextBtn = document.getElementById('bathroomNextBtn');
-  backBtn.disabled = bState.step===BATHROOM_FIRST_STEP;
-  backBtn.setAttribute('aria-disabled', backBtn.disabled?'true':'false');
-  if(bState.step===BATHROOM_REVIEW_STEP){
-    nextBtn.textContent = 'Review Design';
-    nextBtn.disabled = true;
-  } else {
-    nextBtn.textContent = 'Next →';
-    nextBtn.disabled = false;
-  }
-  nextBtn.setAttribute('aria-disabled', nextBtn.disabled?'true':'false');
-}
-
-function renderBathroomWizard(){
-  renderBathroomSidebar();
-  renderBathroomStepContent();
-}
-
-function changeBathroomStep(delta){
-  if(delta>0) bState.completed[bState.step] = true;
-  bState.step = Math.max(BATHROOM_FIRST_STEP, Math.min(BATHROOM_TOTAL_STEPS, bState.step + delta));
-  renderBathroomWizard();
-}
-
-function initBathroomWizard(){
-  const stepsList = document.getElementById('bathroomStepsList');
-  const stepContent = document.getElementById('bathroomStepContent');
-  const backBtn = document.getElementById('bathroomBackBtn');
-  const nextBtn = document.getElementById('bathroomNextBtn');
-
-  stepsList.addEventListener('click', (e)=>{
-    const item = e.target.closest('[data-bstep]');
-    if(!item) return;
-    bState.step = Number(item.dataset.bstep);
-    renderBathroomWizard();
-  });
-  stepsList.addEventListener('keydown', (e)=>{
-    if(e.key!=='Enter' && e.key!==' ') return;
-    const item = e.target.closest('[data-bstep]');
-    if(!item) return;
-    e.preventDefault();
-    bState.step = Number(item.dataset.bstep);
-    renderBathroomWizard();
-  });
-
-  backBtn.addEventListener('click', ()=>changeBathroomStep(-1));
-  nextBtn.addEventListener('click', ()=>changeBathroomStep(1));
-
-  stepContent.addEventListener('click', (e)=>{
-    const pkg = e.target.closest('[data-bpkg]');
-    if(pkg){ bState.pkg = pkg.dataset.bpkg; bState.completed[1]=true; renderBathroomWizard(); return; }
-
-    const vanity = e.target.closest('[data-bvanity]');
-    if(vanity){ bState.vanityStyle = vanity.dataset.bvanity; bState.completed[2]=true; renderBathroomWizard(); return; }
-
-    const vcolor = e.target.closest('[data-bvcolor]');
-    if(vcolor){ bState.vanityColor = vcolor.dataset.bvcolor; bState.completed[2]=true; renderBathroomWizard(); return; }
-
-    const floor = e.target.closest('[data-bfloor]');
-    if(floor){ bState.floorTile = floor.dataset.bfloor; bState.completed[3]=true; renderBathroomWizard(); return; }
-
-    const wall = e.target.closest('[data-bwall]');
-    if(wall){ bState.wallTile = wall.dataset.bwall; bState.completed[3]=true; renderBathroomWizard(); return; }
-
-    const tap = e.target.closest('[data-btap]');
-    if(tap){ bState.tap = tap.dataset.btap; bState.completed[4]=true; renderBathroomWizard(); return; }
-
-    const screen = e.target.closest('[data-bscreen]');
-    if(screen){ bState.screen = screen.dataset.bscreen; bState.completed[4]=true; renderBathroomWizard(); return; }
-
-    const toggle = e.target.closest('[data-btoggle]');
-    if(toggle){
-      const key = toggle.dataset.btoggle;
-      bState[key] = !bState[key];
-      bState.completed[5] = true;
-      renderBathroomWizard();
-      return;
-    }
-
-    const viewBtn = e.target.closest('[data-bview]');
-    if(viewBtn){ bState.view = viewBtn.dataset.bview; renderBathroomStepContent(); return; }
-
-    const quoteBtn = e.target.closest('#bathroomQuoteBtn');
-    if(quoteBtn){
-      openQuoteModal('Bathroom Renovation', buildBathroomQuoteMessage(), quoteBtn);
-      return;
-    }
-  });
-
-  renderBathroomWizard();
-}
-
-/* ============================================================
-   PACKAGE CARDS (kept for compatibility — no longer used)
-============================================================ */
-function renderPkgGrid(gridId, packages, state, onSelect){
-  const grid = document.getElementById(gridId);
-  grid.innerHTML = packages.map(p => `
-    <div class="pkg-card ${state.pkg===p.id?'selected':''}" data-id="${p.id}">
-      ${p.badge?`<div class="badge">${p.badge}</div>`:''}
-      <div class="theme">${p.theme}</div>
-      <h3>${p.name}</h3>
-      <div class="price">$${p.low.toLocaleString()} – $${p.high.toLocaleString()} <span>AUD est.</span></div>
-      <ul>${p.items.map(i=>`<li>${i}</li>`).join('')}</ul>
-      <div class="supp-label">Recommended Sydney Suppliers</div>
-      <div class="supp-chips">${p.suppliers.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
-      <button class="select-btn">${state.pkg===p.id? 'Selected ✓':'Select This Package'}</button>
     </div>
-  `).join('');
-  [...grid.querySelectorAll('.pkg-card')].forEach(card=>{
-    card.addEventListener('click', ()=>{ state.pkg = card.dataset.id; onSelect(); });
-  });
-}
-
-function swatchHTML(item, activeId, wide, showChip){
-  return `<div class="swatch ${activeId===item.id?'active':''}" style="${wide?'width:150px;':''}" data-id="${item.id}">
-    ${showChip?`<div class="chip-color" style="background:${item.hex}"></div>`:''}
-    ${item.brand?`<div class="brand">${item.brand}</div>`:''}
-    <div class="name">${item.name}</div>
-    ${'mod' in item ? `<div class="mod">${item.mod?('+$'+item.mod.toLocaleString()):'included'}</div>`:''}
+    <div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Use the toolbar to add structural elements to your plan. Changes update the canvas instantly.</p>
+      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;">Plan Measurements</div>
+        <div class="summary-line"><span>Width</span><span class="val">${fmtDim(r.width)}</span></div>
+        <div class="summary-line"><span>Length</span><span class="val">${fmtDim(r.length)}</span></div>
+        <div class="summary-line"><span>Floor Area</span><span class="val">${((r.width*r.length)/1000000).toFixed(2)} m²</span></div>
+        <div class="summary-line"><span>Ceiling Height</span><span class="val">${fmtDim(r.height)}</span></div>
+      </div>
+    </div>
   </div>`;
 }
 
-function bindToggle(container, id, state, key, onChange){
-  const row = container.querySelector(`.toggle-row[data-id="${id}"]`);
-  row.querySelector('.switch').addEventListener('click', ()=>{
-    state[key] = !state[key];
-    row.querySelector('.switch').classList.toggle('on', state[key]);
-    onChange();
-  });
-}
-function toggleHTML(id, label, sub, mod, on){
-  return `<div class="toggle-row" data-id="${id}">
-    <div class="lbl">${label}<small>${sub}${mod?(' · +$'+mod.toLocaleString()):''}</small></div>
-    <div class="switch ${on?'on':''}"></div>
-  </div>`;
+function renderProductStep(body, stepId){
+  const list = products[activeType].filter(p=>p.step===stepId);
+  const filters = buildFilters(list);
+  let html = `<div class="filter-bar">
+    <div class="search-box"><input type="text" id="productSearch" placeholder="Search products..."></div>
+    <select class="filter-select" id="filterBrand"><option value="">All Brands</option>${filters.brands.map(b=>`<option value="${b}">${b}</option>`).join('')}</select>
+    <select class="filter-select" id="filterFinish"><option value="">All Finishes</option>${filters.finishes.map(f=>`<option value="${f}">${f}</option>`).join('')}</select>
+    <select class="filter-select" id="filterMaterial"><option value="">All Materials</option>${filters.materials.map(m=>`<option value="${m}">${m}</option>`).join('')}</select>
+    <select class="filter-select" id="filterTier"><option value="">All Tiers</option><option value="budget">Budget</option><option value="premium">Premium</option><option value="luxury">Luxury</option></select>
+    ${['Australian Made','Best Seller','New Arrival'].map(tag=>`<button class="filter-chip" data-tag="${tag}">${tag}</button>`).join('')}
+  </div>
+  <div class="product-grid" id="productGrid">${renderProductCards(list)}</div>`;
+
+  // Smart recommendations
+  const recs = list.slice(0,3);
+  if(recs.length){
+    html += `<div class="recommendations">
+      <h5>Recommended for this design</h5>
+      <div class="recommendation-row">${recs.map(p=>`
+        <div class="rec-card" data-rec="${p.id}">
+          <div class="rec-img" style="${materialStyle(p)}"></div>
+          <strong>${p.name}</strong>
+          <span>${p.brand} · ${money(p.price)}</span>
+        </div>`).join('')}</div>
+    </div>`;
+  }
+  body.innerHTML = html;
+  bindProductFilters(list);
 }
 
-function bindGroupSwatches(container, list, state, key, updateFn){
-  list.forEach(item=>{
-    [...container.querySelectorAll(`.swatch[data-id="${item.id}"]`)].forEach(node=>{
-      node.addEventListener('click', ()=>{
-        state[key] = item.id;
-        if(container.id==='bathroomOptions') renderBathroomOptions();
-        updateFn();
-      });
+function buildFilters(list){
+  const brands = [...new Set(list.map(p=>p.brand))];
+  const finishes = [...new Set(list.map(p=>p.finish))];
+  const materials = [...new Set(list.map(p=>p.material))];
+  return {brands, finishes, materials};
+}
+
+function materialStyle(p){
+  const tx = finishTextures[p.finish.toLowerCase()] || '';
+  return `background:${p.hex||'#f3efe6'} ${tx};`;
+}
+
+function renderProductCards(list){
+  const st = state();
+  if(!list.length) return `<p style="color:#999;font-size:13px;">No products match your filters.</p>`;
+  return list.map(p=>{
+    const selected = st.products[st.step]?.id===p.id;
+    const stockClass = p.stock==='Limited'?'limited':'stock';
+    return `<article class="product-card ${selected?'selected':''}" data-product="${p.id}">
+      <div class="product-image" style="${materialStyle(p)}">
+        <div class="material-swatch" style="width:100%;height:100%;${materialStyle(p)}"></div>
+        <span class="product-badge ${stockClass}">${p.stock}</span>
+      </div>
+      <div class="product-body">
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-model">${p.model} · ${p.material} · ${p.finish}</div>
+        <div class="product-specs">${p.tags.map(t=>`<span>${t}</span>`).join('')}<span>${p.warranty} warranty</span></div>
+        <div class="product-foot"><span class="product-price">${money(p.price)}</span><small>${p.tier}</small></div>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function bindProductFilters(list){
+  const apply = ()=>{
+    const term = (document.getElementById('productSearch')?.value||'').toLowerCase();
+    const brand = document.getElementById('filterBrand')?.value||'';
+    const finish = document.getElementById('filterFinish')?.value||'';
+    const material = document.getElementById('filterMaterial')?.value||'';
+    const tier = document.getElementById('filterTier')?.value||'';
+    const activeTags = [...document.querySelectorAll('.filter-chip.active')].map(b=>b.dataset.tag);
+    const filtered = list.filter(p=>{
+      return (!term || p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term)) &&
+             (!brand || p.brand===brand) &&
+             (!finish || p.finish===finish) &&
+             (!material || p.material===material) &&
+             (!tier || p.tier===tier) &&
+             (activeTags.length===0 || activeTags.some(t=>p.tags.includes(t)));
     });
+    document.getElementById('productGrid').innerHTML = renderProductCards(filtered);
+  };
+  ['productSearch','filterBrand','filterFinish','filterMaterial','filterTier'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input', apply);
+    document.getElementById(id)?.addEventListener('change', apply);
+  });
+  document.querySelectorAll('.filter-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{ chip.classList.toggle('active'); apply(); });
   });
 }
 
-function renderBathroomOptions(){
-  const el = document.getElementById('bathroomOptions');
-  el.innerHTML = `
-    <div class="opt-group">
-      <h4>Vanity</h4>
-      <div class="sub-label">Style</div>
-      <div class="swatch-row">${vanityStyles.map(v=>swatchHTML(v, bState.vanityStyle, true, false)).join('')}</div>
-      <div class="sub-label">Colour</div>
-      <div class="swatch-row">${vanityColors.map(c=>swatchHTML(c, bState.vanityColor, false, true)).join('')}</div>
+function renderReviewStep(body){
+  const t = calcTotals();
+  const st = state();
+  const sels = Object.entries(st.products).map(([stepId, p])=>{
+    const step = steps().find(s=>s.id===Number(stepId));
+    return `<div class="summary-line"><span>${step.title}</span><span class="val">${p.brand} ${p.name}</span></div>`;
+  });
+  body.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+    <div class="summary-card">
+      <h5>Your Selections</h5>
+      <div class="summary-line"><span>Package</span><span class="val">${t.pkg?.name||'—'}</span></div>
+      <div class="summary-line"><span>Layout</span><span class="val">${layouts[activeType].find(l=>l.id===st.layout)?.name||'—'}</span></div>
+      ${sels.length?sels.join(''):'<p style="font-size:12px;color:#999;">No products selected.</p>'}
     </div>
-    <div class="opt-group">
-      <h4>Tiling</h4>
-      <div class="sub-label">Floor Tile</div>
-      <div class="swatch-row">${floorTiles.map(t=>swatchHTML(t, bState.floorTile, false, true)).join('')}</div>
-      <div class="sub-label">Wall Tile</div>
-      <div class="swatch-row">${wallTiles.map(t=>swatchHTML(t, bState.wallTile, false, true)).join('')}</div>
+    <div class="summary-card">
+      <h5>Price Breakdown</h5>
+      <div class="summary-line"><span>Base Package</span><span class="val">$${t.base.toLocaleString()}+</span></div>
+      <div class="summary-line"><span>Product Upgrades</span><span class="val">${money(t.productsCost)}</span></div>
+      ${activeType==='kitchen'?`<div class="summary-line"><span>Cabinet Adjustment</span><span class="val">${money(t.cabinetAdjustment)}</span></div>`:''}
+      <div class="summary-line" style="border-top:2px solid var(--line);padding-top:10px;margin-top:10px;"><strong>Estimated Total</strong><strong>$${t.total.toLocaleString()}+</strong></div>
     </div>
-    <div class="opt-group">
-      <h4>Fixtures</h4>
-      <div class="sub-label">Tapware Finish</div>
-      <div class="swatch-row">${tapware.map(t=>swatchHTML(t, bState.tap, true, true)).join('')}</div>
-      <div class="sub-label">Shower Screen</div>
-      <div class="swatch-row">${showerScreens.map(s=>swatchHTML(s, bState.screen, true, false)).join('')}</div>
-    </div>
-    <div class="opt-group">
-      <h4>Lighting &amp; Trades</h4>
-      ${toggleHTML('ledMirror','LED Backlit Mirror','Touch-sensor demister mirror', 550, bState.ledMirror)}
-      ${toggleHTML('elecB','Electrical &amp; Plumbing Upgrade','New points, exhaust fan, water relocation', 1500, bState.elecPlumb)}
-    </div>
-  `;
-  bindGroupSwatches(el, vanityStyles, bState, 'vanityStyle', updateBathroom);
-  bindGroupSwatches(el, vanityColors, bState, 'vanityColor', updateBathroom);
-  bindGroupSwatches(el, floorTiles, bState, 'floorTile', updateBathroom);
-  bindGroupSwatches(el, wallTiles, bState, 'wallTile', updateBathroom);
-  bindGroupSwatches(el, tapware, bState, 'tap', updateBathroom);
-  bindGroupSwatches(el, showerScreens, bState, 'screen', updateBathroom);
-  bindToggle(el, 'ledMirror', bState, 'ledMirror', updateBathroom);
-  bindToggle(el, 'elecB', bState, 'elecPlumb', updateBathroom);
+  </div>
+  <button class="request-btn" id="reviewRequestBtn" style="max-width:400px;margin-top:22px;">Request This Renovation Quote</button>`;
 }
 
-function isoBox(x, y, w, h, d, frontColor, topColor, sideColor){
-  const dx = d*0.55, dy = d*0.32;
-  return `
-    <polygon points="${x},${y-h} ${x+w},${y-h} ${x+w},${y} ${x},${y}" fill="${frontColor}" stroke="#00000022"/>
-    <polygon points="${x},${y-h} ${x+dx},${y-h-dy} ${x+w+dx},${y-h-dy} ${x+w},${y-h}" fill="${topColor}" stroke="#00000022"/>
-    <polygon points="${x+w},${y-h} ${x+w+dx},${y-h-dy} ${x+w+dx},${y-dy} ${x+w},${y}" fill="${sideColor}" stroke="#00000022"/>
-  `;
-}
-function shade(hex, amt){
-  const c = String(hex || '').replace('#','');
-  if(!/^[0-9a-fA-F]{6}$/.test(c)) return '#808080';
-  const num = parseInt(c,16);
-  let r=(num>>16)+amt, g=((num>>8)&0xff)+amt, b=(num&0xff)+amt;
-  r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
-  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+function renderCanvas(){
+  const canvas = document.getElementById('designCanvas');
+  const ctx = canvas.getContext('2d');
+  const st = state();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const cx = canvas.width/2 + pan.x;
+  const cy = canvas.height/2 + pan.y;
+  const scale = Math.min(canvas.width/st.room.width, canvas.height/st.room.length) * 0.65 * zoom;
+  const rw = st.room.width * scale;
+  const rh = st.room.length * scale;
+
+  ctx.save();
+  ctx.translate(cx-rw/2, cy-rh/2);
+
+  // Floor
+  ctx.fillStyle = '#f3efe6';
+  ctx.fillRect(0,0,rw,rh);
+  ctx.strokeStyle = '#d1c8b3';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(0,0,rw,rh);
+
+  // Grid
+  ctx.strokeStyle = '#e9e2d6';
+  ctx.lineWidth = 1;
+  const grid = 500 * scale;
+  for(let x=grid;x<rw;x+=grid){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,rh); ctx.stroke(); }
+  for(let y=grid;y<rh;y+=grid){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(rw,y); ctx.stroke(); }
+
+  // Layout hints
+  ctx.strokeStyle = '#b79a5d';
+  ctx.lineWidth = 3;
+  if(activeType==='kitchen'){
+    if(st.layout==='galley' || st.layout==='island' || st.layout==='peninsula'){
+      ctx.strokeRect(rw*0.08, rh*0.12, rw*0.84, rh*0.12);
+    }
+    if(st.layout==='lshape' || st.layout==='ushape' || st.layout==='peninsula'){
+      ctx.strokeRect(rw*0.08, rh*0.12, rw*0.2, rh*0.7);
+    }
+    if(st.layout==='ushape' || st.layout==='galley'){
+      ctx.strokeRect(rw*0.72, rh*0.12, rw*0.2, rh*0.7);
+    }
+    if(st.layout==='island'){
+      ctx.strokeRect(rw*0.35, rh*0.45, rw*0.3, rh*0.16);
+    }
+    if(st.layout==='peninsula'){
+      ctx.beginPath(); ctx.moveTo(rw*0.72, rh*0.12); ctx.lineTo(rw*0.72, rh*0.55); ctx.lineTo(rw*0.9, rh*0.55); ctx.stroke();
+    }
+  } else {
+    ctx.strokeRect(rw*0.08, rh*0.1, rw*0.25, rh*0.2);
+    ctx.strokeRect(rw*0.7, rh*0.1, rw*0.22, rh*0.55);
+    if(st.layout==='separate' || st.layout==='ensuite'){
+      ctx.strokeRect(rw*0.38, rh*0.55, rw*0.24, rh*0.28);
+    }
+  }
+
+  // Dimension labels
+  ctx.fillStyle = '#6b6555';
+  ctx.font = '12px Work Sans';
+  ctx.textAlign = 'center';
+  ctx.fillText(fmtDim(st.room.width), rw/2, -10);
+  ctx.save(); ctx.translate(-14, rh/2); ctx.rotate(-Math.PI/2); ctx.fillText(fmtDim(st.room.length), 0, 0); ctx.restore();
+
+  ctx.restore();
 }
 
-function renderBathroom2D(){
-  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
-  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
-  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
-  const tap = tapware.find(t=>t.id===bState.tap).hex;
-  const isFreestanding = bState.vanityStyle==='freestanding';
-  const isFramed = bState.screen==='framed';
-  const mirrorGlow = bState.ledMirror ? `<rect x="30" y="55" width="130" height="66" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".8"/>` : '';
+function renderSummary(){
+  const st = state();
+  const t = calcTotals();
+  document.getElementById('summaryType').textContent = roomTypes[activeType];
+  document.getElementById('summaryPackage').textContent = t.pkg?.name || '—';
+  document.getElementById('summaryLayout').textContent = layouts[activeType].find(l=>l.id===st.layout)?.name || '—';
+  document.getElementById('summaryRoomSize').textContent = `${fmtDim(st.room.width)} × ${fmtDim(st.room.length)}`;
 
-  const svg = `<svg viewBox="0 0 420 260" width="100%" height="auto">
-    <rect x="0" y="0" width="420" height="190" fill="${wTile}"/>
-    <rect x="0" y="190" width="420" height="70" fill="${fTile}"/>
-    <rect x="270" y="30" width="130" height="230" fill="#dff0f5" opacity=".35" stroke="${isFramed?'#2b2c2e':'#9fb8bd'}" stroke-width="${isFramed?6:2}"/>
-    <rect x="270" y="30" width="6" height="230" fill="${isFramed?'#2b2c2e':'#9fb8bd'}"/>
-    <rect x="20" y="${isFreestanding?150:170}" width="150" height="70" rx="4" fill="${vColor}" stroke="#00000022"/>
-    ${isFreestanding? `<rect x="20" y="150" width="150" height="4" fill="#00000022"/>` : `<rect x="20" y="230" width="150" height="6" fill="#00000015"/>`}
-    <rect x="35" y="140" width="120" height="18" rx="9" fill="#fff" stroke="#00000022"/>
-    <rect x="90" y="118" width="6" height="24" fill="${tap}"/><circle cx="93" cy="116" r="5" fill="${tap}"/>
-    <rect x="35" y="58" width="120" height="60" rx="4" fill="#cfe3ea" stroke="#00000015"/>
-    ${mirrorGlow}
-  </svg>`;
-  document.getElementById('bathroomSvgWrap').innerHTML = svg;
-}
-function renderBathroom3D(){
-  const vColor = vanityColors.find(c=>c.id===bState.vanityColor).hex;
-  const fTile = floorTiles.find(t=>t.id===bState.floorTile).hex;
-  const wTile = wallTiles.find(t=>t.id===bState.wallTile).hex;
-  const tap = tapware.find(t=>t.id===bState.tap).hex;
-  let parts = '';
-  parts += `<rect x="0" y="0" width="460" height="300" fill="${shade(wTile,10)}"/>`;
-  parts += `<polygon points="0,220 460,220 400,300 60,300" fill="${shade(fTile,-10)}"/>`;
-  parts += isoBox(60, 260, 140, 55, 34, vColor, shade(vColor,25), shade(vColor,-30));
-  parts += `<rect x="70" y="150" width="120" height="70" fill="#cfe3ea" stroke="#00000022"/>`;
-  if(bState.ledMirror) parts += `<rect x="68" y="148" width="124" height="74" fill="none" stroke="#FFE9AE" stroke-width="4" opacity=".85"/>`;
-  parts += `<rect x="118" y="228" width="6" height="20" fill="${tap}"/><circle cx="121" cy="226" r="5" fill="${tap}"/>`;
-  parts += isoBox(300, 260, 90, 190, 60, '#dbeef2', '#eef9fb', '#c3dee3');
-  const svg = `<svg viewBox="0 0 460 300" width="100%" height="auto">${parts}</svg>`;
-  document.getElementById('bathroomSvgWrap').innerHTML = svg;
-}
-function updateBathroomPreview(){ bState.view==='2d' ? renderBathroom2D() : renderBathroom3D(); }
+  const sels = Object.entries(st.products).map(([stepId, p])=>{
+    const step = steps().find(s=>s.id===Number(stepId));
+    return `<div class="summary-line"><span>${step?.title||'Product'}</span><span class="val">${p.name}</span></div>`;
+  });
+  document.getElementById('summaryProducts').innerHTML = sels.length ? sels.join('') : '<p style="font-size:12px;color:#999;margin:0;">No products selected yet.</p>';
 
-function updateBathroomPrice(){
-  const pkg = bathroomPackages.find(p=>p.id===bState.pkg);
-  if(!pkg) return;
-  const vMod = vanityStyles.find(v=>v.id===bState.vanityStyle).mod;
-  const tMod = tapware.find(t=>t.id===bState.tap).mod;
-  const sMod = showerScreens.find(s=>s.id===bState.screen).mod;
-  const ledMod = bState.ledMirror?550:0;
-  const elecMod = bState.elecPlumb?1500:0;
-  const addOn = vMod+tMod+sMod+ledMod+elecMod;
-  const low = pkg.low+addOn, high = pkg.high+addOn;
-  document.getElementById('bathroomTotal').textContent = `$${low.toLocaleString()} – $${high.toLocaleString()}`;
-  document.getElementById('bathroomPriceLines').innerHTML = `
-    <div class="price-line"><span>${pkg.name} base package</span><span>$${pkg.low.toLocaleString()}–$${pkg.high.toLocaleString()}</span></div>
-    <div class="price-line"><span>Vanity style</span><span>${vMod?('+$'+vMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>Tapware finish</span><span>${tMod?('+$'+tMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>Shower screen</span><span>${sMod?('+$'+sMod.toLocaleString()):'included'}</span></div>
-    <div class="price-line"><span>LED backlit mirror</span><span>${ledMod?('+$'+ledMod.toLocaleString()):'not included'}</span></div>
-    <div class="price-line"><span>Electrical &amp; plumbing upgrade</span><span>${elecMod?('+$'+elecMod.toLocaleString()):'not included'}</span></div>
-  `;
-}
-function updateBathroom(){ updateBathroomPreview(); updateBathroomPrice(); }
+  document.getElementById('summaryPrice').textContent = `$${t.total.toLocaleString()}+`;
+  document.getElementById('summaryLeadTime').textContent = t.pkg?.leadTime || '—';
+  document.getElementById('summaryInstallTime').textContent = t.pkg?.installTime || '—';
+  document.getElementById('summaryCompletion').textContent = todayPlus(t.leadWeeks);
 
-function getSelectionName(options, id){
-  const match = options.find(option=>option.id===id);
-  return match ? match.name : 'Not selected';
+  const reviewStep = activeType==='kitchen'?15:16;
+  document.getElementById('requestQuoteBtn').disabled = !isStepComplete(reviewStep);
 }
 
-function buildKitchenQuoteMessage(){
-  const totals = calcKitchenTotals();
-  return [
-    'Kitchen renovation quote request from the MIC NSW design studio.',
-    `Estimated total: $${totals.total.toLocaleString()}+`,
-    '',
-    kitchenDesignSummaryText()
-  ].join('\n');
+function renderAll(){
+  renderTabs();
+  renderProgress();
+  renderStepList();
+  renderStage();
+  renderCanvas();
+  renderSummary();
+  document.getElementById('canvasTools').style.display = state().step===3?'flex':'none';
+  document.getElementById('canvasPlaceholder').style.display = state().step===3?'none':'flex';
+  if(state().step!==3) document.getElementById('designCanvas').style.opacity = '1';
 }
 
-function buildBathroomQuoteMessage(){
-  const t = calcBathroomTotals();
-  return [
-    'Bathroom renovation quote request from the MIC NSW design studio.',
-    t ? `Estimated price range: $${t.low.toLocaleString()} – $${t.high.toLocaleString()}` : 'No package selected.',
-    '',
-    getBathroomSummaryText()
-  ].join('\n');
+/* EVENTS */
+function changeStep(delta){
+  const s = steps();
+  const idx = s.findIndex(x=>x.id===state().step);
+  const nextIdx = Math.max(0, Math.min(s.length-1, idx + delta));
+  if(delta>0) state().completed[state().step] = true;
+  state().step = s[nextIdx].id;
+  renderAll();
 }
 
+function goToStep(id){
+  if(id > maxUnlockedStep() && id !== state().step) return;
+  state().step = id;
+  renderAll();
+}
+
+document.getElementById('stepList').addEventListener('click', e=>{
+  const item = e.target.closest('[data-step]');
+  if(!item) return;
+  goToStep(Number(item.dataset.step));
+});
+
+document.getElementById('stepList').addEventListener('keydown', e=>{
+  if(e.key!=='Enter' && e.key!==' ') return;
+  const item = e.target.closest('[data-step]');
+  if(!item) return;
+  e.preventDefault();
+  goToStep(Number(item.dataset.step));
+});
+
+document.getElementById('renovationTabs').addEventListener('click', e=>{
+  const tab = e.target.closest('[data-tab]');
+  if(!tab) return;
+  activeType = tab.dataset.tab;
+  renderAll();
+});
+
+document.getElementById('stageBody').addEventListener('click', e=>{
+  const pkgCard = e.target.closest('[data-pkg]');
+  if(pkgCard){ state().pkg = pkgCard.dataset.pkg; state().completed[state().step] = true; renderAll(); return; }
+
+  const layoutCard = e.target.closest('[data-layout]');
+  if(layoutCard){ state().layout = layoutCard.dataset.layout; state().completed[state().step] = true; renderAll(); return; }
+
+  const product = e.target.closest('[data-product]');
+  if(product){ openDetailPanel(products[activeType].find(p=>p.id===product.dataset.product)); return; }
+
+  const rec = e.target.closest('[data-rec]');
+  if(rec){ openDetailPanel(products[activeType].find(p=>p.id===rec.dataset.rec)); return; }
+
+  const tool = e.target.closest('[data-tool]');
+  if(tool){ roomTool = roomTool===tool.dataset.tool?null:tool.dataset.tool; renderStage(); renderCanvas(); return; }
+});
+
+document.getElementById('stageBody').addEventListener('input', e=>{
+  if(e.target.id==='roomWidth' || e.target.id==='roomLength' || e.target.id==='roomHeight'){
+    const val = Math.max(1000, parseInt(e.target.value)||0);
+    state().room[e.target.id.replace('room','').toLowerCase()] = val;
+    renderCanvas();
+    renderSummary();
+  }
+});
+
+/* Canvas interactions */
+document.getElementById('canvasTools').addEventListener('click', e=>{
+  const btn = e.target.closest('[data-view], [data-action]');
+  if(!btn) return;
+  if(btn.dataset.view){
+    canvasMode = btn.dataset.view;
+    document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active', b.dataset.view===canvasMode));
+  }
+  if(btn.dataset.action==='zoom-in') zoom = Math.min(3, zoom + 0.2);
+  if(btn.dataset.action==='zoom-out') zoom = Math.max(0.4, zoom - 0.2);
+  if(btn.dataset.action==='reset'){ zoom=1; pan={x:0,y:0}; }
+  if(btn.dataset.action==='fullscreen'){
+    const el = document.getElementById('designCanvas');
+    if(!document.fullscreenElement) el.requestFullscreen?.(); else document.exitFullscreen?.();
+  }
+  renderCanvas();
+});
+
+/* Product detail panel */
+let detailProduct = null;
+const detailPanel = document.getElementById('detailPanel');
+function openDetailPanel(product){
+  if(!product) return;
+  detailProduct = product;
+  document.getElementById('detailBrand').textContent = product.brand;
+  document.getElementById('detailTitle').textContent = product.name;
+  document.getElementById('detailDesc').textContent = product.desc;
+  document.getElementById('detailGallery').style = `background:${product.hex||'#f3efe6'} ${finishTextures[product.finish.toLowerCase()]||''}; display:flex; align-items:center; justify-content:center; font-size:40px;`;
+  document.getElementById('detailGallery').textContent = product.type==='accessory'?'🧰':'🖼️';
+  document.getElementById('detailSpecs').innerHTML = product.specs.map(s=>`<li>${s}</li>`).join('');
+  document.getElementById('detailFeatures').innerHTML = product.features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('detailCare').textContent = product.care;
+  detailPanel.classList.add('show');
+  detailPanel.setAttribute('aria-hidden','false');
+}
+function closeDetailPanel(){
+  detailPanel.classList.remove('show');
+  detailPanel.setAttribute('aria-hidden','true');
+}
+document.getElementById('detailClose').addEventListener('click', closeDetailPanel);
+document.getElementById('detailCancel').addEventListener('click', closeDetailPanel);
+document.getElementById('detailAdd').addEventListener('click', ()=>{
+  if(detailProduct) setSelection(state().step, detailProduct);
+  closeDetailPanel();
+});
+detailPanel.addEventListener('click', e=>{ if(e.target===detailPanel) closeDetailPanel(); });
+
+/* Quote modal */
 const quoteModal = document.getElementById('quoteModal');
 const quoteModalTitle = document.getElementById('quoteModalTitle');
-const quoteCloseBtn = document.getElementById('quoteCloseBtn');
-const quoteRequestForm = document.getElementById('quoteRequestForm');
-const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
-const quoteCancelBtn = document.getElementById('quoteCancelBtn');
 const quoteSummaryText = document.getElementById('quoteSummaryText');
 const quoteFormStatus = document.getElementById('quoteFormStatus');
-let pendingQuoteRequest = null;
+let pendingQuote = null;
 
-function setQuoteStatus(message, isError=false){
-  quoteFormStatus.textContent = message;
+function buildQuoteMessage(){
+  const st = state();
+  const t = calcTotals();
+  const lines = [
+    `${roomTypes[activeType]} quote request from MIC NSW Renovation Studio.`,
+    `Estimated total: $${t.total.toLocaleString()}+`,
+    `Package: ${t.pkg?.name}`,
+    `Layout: ${layouts[activeType].find(l=>l.id===st.layout)?.name}`,
+    `Room: ${fmtDim(st.room.width)} × ${fmtDim(st.room.length)} × ${fmtDim(st.room.height)}`,
+    '',
+    'Selected Products:'
+  ];
+  Object.entries(st.products).forEach(([stepId, p])=>{
+    const step = steps().find(s=>s.id===Number(stepId));
+    lines.push(`- ${step?.title}: ${p.brand} ${p.name} (${money(p.price)})`);
+  });
+  return lines.join('\n');
+}
+
+function openQuoteModal(){
+  pendingQuote = {message: buildQuoteMessage()};
+  quoteModalTitle.textContent = `Request Your ${roomTypes[activeType]} Quote`;
+  document.getElementById('quoteRequestForm').reset();
+  quoteSummaryText.value = pendingQuote.message;
+  setQuoteStatus('');
+  quoteModal.classList.add('show');
+  quoteModal.setAttribute('aria-hidden','false');
+  document.getElementById('quoteName').focus();
+}
+function closeQuoteModal(){
+  quoteModal.classList.remove('show');
+  quoteModal.setAttribute('aria-hidden','true');
+  document.getElementById('quoteSubmitBtn').disabled = false;
+}
+function setQuoteStatus(msg, isError=false){
+  quoteFormStatus.textContent = msg;
   quoteFormStatus.classList.toggle('error', isError);
 }
 
-function closeQuoteModal(){
-  quoteModal.classList.remove('show');
-  quoteModal.setAttribute('aria-hidden', 'true');
-  quoteSubmitBtn.disabled = false;
-  setQuoteStatus('');
-  const triggerBtn = pendingQuoteRequest && pendingQuoteRequest.button;
-  pendingQuoteRequest = null;
-  if(triggerBtn && document.contains(triggerBtn)){
-    try { triggerBtn.focus(); } catch(e){ /* focus restoration is best-effort */ }
-  }
-}
+document.getElementById('requestQuoteBtn').addEventListener('click', openQuoteModal);
+document.getElementById('summaryScroll').addEventListener('click', e=>{
+  if(e.target.closest('#requestQuoteBtn')) openQuoteModal();
+});
+document.getElementById('stageBody').addEventListener('click', e=>{
+  if(e.target.closest('#reviewRequestBtn')) openQuoteModal();
+});
 
-function openQuoteModal(serviceName, message, button){
-  pendingQuoteRequest = { serviceName, message, button, originalLabel: button.textContent };
-  quoteModalTitle.textContent = `Request Your ${serviceName} Quote`;
-  quoteRequestForm.reset();
-  quoteSummaryText.value = message;
-  setQuoteStatus('');
-  quoteModal.classList.add('show');
-  quoteModal.setAttribute('aria-hidden', 'false');
-  document.getElementById('quoteName').focus();
-}
+document.getElementById('quoteCloseBtn').addEventListener('click', closeQuoteModal);
+document.getElementById('quoteCancelBtn').addEventListener('click', closeQuoteModal);
+quoteModal.addEventListener('click', e=>{ if(e.target===quoteModal) closeQuoteModal(); });
+quoteModal.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closeQuoteModal();
+});
 
-async function submitQuoteRequest(contact){
-  if(!pendingQuoteRequest){
-    console.warn('Quote submission attempted without an active quote request.');
-    setQuoteStatus(`Sorry, something went wrong. Please reopen the quote form or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`, true);
-    return;
-  }
-  const { serviceName, message, button, originalLabel } = pendingQuoteRequest;
+document.getElementById('quoteRequestForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!document.getElementById('quoteRequestForm').reportValidity()) return;
+  const from_name = document.getElementById('quoteName').value.trim();
+  const email = document.getElementById('quoteEmail').value.trim();
+  const phone = document.getElementById('quotePhone').value.trim();
+  if(!from_name||!email||!phone){ setQuoteStatus('Please enter your name, email, and phone number.', true); return; }
 
-  button.disabled = true;
-  button.textContent = 'Sending quote request...';
-  quoteSubmitBtn.disabled = true;
+  const btn = document.getElementById('quoteSubmitBtn');
+  btn.disabled = true;
   const controller = new AbortController();
   const timeoutId = setTimeout(()=>controller.abort(), QUOTE_REQUEST_TIMEOUT_MS);
-
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
+      method:'POST', signal:controller.signal,
+      headers:{'Content-Type':'application/json', Accept:'application/json'},
+      body:JSON.stringify({
         access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `${serviceName} Quote Request`,
-        from_name: contact.from_name,
-        email: contact.email,
-        phone: contact.phone,
-        message
+        subject: `${roomTypes[activeType]} Quote Request`,
+        from_name, email, phone,
+        message: pendingQuote?.message || buildQuoteMessage()
       })
     });
     const result = await response.json();
     if(!response.ok || !result.success) throw new Error(result.message || 'Unable to submit quote request.');
-
-    button.textContent = 'Quote request sent ✓';
-    quoteSubmitBtn.disabled = false;
-    setQuoteStatus(`Thanks ${contact.from_name}! Your ${serviceName.toLowerCase()} quote request has been sent to MIC NSW.`);
-    setTimeout(()=>{
-      button.textContent = originalLabel;
-      button.disabled = false;
-      closeQuoteModal();
-    }, 2500);
-  } catch (error) {
-    const errorMessage = error && error.name === 'AbortError'
+    setQuoteStatus(`Thanks ${from_name}! Your ${roomTypes[activeType].toLowerCase()} quote request has been sent to MIC NSW.`);
+    setTimeout(closeQuoteModal, 2500);
+  } catch(err){
+    const msg = err.name==='AbortError'
       ? `Your quote request timed out. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`
       : `Sorry, we could not send your quote request. Please try again or contact MIC NSW directly at ${MIC_CONTACT_EMAIL}.`;
-    setQuoteStatus(errorMessage, true);
-    button.textContent = originalLabel;
-    button.disabled = false;
-    quoteSubmitBtn.disabled = false;
-    return;
+    setQuoteStatus(msg, true);
   } finally {
     clearTimeout(timeoutId);
+    btn.disabled = false;
   }
-}
-
-/* ============================================================
-   INIT + TABS
-============================================================ */
-initKitchenWizard();
-initBathroomWizard();
-
-document.querySelectorAll('.tab').forEach(tab=>{
-  tab.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    const target = tab.dataset.tab;
-    document.getElementById('kitchen-tab').style.display = target==='kitchen'?'block':'none';
-    document.getElementById('bathroom-tab').style.display = target==='bathroom'?'block':'none';
-  });
 });
 
-quoteCloseBtn.addEventListener('click', closeQuoteModal);
-quoteCancelBtn.addEventListener('click', closeQuoteModal);
-quoteModal.addEventListener('click', e=>{
-  if(e.target === quoteModal) closeQuoteModal();
+/* Keyboard nav */
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowRight') changeStep(1);
+  if(e.key==='ArrowLeft') changeStep(-1);
 });
-quoteModal.addEventListener('keydown', event=>{
-  if(event.key==='Escape'){ closeQuoteModal(); return; }
-  if(event.key!=='Tab') return;
-  const focusable = [...quoteModal.querySelectorAll('button,input,textarea,[tabindex]:not([tabindex="-1"])')].filter(node=>!node.disabled);
-  if(!focusable.length) return;
-  const first = focusable[0];
-  const last = focusable[focusable.length-1];
-  if(event.shiftKey && document.activeElement===first){ event.preventDefault(); last.focus(); }
-  else if(!event.shiftKey && document.activeElement===last){ event.preventDefault(); first.focus(); }
-});
-quoteRequestForm.addEventListener('submit', e=>{
-  e.preventDefault();
-  if(!quoteRequestForm.reportValidity()) return;
 
-  const from_name = document.getElementById('quoteName').value.trim();
-  const email = document.getElementById('quoteEmail').value.trim();
-  const phone = document.getElementById('quotePhone').value.trim();
-
-  if(!from_name || !email || !phone){
-    setQuoteStatus('Please enter your name, email, and phone number.', true);
-    return;
-  }
-
-  submitQuoteRequest({ from_name, email, phone });
-});
+/* Init */
+renderAll();
+window.addEventListener('resize', renderCanvas);
 </script>
-<footer style="background:var(--navy);color:#c9c2b3;padding:50px 20px 26px;margin-top:20px;">
-  <div style="max-width:1220px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center;">
-    <div>
-      <img src="https://mic-nsw.com.au/front/images/logo2.png" alt="MIC NSW" style="height:34px;filter:brightness(0) invert(1);margin-bottom:10px;">
-      <p style="font-size:12.5px;color:#a89f8e;max-width:340px;">MIC NSW PTY LTD — ABN: 51 665 533 282 — Contractor Licence: 393630C</p>
-    </div>
-    <div style="font-size:13px;">
-      <a href="index.html" style="color:#ece5d6;">← Back to Homepage</a> &nbsp;|&nbsp;
-      <a href="index.html#contact" style="color:var(--gold);">Contact Us</a> &nbsp;|&nbsp;
-      <a href="https://wa.me/+61470640083?text=Hello" style="color:#ece5d6;">WhatsApp</a>
-    </div>
-  </div>
-</footer>
-<a href="https://wa.me/+61470640083?text=Hello" style="position:fixed;bottom:26px;right:26px;z-index:250;background:#25D366;color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 20px rgba(0,0,0,.25);" aria-label="Chat on WhatsApp">💬</a>
-
 </body>
 </html>
