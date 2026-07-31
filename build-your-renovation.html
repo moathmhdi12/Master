@@ -1570,16 +1570,14 @@ function currentBathroomValueForStep(stepId){
 function updateBathroomNav(){
   const backBtn = document.getElementById('bathroomBackBtn');
   const nextBtn = document.getElementById('bathroomNextBtn');
-  backBtn.disabled = bState.step===BATHROOM_FIRST_STEP;
-  backBtn.setAttribute('aria-disabled', backBtn.disabled?'true':'false');
-  if(bState.step===BATHROOM_REVIEW_STEP){
-    nextBtn.textContent = 'Review Design';
-    nextBtn.disabled = true;
-  } else {
-    nextBtn.textContent = 'Next →';
-    nextBtn.disabled = false;
-  }
-  nextBtn.setAttribute('aria-disabled', nextBtn.disabled?'true':'false');
+  const mobileBack = document.getElementById('bathroomBackBtnMobile');
+  const mobileNext = document.getElementById('bathroomNextBtnMobile');
+  const disabled = bState.step===BATHROOM_FIRST_STEP;
+  [backBtn, mobileBack].forEach(btn=>{ if(btn){ btn.disabled = disabled; btn.setAttribute('aria-disabled', disabled?'true':'false'); } });
+  const atReview = bState.step===BATHROOM_REVIEW_STEP;
+  const label = atReview ? 'Review Complete' : 'Next →';
+  const nextDisabled = atReview;
+  [nextBtn, mobileNext].forEach(btn=>{ if(btn){ btn.textContent = label; btn.disabled = nextDisabled; btn.setAttribute('aria-disabled', nextDisabled?'true':'false'); } });
 }
 
 function renderBathroomWizard(){
