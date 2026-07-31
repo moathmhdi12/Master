@@ -551,40 +551,141 @@ const kitchenUpgradeOptions = [
 ];
 
 /* Bathroom data */
+/* ---------- Luxury Bathroom Data ---------- */
 const bathroomPackages = [
-  {id:'essential', theme:'Sydney Essentials', name:'Essential Bathroom', badge:null, low:18000, high:26000,
+  {id:'essential', theme:'Sydney Essentials', name:'Essential Bathroom', badge:null, low:18000, high:26000, estBuildDays:14, estInstallDays:8,
    items:['Full strip-out & re-waterproofing','Ceramic wall & floor tiles','Standard vanity','Caroma tapware, semi-frameless screen'],
    suppliers:['Bunnings / Caroma','Beaumont Tiles','Methven Tapware']},
-  {id:'premium', theme:'Sydney Premium', name:'Premium Bathroom', badge:'MOST POPULAR', low:28000, high:45000,
+  {id:'premium', theme:'Sydney Premium', name:'Premium Bathroom', badge:'MOST POPULAR', low:28000, high:45000, estBuildDays:18, estInstallDays:10,
    items:['Full strip-out & re-waterproofing','Large-format porcelain tiles','Floating vanity','Phoenix tapware, frameless screen'],
    suppliers:['Reece','National Tiles','Phoenix Tapware']},
-  {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000,
+  {id:'luxury', theme:'Sydney Signature', name:'Luxury Bathroom', badge:'FULL CUSTOM', low:50000, high:80000, estBuildDays:25, estInstallDays:14,
    items:['Full strip-out, re-waterproof & re-plumb','Natural stone-look porcelain','Freestanding bath','Brushed brass/black tapware, LED mirror'],
    suppliers:['Custom Joinery','Signorino / Artedomus','Nero / Sussex Taps']}
 ];
 
-const vanityStyles = [
-  {id:'wallhung', name:'Wall-Hung', mod:0},{id:'freestanding', name:'Freestanding', mod:900},{id:'timber', name:'Timber Vanity', mod:1400}
+const bathroomLayouts = [
+  {id:'single-wall', name:'Single Wall', dims:'2.0m × 2.8m', rec:'2.2m × 3.0m', apartment:true, family:false,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="22" fill="#e9e4d6"/><rect x="20" y="45" width="32" height="22" rx="2" fill="#e9e4d6"/><rect x="70" y="45" width="28" height="22" rx="2" fill="#e9e4d6"/></svg>'},
+  {id:'corner', name:'Corner Bathroom', dims:'2.2m × 2.4m', rec:'2.4m × 2.8m', apartment:true, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="50" height="22" fill="#e9e4d6"/><rect x="15" y="42" width="26" height="33" fill="#e9e4d6"/><rect x="68" y="45" width="32" height="22" rx="2" fill="#e9e4d6"/></svg>'},
+  {id:'walkin', name:'Walk-In Shower', dims:'2.4m × 3.0m', rec:'2.6m × 3.2m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="12" fill="#e9e4d6"/><rect x="20" y="35" width="34" height="22" rx="2" fill="#e9e4d6"/><rect x="70" y="35" width="30" height="40" fill="#e9e4d6"/><line x1="70" y1="35" x2="70" y2="75" stroke="#1C2B33" stroke-width="2" stroke-dasharray="3,2"/></svg>'},
+  {id:'freestanding-bath', name:'Freestanding Bath Layout', dims:'2.6m × 3.2m', rec:'2.8m × 3.5m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><ellipse cx="75" cy="45" rx="22" ry="14" fill="#e9e4d6"/><rect x="20" y="35" width="32" height="22" rx="2" fill="#e9e4d6"/><rect x="15" y="15" width="90" height="12" fill="#e9e4d6"/></svg>'},
+  {id:'double-vanity', name:'Double Vanity Layout', dims:'2.8m × 3.4m', rec:'3.0m × 3.6m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="22" fill="#e9e4d6"/><rect x="20" y="45" width="26" height="22" rx="2" fill="#e9e4d6"/><rect x="52" y="45" width="26" height="22" rx="2" fill="#e9e4d6"/><rect x="85" y="42" width="16" height="30" fill="#e9e4d6"/></svg>'},
+  {id:'ensuite', name:'Luxury Ensuite', dims:'2.2m × 2.8m', rec:'2.4m × 3.0m', apartment:true, family:false,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="18" fill="#e9e4d6"/><rect x="20" y="40" width="28" height="18" rx="2" fill="#e9e4d6"/><rect x="68" y="40" width="32" height="30" fill="#e9e4d6"/><line x1="68" y1="40" x2="68" y2="70" stroke="#1C2B33" stroke-width="2" stroke-dasharray="3,2"/></svg>'},
+  {id:'compact', name:'Compact Bathroom', dims:'1.8m × 2.4m', rec:'2.0m × 2.6m', apartment:true, family:false,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="20" fill="#e9e4d6"/><rect x="20" y="42" width="28" height="22" rx="2" fill="#e9e4d6"/><rect x="70" y="42" width="28" height="26" fill="#e9e4d6"/></svg>'},
+  {id:'large-family', name:'Large Family Bathroom', dims:'3.0m × 4.0m', rec:'3.2m × 4.2m', apartment:false, family:true,
+   svg:'<svg viewBox="0 0 120 90"><rect x="15" y="15" width="90" height="60" fill="none" stroke="#1C2B33" stroke-width="3"/><rect x="15" y="15" width="90" height="18" fill="#e9e4d6"/><rect x="20" y="40" width="24" height="18" rx="2" fill="#e9e4d6"/><rect x="50" y="40" width="24" height="18" rx="2" fill="#e9e4d6"/><ellipse cx="85" cy="55" rx="14" ry="9" fill="#e9e4d6"/></svg>'}
+];
+
+const vanities = [
+  {id:'floating', name:'Floating Vanity', type:'Floating', brand:'ADP', collection:'Glacier', material:'Moisture-resistant MDF', finish:'Satin', dims:'900mm W', drawers:'2 soft-close', stone:'Carrara-look ceramic', softClose:true, colors:['white','oak','black','sage'], mod:0, warranty:'7 years', rating:'4 Star WELS', badge:'best'},
+  {id:'freestanding', name:'Freestanding Vanity', type:'Freestanding', brand:'Timberline', collection:'Bastian', material:'Solid oak & plywood', finish:'Natural oak', dims:'1200mm W', drawers:'3 soft-close', stone:'Engineered stone', softClose:true, colors:['oak','black','white'], mod:900, warranty:'10 years', rating:'4 Star WELS', badge:'luxury'},
+  {id:'double', name:'Double Vanity', type:'Double', brand:'Kado', collection:'Arc', material:'Polyurethane', finish:'Matte', dims:'1500mm W', drawers:'4 soft-close', stone:'40mm engineered stone', softClose:true, colors:['white','black'], mod:2200, warranty:'10 years', rating:'4 Star WELS', badge:'luxury'},
+  {id:'timber', name:'Timber Vanity', type:'Timber', brand:'Loughlin Furniture', collection:'Coastal', material:'Tasmanian oak', finish:'Oiled', dims:'1050mm W', drawers:'2 timber-dovetail', stone:'Solid surface', softClose:true, colors:['oak'], mod:1800, warranty:'10 years', rating:'4 Star WELS', badge:'premium'},
+  {id:'stone', name:'Stone Vanity', type:'Stone', brand:'Marquis', collection:'Arco', material:'Concrete stone composite', finish:'Honed', dims:'900mm W', drawers:'2 push-to-open', stone:'Integrated stone basin', softClose:true, colors:['white','charcoal'], mod:2400, warranty:'10 years', rating:'5 Star WELS', badge:'luxury'},
+  {id:'custom', name:'Custom Vanity', type:'Custom', brand:'MIC Joinery', collection:'Bespoke', material:'Custom', finish:'Made-to-order', dims:'Any size', drawers:'Custom config', stone:'Your choice', softClose:true, colors:['white','oak','black','sage'], mod:4500, warranty:'7 years', rating:'4 Star WELS', badge:'new'}
 ];
 const vanityColors = [
   {id:'white', name:'Matte White', hex:'#F4F2ED'},{id:'oak', name:'Natural Oak', hex:'#C9A876'},
-  {id:'black', name:'Matte Black', hex:'#26282A'},{id:'sage', name:'Sage Green', hex:'#8A9A80'}
+  {id:'black', name:'Matte Black', hex:'#26282A'},{id:'sage', name:'Sage Green', hex:'#8A9A80'},{id:'charcoal', name:'Charcoal', hex:'#4A4E52'}
 ];
-const floorTiles = [
-  {id:'subway', name:'Matte Porcelain — Grey', hex:'#D8D2C4'},{id:'stone', name:'Stone-Look Porcelain', hex:'#C8C2B4'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'charcoal', name:'Charcoal Matte', hex:'#3A3D40'}
+
+const tileStyles = [
+  {id:'large-porcelain', name:'Large Porcelain', texture:'large', size:'600×1200mm', slip:'P3', brand:'National Tiles', hex:'#E8E4DA', eco:false, badge:'best'},
+  {id:'marble-look', name:'Marble Look', texture:'marble', size:'600×1200mm', slip:'P2', brand:'Signorino', hex:'#EAE6DC', eco:false, badge:'luxury'},
+  {id:'concrete', name:'Concrete', texture:'concrete', size:'600×600mm', slip:'P3', brand:'Beaumont Tiles', hex:'#B8B2A7', eco:true, badge:'eco'},
+  {id:'terrazzo', name:'Terrazzo', texture:'terrazzo', size:'600×600mm', slip:'P3', brand:'Artedomus', hex:'#DCD3C2', eco:false, badge:'new'},
+  {id:'travertine', name:'Travertine', texture:'travertine', size:'450×900mm', slip:'P2', brand:'Artedomus', hex:'#D5CDBA', eco:false, badge:'luxury'},
+  {id:'stone', name:'Stone', texture:'stone', size:'400×800mm', slip:'P4', brand:'National Tiles', hex:'#C8C2B4', eco:true, badge:'premium'},
+  {id:'timber-look', name:'Timber Look', texture:'timber', size:'200×1200mm', slip:'P3', brand:'Beaumont Tiles', hex:'#C9A876', eco:true, badge:'eco'},
+  {id:'matt', name:'Matt Ceramic', texture:'matt', size:'300×600mm', slip:'P3', brand:'National Tiles', hex:'#D8D2C4', eco:false, badge:null},
+  {id:'gloss', name:'Gloss Ceramic', texture:'gloss', size:'300×600mm', slip:'P2', brand:'Beaumont Tiles', hex:'#F7F6F2', eco:false, badge:null}
 ];
-const wallTiles = [
-  {id:'subway', name:'Subway Tile — White', hex:'#F7F6F2'},{id:'marble', name:'Marble-Look Large Format', hex:'#EAE6DC'},
-  {id:'terrazzo', name:'Terrazzo Blend', hex:'#DCD3C2'},{id:'black', name:'Matte Black Large Format', hex:'#2B2C2E'}
-];
+const floorTiles = tileStyles;
+const wallTiles = tileStyles;
+
 const tapware = [
-  {id:'chrome', brand:'Caroma', name:'Chrome', hex:'#C7CBCE', mod:0},{id:'black', brand:'Nero', name:'Matte Black', hex:'#26282A', mod:250},
-  {id:'brass', brand:'Sussex', name:'Brushed Brass', hex:'#C9A24B', mod:350},{id:'nickel', brand:'Phoenix', name:'Brushed Nickel', hex:'#A9ACAE', mod:300}
+  {id:'chrome', brand:'Caroma', name:'Chrome', finish:'Polished Chrome', hex:'#C7CBCE', mod:0, material:'Solid brass', warranty:'15 years', desc:'Timeless mirror finish that suits every bathroom.', badge:'best'},
+  {id:'black', brand:'Nero', name:'Matte Black', finish:'Matte Black', hex:'#26282A', mod:250, material:'Brass', warranty:'15 years', desc:'Bold modern finish for high-contrast designs.', badge:'premium'},
+  {id:'brass', brand:'Sussex', name:'Brushed Brass', finish:'Brushed Brass', hex:'#C9A24B', mod:350, material:'Solid brass', warranty:'15 years', desc:'Warm, luxurious brushed gold tone.', badge:'luxury'},
+  {id:'nickel', brand:'Phoenix', name:'Brushed Nickel', finish:'Brushed Nickel', hex:'#A9ACAE', mod:300, material:'Brass', warranty:'15 years', desc:'Subtle metallic sheen, fingerprint resistant.', badge:'premium'},
+  {id:'gunmetal', brand:'Nero', name:'Gunmetal', finish:'Gunmetal Grey', hex:'#4A4E52', mod:320, material:'Brass', warranty:'15 years', desc:'Industrial-luxe dark metallic finish.', badge:'new'},
+  {id:'rose-gold', brand:'Sussex', name:'Rose Gold', finish:'Rose Gold', hex:'#C98B7B', mod:380, material:'Brass', warranty:'15 years', desc:'Soft pink-gold statement finish.', badge:'luxury'}
 ];
+
 const showerScreens = [
-  {id:'framed', name:'Framed', mod:0},{id:'semi', name:'Semi-Frameless', mod:400},{id:'frameless', name:'Frameless', mod:900}
+  {id:'frameless', name:'Frameless Glass', type:'Frameless', glass:'10mm toughened', mod:900, brand:'Bathrooms By Design', warranty:'10 years', desc:'Minimalist fully frameless screen.', badge:'luxury'},
+  {id:'semi-frameless', name:'Semi-Frameless', type:'Semi-Frameless', glass:'6mm toughened', mod:400, brand:'Dorf', warranty:'7 years', desc:'Clean lines with slim top and bottom rails.', badge:'best'},
+  {id:'black-frame', name:'Black Frame', type:'Framed', glass:'6mm toughened', mod:550, brand:'Phoenix', warranty:'7 years', desc:'Industrial black aluminium framing.', badge:'premium'},
+  {id:'brass-frame', name:'Brass Frame', type:'Framed', glass:'6mm toughened', mod:750, brand:'Sussex', warranty:'10 years', desc:'Brushed brass framed statement screen.', badge:'luxury'},
+  {id:'sliding', name:'Sliding Door', type:'Sliding', glass:'6mm toughened', mod:600, brand:'Dorf', warranty:'7 years', desc:'Space-saving sliding entry door.', badge:'premium'},
+  {id:'pivot', name:'Pivot Door', type:'Pivot', glass:'6mm toughened', mod:500, brand:'Caroma', warranty:'7 years', desc:'Classic pivot opening for easy access.', badge:null},
+  {id:'walkin', name:'Walk-In', type:'Walk-In', glass:'10mm toughened', mod:1100, brand:'Bathrooms By Design', warranty:'10 years', desc:'Open wet-room panel, no door required.', badge:'luxury'},
+  {id:'corner', name:'Corner Shower', type:'Corner', glass:'6mm toughened', mod:650, brand:'Dorf', warranty:'7 years', desc:'Compact framed corner enclosure.', badge:null}
 ];
+
+const baths = [
+  {id:'freestanding', name:'Freestanding Bath', type:'Freestanding', material:'Acrylic', capacity:'180L', finish:'Gloss white', dims:'1500×750mm', brand:'Kado', mod:1800, warranty:'10 years', desc:'Sculptural centre-piece bath.', badge:'luxury'},
+  {id:'builtin', name:'Built-in Bath', type:'Built-in', material:'Steel enamel', capacity:'160L', finish:'Gloss white', dims:'1520×760mm', brand:'Caroma', mod:800, warranty:'10 years', desc:'Durable classic built-in bath.', badge:'best'},
+  {id:'back-to-wall', name:'Back-to-Wall Bath', type:'Back-to-Wall', material:'Acrylic', capacity:'170L', finish:'Gloss white', dims:'1500×750mm', brand:'Timberline', mod:1200, warranty:'10 years', desc:'Freestanding look with easy cleaning.', badge:'premium'},
+  {id:'corner-bath', name:'Corner Bath', type:'Corner', material:'Acrylic', capacity:'190L', finish:'Gloss white', dims:'1400×1400mm', brand:'Decina', mod:1400, warranty:'10 years', desc:'Maximise space with a relaxing corner fit.', badge:null},
+  {id:'stone-bath', name:'Luxury Stone Bath', type:'Stone', material:'Solid surface', capacity:'200L', finish:'Honed matte', dims:'1600×800mm', brand:'Apaiser', mod:5200, warranty:'10 years', desc:'Statement stone bath with thermal mass.', badge:'luxury'}
+];
+
+const toilets = [
+  {id:'wallhung', name:'Wall Hung Toilet', type:'Wall-Hung', brand:'Geberit', flush:'Rimless', efficiency:'4 Star WELS', warranty:'10 years', mod:1400, desc:'Floating pan for easy floor cleaning.', badge:'luxury'},
+  {id:'backtowall', name:'Back-To-Wall Toilet', type:'Back-To-Wall', brand:'Caroma', flush:'Rimless', efficiency:'4 Star WELS', warranty:'10 years', mod:600, desc:'Sleek close-coupled back-to-wall design.', badge:'best'},
+  {id:'closecoupled', name:'Close Coupled Toilet', type:'Close-Coupled', brand:'Mondella', flush:'Dual flush', efficiency:'4 Star WELS', warranty:'7 years', mod:0, desc:'Reliable classic close-coupled suite.', badge:null},
+  {id:'smart', name:'Smart Toilet', type:'Smart', brand:'Toto', flush:'Tornado', efficiency:'5 Star WELS', warranty:'10 years', mod:3500, desc:'Heated seat, bidet and auto flush.', badge:'new'}
+];
+
+const basins = [
+  {id:'above-counter', name:'Above Counter Basin', type:'Above-Counter', material:'Ceramic', finish:'Gloss white', brand:'Caroma', mod:0, warranty:'10 years', desc:'Vessel basin that sits proud of the vanity.', badge:'premium'},
+  {id:'undermount', name:'Undermount Basin', type:'Undermount', material:'Ceramic', finish:'Gloss white', brand:'Kado', mod:200, warranty:'10 years', desc:'Seamless under-bench basin for clean lines.', badge:'best'},
+  {id:'semi-recessed', name:'Semi-Recessed Basin', type:'Semi-Recessed', material:'Ceramic', finish:'Gloss white', brand:'Mondella', mod:150, warranty:'7 years', desc:' Basin partly proud for compact vanities.', badge:null},
+  {id:'integrated', name:'Integrated Basin', type:'Integrated', material:'Engineered stone', finish:'Matte', brand:'Marquis', mod:650, warranty:'10 years', desc:'One-piece stone top and basin.', badge:'luxury'},
+  {id:'stone-basin', name:'Stone Basin', type:'Stone', material:'Solid surface', finish:'Honed', brand:'Apaiser', mod:1200, warranty:'10 years', desc:'Natural-feel solid surface basin.', badge:'luxury'},
+  {id:'ceramic-basin', name:'Ceramic Basin', type:'Ceramic', material:'Ceramic', finish:'Gloss white', brand:'Caroma', mod:0, warranty:'10 years', desc:'Durable everyday ceramic basin.', badge:null}
+];
+
+const mirrors = [
+  {id:'standard', name:'Standard Mirror', type:'Standard', brand:'ADP', finish:'Polished edge', mod:0, warranty:'5 years', desc:'Bevelled edge mirror.', badge:null},
+  {id:'led', name:'LED Mirror', type:'LED', brand:'Remer', finish:'Backlit / demister', mod:550, warranty:'5 years', desc:'Touch-sensor LED with demister pad.', badge:'best'},
+  {id:'smart', name:'Smart Mirror', type:'Smart', brand:'Remer', finish:'Anti-fog, touch', mod:950, warranty:'5 years', desc:'Demister, clock and colour-temp control.', badge:'premium'},
+  {id:'bluetooth', name:'Bluetooth Mirror', type:'Bluetooth', brand:'Remer', finish:'Speaker + LED', mod:1250, warranty:'5 years', desc:'Built-in speakers and LED lighting.', badge:'new'},
+  {id:'round', name:'Round Mirror', type:'Decorative', brand:'Fienza', finish:'Brass frame', mod:450, warranty:'5 years', desc:'Circular mirror with brass frame.', badge:'luxury'},
+  {id:'black-frame', name:'Black Frame Mirror', type:'Decorative', brand:'Fienza', finish:'Matte black frame', mod:420, warranty:'5 years', desc:'Bold black framed feature mirror.', badge:'premium'}
+];
+
+const lighting = [
+  {id:'led-mirror', name:'LED Mirror Light', type:'LED Mirror', warmth:'Warm / Cool', mod:0, brand:'Remer', warranty:'5 years', desc:'Integrated mirror illumination.', badge:'best'},
+  {id:'downlights', name:'Ceiling Downlights', type:'Downlights', warmth:'3000K warm white', mod:350, brand:'Clipsal', warranty:'3 years', desc:'Recessed LED downlights.', badge:null},
+  {id:'pendant', name:'Pendant Lights', type:'Pendant', warmth:'2700K warm', mod:650, brand:'Beacon Lighting', warranty:'2 years', desc:'Designer pendants over vanity.', badge:'luxury'},
+  {id:'wall', name:'Wall Lights', type:'Wall', warmth:'3000K warm white', mod:480, brand:'Beacon Lighting', warranty:'2 years', desc:'Sconce lights either side of mirror.', badge:'premium'},
+  {id:'motion', name:'Motion Sensor Lighting', type:'Motion', warmth:'4000K cool white', mod:420, brand:'Clipsal', warranty:'3 years', desc:'Automatic night/path lighting.', badge:'new'},
+  {id:'ambient', name:'Ambient Lighting', type:'Ambient', warmth:'Warm dimmable', mod:520, brand:'HPM', warranty:'3 years', desc:'Indirect cove lighting for atmosphere.', badge:'luxury'}
+];
+
+const accessories = [
+  {id:'heated-rail', name:'Heated Towel Rail', type:'Heated Rail', finish:'Chrome', mod:780, brand:'Kado', warranty:'10 years', desc:'Warm, dry towels all year.', badge:'luxury'},
+  {id:'towel-ring', name:'Towel Ring', type:'Ring', finish:'Matching tapware', mod:85, brand:'Phoenix', warranty:'10 years', desc:'Coordinated hand-towel ring.', badge:null},
+  {id:'toilet-roll', name:'Toilet Roll Holder', type:'Holder', finish:'Matching tapware', mod:75, brand:'Phoenix', warranty:'10 years', desc:'Matching toilet roll holder.', badge:null},
+  {id:'soap-niche', name:'Soap Niche', type:'Niche', finish:'Tiled recess', mod:220, brand:'Custom', warranty:'7 years', desc:'Recessed shower niche for toiletries.', badge:'premium'},
+  {id:'shower-shelf', name:'Shower Shelf', type:'Shelf', finish:'Glass / metal', mod:180, brand:'Phoenix', warranty:'7 years', desc:'Glass corner shower shelf.', badge:null},
+  {id:'robe-hook', name:'Robe Hook', type:'Hook', finish:'Matching tapware', mod:45, brand:'Phoenix', warranty:'10 years', desc:'Robe hook on back of door.', badge:null},
+  {id:'floor-waste', name:'Floor Waste', type:'Waste', finish:'Chrome / tile insert', mod:120, brand:'Mondella', warranty:'5 years', desc:'Linear or tile-insert floor waste.', badge:null},
+  {id:'smart-mirror', name:'Smart Mirror', type:'Smart', finish:'Anti-fog touch', mod:950, brand:'Remer', warranty:'5 years', desc:'Demister and colour-temp control.', badge:'new'}
+];
+
+const bathroomFilters = ['Brand','Colour','Material','Finish','Luxury','Premium','Australian Made','Best Seller','Eco Friendly','Price'];
+
+const vanityStyles = vanities;
 
 /* ============================================================
    STATE
